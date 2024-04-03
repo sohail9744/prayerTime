@@ -1,0 +1,23 @@
+.transparent-table-container {
+    background: rgba(255, 255, 255, 0.5); /* Transparent white background */
+    padding: 20px;
+    border-radius: 10px;
+    overflow: auto;
+  }
+  
+  .transparent-table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .transparent-table th,
+  .transparent-table td {
+    padding: 10px;
+    border: 1px solid rgba(0, 0, 0, 0.1); /* Transparent black border */
+  }
+  
+  .transparent-table th {
+    background-color: #f0f0f0;
+    font-weight: bold;
+  }
+  
