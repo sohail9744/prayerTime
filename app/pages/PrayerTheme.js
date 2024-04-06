@@ -55,7 +55,7 @@ export default function PrayerTheme() {
   // ];
 
   return (
-    <Box class="page-theme" component="div" sx={{ width: '100%', display: 'flex', justifyContent: 'center', p: 5, m: 1, border: '1px dashed grey' }}>
+    <Box className="page-theme" component="div" sx={{ width: '100%', display: 'flex', justifyContent: 'center', p: 5, border: '1px dashed grey' }}>
       {prayerTimes && (
         <Box component="div" sx={{ width: '100%', display: 'flex', alignItems: "center", flexDirection: 'column', gap: 7 }}>
           <Stack useFlexGap alignItems="center" spacing={3}>
