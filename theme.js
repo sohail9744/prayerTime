@@ -1,12 +1,14 @@
 'use client';
 import { createTheme } from '@mui/material/styles';
+import './app/globals.css'
 
+const font = "'Open Sans', sans-serif"
 const theme = createTheme({
   typography: {
-    fontFamily: ['Open Sans', "sans-serif"].join(","),
+    fontFamily: font
   },
   palette:{
-    
+    text:{}
   }
 });
 

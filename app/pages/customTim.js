@@ -1,15 +1,63 @@
-import React, { Fragment, useState } from 'react'
+import React, { Fragment, useEffect, useState } from 'react'
 import { Box, Button, Divider, Snackbar, Stack, TextField, Toolbar, Typography, IconButton, Alert } from '@mui/material'
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import { LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import CloseIcon from '@mui/icons-material/Close';
 import AlertBox from '../components/alertBox';
+import axios from 'axios';
 
 function CustomTime() {
-    // onHandleDetails = () => {
-    //     console.log(hehe);
-    // }
+    const [fazrTime, setFazrTime] = useState(null);
+    const [zohrTime, setZohrTime] = useState(null);
+    const [asrTime, setAsrTime] = useState(null);
+    const [magribTime, setMagribTime] = useState(null);
+    const [ishaTime, setIshaTime] = useState(null);
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get('apiEndpoint');
+                if (response.status === 200) {
+                    // Check if data is received
+                    console.log(response.data);
+                } else {
+                    throw new Error('Failed to fetch data');
+                }
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                // Handle error, show error snackbar, etc.
+            }
+        };
+
+        fetchData(); 
+    }, []);
+    const handleSave = async () => {
+        // Construct the data object with TimePicker values
+        const data = {
+            fazrTime,
+            zohrTime,
+            asrTime,
+            magribTime,
+            ishaTime
+        };
+
+        // Example: Make API call here with the constructed data object
+        try {
+            // Example: Make API call using Axios
+            const response = await axios.post('apiEndpoint', data);
+            if (response.status === 200) {
+                setOpenSnackbar(true); // Open success snackbar
+            } else {
+                throw new Error('Failed to save data');
+            }
+        } catch (error) {
+            console.error('Error saving data:', error);
+            // Handle error, show error snackbar, etc.
+        }
+    };
+
     const [open, setOpen] = useState(false);
 
     const handleClick = () => {
@@ -37,7 +85,7 @@ function CustomTime() {
     );
     return (
         <Box component='main'>
-            <AlertBox text="If your internet is connect to your TV the data will reflect in 15 minutes." iconText="info"/>
+            <AlertBox text="If your internet is connect to your TV the data will reflect in 15 minutes." iconText="info" />
             <Typography variant='h5'>
                 Azaan Timings
             </Typography>

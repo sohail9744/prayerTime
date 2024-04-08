@@ -1,23 +1,27 @@
 import { Box, Button, Divider, Typography } from '@mui/material'
-import React from 'react'
-import TextField from '@mui/material/TextField';
-import Autocomplete from '@mui/material/Autocomplete';
+import React, { useState } from 'react'
+import Location from '../components/location';
 
 function Config() {
+  const [selectedLocation, setSelectedLocation] = useState(null);
+  const handleLocationSelect = (locationDetails) => {
+    setSelectedLocation(locationDetails);
+  };
   return (
     <Box component='main'>
       <Typography variant='h5'>
-        Configuration
+        Set your Manual Location
       </Typography>
-      <Divider sx={{ py: 1 }} />
+      <Divider sx={{ my: 2 }} />
       <Box component='div' display='flex' flexWrap='wrap'>
-        <Autocomplete
-          disablePortal
-          options={countryNames}
-          sx={{ width: 300 , pt: 3}}
-          renderInput={(params) => <TextField {...params} label="Select Location" placeholder='USA' />}
-          noOptionsText="No location"
-        />
+        <Location onSelect={handleLocationSelect} />
+        {selectedLocation && (
+          <div>
+            <p>Selected Place: {selectedLocation.placeName}</p>
+            <p>Latitude: {selectedLocation.latitude}</p>
+            <p>Longitude: {selectedLocation.longitude}</p>
+          </div>
+        )}
       </Box>
       <Box paddingTop='25px' display='flex' alignItems='center' justifyContent='center'>
         <Button variant='contained'>Save</Button>
@@ -27,55 +31,3 @@ function Config() {
 }
 
 export default Config
-
-const countryNames = [
-  { label: 'Afghanistan' },
-  { label: 'Albania' },
-  { label: 'Algeria' },
-  { label: 'Andorra' },
-  { label: 'Angola' },
-  { label: 'Antigua and Barbuda' },
-  { label: 'Argentina' },
-  { label: 'Armenia' },
-  { label: 'Australia' },
-  { label: 'Austria' },
-  { label: 'Azerbaijan' },
-  { label: 'Bahamas' },
-  { label: 'Bahrain' },
-  { label: 'Bangladesh' },
-  { label: 'Barbados' },
-  { label: 'Belarus' },
-  { label: 'Belgium' },
-  { label: 'Belize' },
-  { label: 'Benin' },
-  { label: 'Bhutan' },
-  { label: 'Bolivia' },
-  { label: 'Bosnia and Herzegovina' },
-  { label: 'Botswana' },
-  { label: 'Brazil' },
-  { label: 'Brunei' },
-  { label: 'Bulgaria' },
-  { label: 'Burkina Faso' },
-  { label: 'Burundi' },
-  { label: 'Cabo Verde' },
-  { label: 'Cambodia' },
-  { label: 'Cameroon' },
-  { label: 'Canada' },
-  { label: 'Central African Republic' },
-  { label: 'Chad' },
-  { label: 'Chile' },
-  { label: 'China' },
-  { label: 'Colombia' },
-  { label: 'Comoros' },
-  { label: 'Congo' },
-  { label: 'Costa Rica' },
-  { label: 'Croatia' },
-  { label: 'Cuba' },
-  { label: 'Cyprus' },
-  { label: 'Czech Republic' },
-  { label: 'Democratic Republic of the Congo' },
-  { label: 'Denmark' },
-  { label: 'Djibouti' },
-  { label: 'Dominica' },
-  { label: 'Dominican Republic' }
-];

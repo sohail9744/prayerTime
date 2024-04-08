@@ -2,15 +2,14 @@ import * as React from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 import Autocomplete from '@mui/material/Autocomplete';
+import CircularProgress from '@mui/material/CircularProgress';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-// import parse from 'autosuggest-highlight/parse';
+import parse from 'autosuggest-highlight/parse';
 import { debounce } from '@mui/material/utils';
 
-// This key was created specifically for the demo in mui.com.
-// You need to create a new one for your application.
-const GOOGLE_MAPS_API_KEY = 'AIzaSyC3aviU6KHXAjoSnxcw6qbOhjnFctbxPkE';
+const GOOGLE_MAPS_API_KEY = 'AIzaSyD3QQH8b4zZn4CFuhxuZyksdwRRZVbOtWQ';
 
 function loadScript(src, position, id) {
   if (!position) {
@@ -25,11 +24,13 @@ function loadScript(src, position, id) {
 }
 
 const autocompleteService = { current: null };
+const geocoderService = { current: null };
 
-export default function GoogleMaps() {
+export default function Location({ onSelect }) {
   const [value, setValue] = React.useState(null);
   const [inputValue, setInputValue] = React.useState('');
   const [options, setOptions] = React.useState([]);
+  const [loading, setLoading] = React.useState(false);
   const loaded = React.useRef(false);
 
   if (typeof window !== 'undefined' && !loaded.current) {
@@ -47,10 +48,42 @@ export default function GoogleMaps() {
   const fetch = React.useMemo(
     () =>
       debounce((request, callback) => {
-        autocompleteService.current.getPlacePredictions(request, callback);
+        setLoading(true);
+        autocompleteService.current.getPlacePredictions(request, (results) => {
+          setLoading(false);
+          callback(results);
+        });
       }, 400),
     [],
   );
+
+  const getPlaceDetails = (placeId) => {
+    if (!geocoderService.current && window.google) {
+      geocoderService.current = new window.google.maps.Geocoder();
+    }
+    if (!geocoderService.current) {
+      return;
+    }
+
+    geocoderService.current.geocode({ placeId: placeId }, (results, status) => {
+      if (status === 'OK' && results[0]) {
+        const location = results[0].geometry.location;
+        const placeName = results[0].formatted_address;
+        console.log('Place Name:', placeName);
+        console.log('Latitude:', location.lat());
+        console.log('Longitude:', location.lng());
+
+        // Call onSelect callback with selected location details
+        onSelect({
+          placeName: placeName,
+          latitude: location.lat(),
+          longitude: location.lng()
+        });
+      } else {
+        console.error('Geocode was not successful for the following reason:', status);
+      }
+    });
+  };
 
   React.useEffect(() => {
     let active = true;
@@ -106,12 +139,28 @@ export default function GoogleMaps() {
       onChange={(event, newValue) => {
         setOptions(newValue ? [newValue, ...options] : options);
         setValue(newValue);
+        if (newValue) {
+          getPlaceDetails(newValue.place_id);
+        }
       }}
       onInputChange={(event, newInputValue) => {
         setInputValue(newInputValue);
       }}
       renderInput={(params) => (
-        <TextField {...params} label="Add a location" fullWidth />
+        <TextField
+          {...params}
+          label="Add a location"
+          fullWidth
+          InputProps={{
+            ...params.InputProps,
+            endAdornment: (
+              <React.Fragment>
+                {loading ? <CircularProgress color="inherit" size={20} /> : null}
+                {params.InputProps.endAdornment}
+              </React.Fragment>
+            ),
+          }}
+        />
       )}
       renderOption={(props, option) => {
         const matches =

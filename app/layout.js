@@ -1,7 +1,6 @@
-import { Inter } from "next/font/google";
 import "./globals.css";
-import { ThemeProvider } from '@mui/material/styles';
-import theme from '../theme';
+import { ThemeProvider } from "@mui/material/styles";
+import theme from "../theme";
 
 export const metadata = {
   title: "Create Next App",
@@ -12,9 +11,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <ThemeProvider theme={theme}>
-          {children}
-        </ThemeProvider>
+        <ThemeProvider theme={theme}>{children}</ThemeProvider>
       </body>
     </html>
   );
