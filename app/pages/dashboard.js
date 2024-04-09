@@ -12,7 +12,7 @@ import ListItemButton from "@mui/material/ListItemButton";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import CustomTime from "./customTim";
-import Config from "./config";
+import Config from "./location";
 import Help from "./help";
 import AccountMenu from "../components/profileBar";
 import ClockScreens from "./clockScreen";
@@ -21,21 +21,37 @@ import {
   MdMoreTime,
   MdShareLocation,
   MdOutlineScreenshotMonitor,
+  MdMenu,
 } from "react-icons/md";
 import { BiSupport, BiHelpCircle } from "react-icons/bi";
 import "../globals.css";
+import { IconButton, useMediaQuery } from "@mui/material";
+import { useTheme } from "@mui/system";
 const drawerWidth = 230;
 
 export default function Dashboard() {
   const [focused, setFocused] = useState(0);
+  const [mobileOpen, setMobileOpen] = useState(false);
+  const handleDrawerToggle = () => {
+    setMobileOpen(!mobileOpen);
+  };
+  // const handleDrawerClose = () => {
+  //   setMobileOpen(false);
+  // };
+  //I am adding mediquery hook from material ui
+  // if it is down then 900 px the drawer will hidden
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.down("md"));
+
   const onHandleItem = (item) => {
     setFocused(item.key);
+    handleDrawerToggle();
   };
 
   const handleItemClick = (index) => {};
   const listData = [
     { name: "Prayer Time", key: 0, icon: <MdMoreTime /> },
-    { name: "Configuration", key: 1, icon: <MdShareLocation /> },
+    { name: "Location", key: 1, icon: <MdShareLocation /> },
     { name: "Screens", key: 2, icon: <MdOutlineScreenshotMonitor /> },
     { name: "User Guide", key: 3, icon: <BiHelpCircle /> },
     { name: "Support", key: 4, icon: <BiSupport /> },
@@ -45,7 +61,11 @@ export default function Dashboard() {
       <CssBaseline />
       <AppBar
         position="fixed"
-        sx={{ width: `calc(100% - ${drawerWidth}px)`, ml: `${drawerWidth}px` }}
+        sx={{
+          width: { sm: `calc(100% - ${drawerWidth}px)` },
+          ml: { sm: `${drawerWidth}px` },
+          opacity: '90%'
+        }}
       >
         <Toolbar
           sx={{
@@ -54,6 +74,18 @@ export default function Dashboard() {
             alignItems: "center",
           }}
         >
+          {/* add icon */}
+          {matches && (
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              edge="start"
+              onClick={handleDrawerToggle}
+              sx={{ mr: 2, display: { sm: "none", md: "none" } }}
+            >
+              <MdMenu />
+            </IconButton>
+          )}
           <Typography variant="h6" noWrap component="div">
             Dashboard
           </Typography>
@@ -69,12 +101,14 @@ export default function Dashboard() {
             boxSizing: "border-box",
           },
         }}
-        variant="permanent"
-        anchor="left"
+        variant={matches ? "temporary" : "permanent"}
+        open={matches ? mobileOpen : true}
+        ModalProps={{
+          keepMounted: true, // Better open performance on mobile.
+        }}
+        onClose={handleDrawerToggle}
       >
-        <Toolbar>
-          Logo
-        </Toolbar>
+        <Toolbar>Logo</Toolbar>
         <Divider />
         <List>
           {listData.map((item, index) => (
