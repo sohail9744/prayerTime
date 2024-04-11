@@ -44,7 +44,7 @@ function TimeCard({ Time }) {
       });
     }, 1000);
     return () => clearInterval(intervalId);
-  }, []);
+  }, [Time]);
 
   return (
     <Box my={3} display="flex" gap={2} component="main">

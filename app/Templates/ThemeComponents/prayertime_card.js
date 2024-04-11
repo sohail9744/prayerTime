@@ -18,7 +18,7 @@ function PrayerTimeCards({ Time }) {
       });
     }, 60000);
     return () => clearInterval(intervalId);
-  }, []);
+  }, [Time]);
   return (
     <>
       <Paper

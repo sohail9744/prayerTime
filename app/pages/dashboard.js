@@ -30,7 +30,7 @@ import { useTheme } from "@mui/system";
 const drawerWidth = 230;
 
 export default function Dashboard() {
-  const [focused, setFocused] = useState(0);
+  const [focused, setFocused] = useState(2);
   const [mobileOpen, setMobileOpen] = useState(false);
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -41,7 +41,7 @@ export default function Dashboard() {
   //I am adding mediquery hook from material ui
   // if it is down then 900 px the drawer will hidden
   const theme = useTheme();
-  const matches = useMediaQuery(theme.breakpoints.down("md"));
+  const matches = useMediaQuery(theme.breakpoints.down("lg"));
 
   const onHandleItem = (item) => {
     setFocused(item.key);
@@ -63,8 +63,8 @@ export default function Dashboard() {
         position="fixed"
         sx={{
           width: { sm: `calc(100% - ${drawerWidth}px)` },
-          ml: { sm: `${drawerWidth}px` },
-          opacity: '90%'
+          ml: { sm: `${drawerWidth}px`},
+          opacity: "90%",
         }}
       >
         <Toolbar

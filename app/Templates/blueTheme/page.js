@@ -1,3 +1,4 @@
+'use client'
 import {
   Box,
   Paper,
@@ -6,9 +7,9 @@ import {
   createTheme,
 } from "@mui/material";
 import React, { useEffect, useState } from "react";
-import TimeCard from "./ThemeComponents/time_card";
-import PrayerTimeCards from "./ThemeComponents/prayertime_card";
-import { getCurrentPrayerTimes } from "../components/PrayerTime";
+import TimeCard from "../ThemeComponents/time_card";
+import PrayerTimeCards from "../ThemeComponents/prayertime_card";
+import { getCurrentPrayerTimes } from "../../components/PrayerTime";
 
 const font = "'Montserrat', sans-serif";
 const theme = createTheme({
@@ -56,7 +57,7 @@ function DefaultTheme() {
     };
     // Set up an interval to increment updateKey every minute
     fetchData();
-  }, []);
+  }, [updateKey]);
 
   return (
     <ThemeProvider theme={theme}>
@@ -71,7 +72,7 @@ function DefaultTheme() {
           }}
           aria-label="call to prayer box"
         >
-          <Typography variant="h3">THE CALL TO PRAYER ASR IN</Typography>
+          <Typography variant="h3">{`THE CALL TO PRAYER ${prayerTimes?.nextPrayerTime.key} IN`}</Typography>
           {prayerTimes ? <TimeCard Time={prayerTimes} /> : null}
         </Box>
         {/* Bottom part start from here */}
