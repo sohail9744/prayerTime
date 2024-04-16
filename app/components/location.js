@@ -1,24 +1,24 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import TextField from '@mui/material/TextField';
-import Autocomplete from '@mui/material/Autocomplete';
-import CircularProgress from '@mui/material/CircularProgress';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
-import parse from 'autosuggest-highlight/parse';
-import { debounce } from '@mui/material/utils';
+import * as React from "react";
+import Box from "@mui/material/Box";
+import TextField from "@mui/material/TextField";
+import Autocomplete from "@mui/material/Autocomplete";
+import CircularProgress from "@mui/material/CircularProgress";
+import LocationOnIcon from "@mui/icons-material/LocationOn";
+import Grid from "@mui/material/Grid";
+import Typography from "@mui/material/Typography";
+import parse from "autosuggest-highlight/parse";
+import { debounce } from "@mui/material/utils";
 
-const GOOGLE_MAPS_API_KEY = 'AIzaSyD3QQH8b4zZn4CFuhxuZyksdwRRZVbOtWQ';
+const GOOGLE_MAPS_API_KEY = process.env.GOOGLE_MAPS_KEY;
 
 function loadScript(src, position, id) {
   if (!position) {
     return;
   }
 
-  const script = document.createElement('script');
-  script.setAttribute('async', '');
-  script.setAttribute('id', id);
+  const script = document.createElement("script");
+  script.setAttribute("async", "");
+  script.setAttribute("id", id);
   script.src = src;
   position.appendChild(script);
 }
@@ -28,17 +28,17 @@ const geocoderService = { current: null };
 
 export default function Location({ onSelect }) {
   const [value, setValue] = React.useState(null);
-  const [inputValue, setInputValue] = React.useState('');
+  const [inputValue, setInputValue] = React.useState("");
   const [options, setOptions] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
   const loaded = React.useRef(false);
 
-  if (typeof window !== 'undefined' && !loaded.current) {
-    if (!document.querySelector('#google-maps')) {
+  if (typeof window !== "undefined" && !loaded.current) {
+    if (!document.querySelector("#google-maps")) {
       loadScript(
         `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_MAPS_API_KEY}&libraries=places`,
-        document.querySelector('head'),
-        'google-maps',
+        document.querySelector("head"),
+        "google-maps"
       );
     }
 
@@ -54,7 +54,7 @@ export default function Location({ onSelect }) {
           callback(results);
         });
       }, 400),
-    [],
+    []
   );
 
   const getPlaceDetails = (placeId) => {
@@ -66,21 +66,24 @@ export default function Location({ onSelect }) {
     }
 
     geocoderService.current.geocode({ placeId: placeId }, (results, status) => {
-      if (status === 'OK' && results[0]) {
+      if (status === "OK" && results[0]) {
         const location = results[0].geometry.location;
         const placeName = results[0].formatted_address;
-        console.log('Place Name:', placeName);
-        console.log('Latitude:', location.lat());
-        console.log('Longitude:', location.lng());
+        console.log("Place Name:", placeName);
+        console.log("Latitude:", location.lat());
+        console.log("Longitude:", location.lng());
 
         // Call onSelect callback with selected location details
         onSelect({
           placeName: placeName,
           latitude: location.lat(),
-          longitude: location.lng()
+          longitude: location.lng(),
         });
       } else {
-        console.error('Geocode was not successful for the following reason:', status);
+        console.error(
+          "Geocode was not successful for the following reason:",
+          status
+        );
       }
     });
   };
@@ -96,7 +99,7 @@ export default function Location({ onSelect }) {
       return undefined;
     }
 
-    if (inputValue === '') {
+    if (inputValue === "") {
       setOptions(value ? [value] : []);
       return undefined;
     }
@@ -127,7 +130,7 @@ export default function Location({ onSelect }) {
       id="google-map-demo"
       sx={{ width: 300 }}
       getOptionLabel={(option) =>
-        typeof option === 'string' ? option : option.description
+        typeof option === "string" ? option : option.description
       }
       filterOptions={(x) => x}
       options={options}
@@ -155,7 +158,9 @@ export default function Location({ onSelect }) {
             ...params.InputProps,
             endAdornment: (
               <React.Fragment>
-                {loading ? <CircularProgress color="inherit" size={20} /> : null}
+                {loading ? (
+                  <CircularProgress color="inherit" size={20} />
+                ) : null}
                 {params.InputProps.endAdornment}
               </React.Fragment>
             ),
@@ -168,21 +173,24 @@ export default function Location({ onSelect }) {
 
         const parts = parse(
           option.structured_formatting.main_text,
-          matches.map((match) => [match.offset, match.offset + match.length]),
+          matches.map((match) => [match.offset, match.offset + match.length])
         );
 
         return (
           <li {...props}>
             <Grid container alignItems="center">
-              <Grid item sx={{ display: 'flex', width: 44 }}>
-                <LocationOnIcon sx={{ color: 'text.secondary' }} />
+              <Grid item sx={{ display: "flex", width: 44 }}>
+                <LocationOnIcon sx={{ color: "text.secondary" }} />
               </Grid>
-              <Grid item sx={{ width: 'calc(100% - 44px)', wordWrap: 'break-word' }}>
+              <Grid
+                item
+                sx={{ width: "calc(100% - 44px)", wordWrap: "break-word" }}
+              >
                 {parts.map((part, index) => (
                   <Box
                     key={index}
                     component="span"
-                    sx={{ fontWeight: part.highlight ? 'bold' : 'regular' }}
+                    sx={{ fontWeight: part.highlight ? "bold" : "regular" }}
                   >
                     {part.text}
                   </Box>

@@ -19,7 +19,7 @@ export async function getCurrentPrayerTimes({ location, country } = {}) {
     if (location && country) {
       try {
         const response = await fetch(
-          `https://api.openweathermap.org/data/2.5/weather?q=${location},${country}&appid=YOUR_API_KEY`
+          `https://api.openweathermap.org/data/2.5/weather?q=${location},${country}&appid=${process.env.GOOGLE_MAPS_KEY}`
         );
         const data = await response.json();
         latitude = data.coord.lat;

@@ -4,96 +4,60 @@ import {
   Button,
   Divider,
   Snackbar,
-  Stack,
-  TextField,
-  Toolbar,
   Typography,
   IconButton,
-  Alert,
 } from "@mui/material";
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import CloseIcon from "@mui/icons-material/Close";
 import AlertBox from "../components/alertBox";
+import dayjs, { Dayjs } from "dayjs";
 import axios from "axios";
 
 function CustomTime() {
-  const [fazrTime, setFazrTime] = useState(null);
-  const [zohrTime, setZohrTime] = useState(null);
-  const [asrTime, setAsrTime] = useState(null);
-  const [magribTime, setMagribTime] = useState(null);
-  const [ishaTime, setIshaTime] = useState(null);
-  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [data, setData] = useState({
+    azaan_fazr: null,
+    azaan_zuhr: null,
+    azaan_asr: null,
+    azaan_maghrib: null,
+    azaan_isha: null,
+    azaan_jumah: null,
+    pray_jumah: null,
+    pray_fazr: null,
+    pray_zuhr: null,
+    pray_asr: null,
+    pray_maghrib: null,
+    pray_isha: null,
+  });
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get("apiEndpoint");
-        if (response.status === 200) {
-          // Check if data is received
-          console.log(response.data);
-        } else {
-          throw new Error("Failed to fetch data");
-        }
-      } catch (error) {
-        console.error("Error fetching data:", error);
-        // Handle error, show error snackbar, etc.
-      }
+  const handleInputChange = (value, name) => {
+    const isoDate = value ? value.toISOString() : null;
+    setData((prevFormData) => setData({ ...prevFormData, [name]: isoDate }));
+  };
+
+  const onSubmitForm = async (ev) => {
+    ev.preventDefault();
+    debugger;
+    const detail = {
+      data: data,
     };
-
-    fetchData();
-  }, []);
-  const handleSave = async () => {
-    // Construct the data object with TimePicker values
-    const data = {
-      fazrTime,
-      zohrTime,
-      asrTime,
-      magribTime,
-      ishaTime,
-    };
-
-    // Example: Make API call here with the constructed data object
     try {
-      // Example: Make API call using Axios
-      const response = await axios.post("apiEndpoint", data);
-      if (response.status === 200) {
-        setOpenSnackbar(true); // Open success snackbar
-      } else {
-        throw new Error("Failed to save data");
-      }
+      const token = localStorage.getItem("token"); // Get the token from local storage
+      const response = await axios.post(
+        `http://localhost:1337/api/prayer-times`,
+        detail,
+        {
+          headers: {
+            Authorization: `Bearer 97283c93b3263a7af733c1356b4a3d4d08dd5924d82926502ce67e6f3eb245f211d36bb63270fc1b78902d5199f8c312e8053d7b838e8171b2e9c81ea9a9854ee0cf44823bd3600f30ec670c60edf9aba63a47018a2bfbc4af810e384b9aba3b9ab688ebaf6b0f4c9cb985db8144f1ce98f012b82320d6b24512734354b18b9b`,
+          },
+        }
+      );
+      console.log(response.data); // Handle your response here
     } catch (error) {
-      console.error("Error saving data:", error);
-      // Handle error, show error snackbar, etc.
+      console.error("Request failed:", error.response || error.message);
     }
   };
-
-  const [open, setOpen] = useState(false);
-
-  const handleClick = () => {
-    setOpen(true);
-  };
-
-  const handleClose = (event, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    setOpen(false);
-  };
-  const action = (
-    <Fragment>
-      <IconButton
-        size="small"
-        aria-label="close"
-        color="inherit"
-        onClick={handleClose}
-      >
-        <CloseIcon fontSize="small" />
-      </IconButton>
-    </Fragment>
-  );
   return (
     <Box component="main">
       <AlertBox
@@ -104,22 +68,65 @@ function CustomTime() {
       <Divider sx={{ my: 1 }} />
       <Box component="form" display="flex" flexWrap="wrap" gap={4} pt={3}>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <TimePicker label="Fazr Time" />
+          <TimePicker
+            label="Fazr Time"
+            value={
+              data?.azaan_fazr ? dayjs(data?.azaan_fazr) : data?.azaan_fazr
+            }
+            onChange={(newValue) => handleInputChange(newValue, "azaan_fazr")}
+          />
         </LocalizationProvider>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <TimePicker label="Zohr Time" />
+          <TimePicker
+            label="Zohr Time"
+            value={
+              data?.azaan_zuhr ? dayjs(data?.azaan_zuhr) : data?.azaan_zuhr
+            }
+            name="azaan_zuhr"
+            onChange={(newValue) => handleInputChange(newValue, "azaan_zuhr")}
+          />
         </LocalizationProvider>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <TimePicker label="Asr Time" />
+          <TimePicker
+            label="Asr Time"
+            value={data?.azaan_asr ? dayjs(data?.azaan_asr) : data?.azaan_asr}
+            name="azaan_asr"
+            onChange={(newValue) => handleInputChange(newValue, "azaan_asr")}
+          />
         </LocalizationProvider>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <TimePicker label="Magrib Time" />
+          <TimePicker
+            label="Magrib Time"
+            value={
+              data?.azaan_maghrib
+                ? dayjs(data?.azaan_maghrib)
+                : data?.azaan_maghrib
+            }
+            name="azaan_maghrib"
+            onChange={(newValue) =>
+              handleInputChange(newValue, "azaan_maghrib")
+            }
+          />
         </LocalizationProvider>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <TimePicker label="Isha Time" />
+          <TimePicker
+            label="Isha Time"
+            value={
+              data?.azaan_isha ? dayjs(data?.azaan_isha) : data?.azaan_isha
+            }
+            name="azaan_isha"
+            onChange={(newValue) => handleInputChange(newValue, "azaan_isha")}
+          />
         </LocalizationProvider>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <TimePicker label="Jumah Time" />
+          <TimePicker
+            label="Jumah Time"
+            value={
+              data?.azaan_jumah ? dayjs(data?.azaan_jumah) : data?.azaan_jumah
+            }
+            name="azaan_jumah"
+            onChange={(newValue) => handleInputChange(newValue, "azaan_jumah")}
+          />
         </LocalizationProvider>
       </Box>
       <Typography sx={{ my: 3 }} variant="h5">
@@ -135,36 +142,64 @@ function CustomTime() {
         pt={3}
       >
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <TimePicker label="Fazr Time" />
+          <TimePicker
+            label="Fazr Time"
+            value={data?.pray_fazr ? dayjs(data?.pray_fazr) : data?.pray_fazr}
+            name="pray_fazr"
+            onChange={(newValue) => handleInputChange(newValue, "pray_fazr")}
+          />
         </LocalizationProvider>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <TimePicker label="Zohr Time" />
+          <TimePicker
+            label="Zohr Time"
+            value={data?.pray_zuhr ? dayjs(data?.pray_zuhr) : data?.pray_zuhr}
+            name="pray_zuhr"
+            onChange={(newValue) => handleInputChange(newValue, "pray_zuhr")}
+          />
         </LocalizationProvider>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <TimePicker label="Asr Time" />
+          <TimePicker
+            label="Asr Time"
+            value={data?.pray_asr ? dayjs(data?.pray_asr) : data?.pray_asr}
+            name="pray_asr"
+            onChange={(newValue) => handleInputChange(newValue, "pray_asr")}
+          />
         </LocalizationProvider>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <TimePicker label="Magrib Time" />
+          <TimePicker
+            label="Magrib Time"
+            value={
+              data?.pray_maghrib
+                ? dayjs(data?.pray_maghrib)
+                : data?.pray_maghrib
+            }
+            name="pray_maghrib"
+            onChange={(newValue) => handleInputChange(newValue, "pray_maghrib")}
+          />
         </LocalizationProvider>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <TimePicker label="Isha Time" />
+          <TimePicker
+            label="Isha Time"
+            value={data?.pray_isha ? dayjs(data?.pray_isha) : data?.pray_isha}
+            name="pray_isha"
+            onChange={(newValue) => handleInputChange(newValue, "pray_isha")}
+          />
         </LocalizationProvider>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <TimePicker label="Jumah Time" />
+          <TimePicker
+            label="Jumah Time"
+            value={
+              data?.pray_jumah ? dayjs(data?.pray_jumah) : data?.pray_jumah
+            }
+            name="pray_jumah"
+            onChange={(newValue) => handleInputChange(newValue, "pray_jumah")}
+          />
         </LocalizationProvider>
       </Box>
       <Box pt={3} alignItems="center" display="flex" justifyContent="center">
-        <Button onClick={handleClick} variant="contained">
+        <Button onClick={onSubmitForm} variant="contained">
           Submit
         </Button>
-        <Snackbar
-          open={open}
-          autoHideDuration={6000}
-          onClose={handleClose}
-          message="Saved Successfully"
-          action={action}
-          TransitionComponent="SlideTransition"
-        />
       </Box>
     </Box>
   );

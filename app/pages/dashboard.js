@@ -1,4 +1,4 @@
-import { React, useState } from "react";
+import { React, useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
 import CssBaseline from "@mui/material/CssBaseline";
@@ -27,11 +27,14 @@ import { BiSupport, BiHelpCircle } from "react-icons/bi";
 import "../globals.css";
 import { IconButton, useMediaQuery } from "@mui/material";
 import { useTheme } from "@mui/system";
+import { Settings } from "@mui/icons-material";
+import UserSettings from "./profile_setting";
 const drawerWidth = 230;
 
 export default function Dashboard() {
-  const [focused, setFocused] = useState(2);
+  const [focused, setFocused] = useState(0);
   const [mobileOpen, setMobileOpen] = useState(false);
+
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
@@ -54,7 +57,8 @@ export default function Dashboard() {
     { name: "Location", key: 1, icon: <MdShareLocation /> },
     { name: "Screens", key: 2, icon: <MdOutlineScreenshotMonitor /> },
     { name: "User Guide", key: 3, icon: <BiHelpCircle /> },
-    { name: "Support", key: 4, icon: <BiSupport /> },
+    { name: "Settings", key: 4, icon: <Settings /> },
+    { name: "Support", key: 5, icon: <BiSupport /> },
   ];
   return (
     <Box sx={{ display: "flex" }}>
@@ -63,7 +67,7 @@ export default function Dashboard() {
         position="fixed"
         sx={{
           width: { sm: `calc(100% - ${drawerWidth}px)` },
-          ml: { sm: `${drawerWidth}px`},
+          ml: { sm: `${drawerWidth}px` },
           opacity: "90%",
         }}
       >
@@ -169,7 +173,8 @@ export default function Dashboard() {
         {focused === 1 ? <Config /> : null}
         {focused === 2 ? <ClockScreens /> : null}
         {focused === 3 ? <Help /> : null}
-        {focused === 4 ? <Support /> : null}
+        {focused === 4 ? <UserSettings /> : null}
+        {focused === 5 ? <Support /> : null}
       </Box>
     </Box>
   );
