@@ -1,0 +1,55 @@
+{
+  "kind": "collectionType",
+  "collectionName": "prayer_times",
+  "info": {
+    "singularName": "prayer-time",
+    "pluralName": "prayer-times",
+    "displayName": "prayerTime",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "azaan_fazr": {
+      "type": "string"
+    },
+    "azaan_zuhr": {
+      "type": "string"
+    },
+    "azaan_asr": {
+      "type": "string"
+    },
+    "azaan_maghrib": {
+      "type": "string"
+    },
+    "azaan_isha": {
+      "type": "string"
+    },
+    "pray_fazr": {
+      "type": "string"
+    },
+    "pray_zuhr": {
+      "type": "string"
+    },
+    "pray_maghrib": {
+      "type": "string"
+    },
+    "pray_isha": {
+      "type": "string"
+    },
+    "azaan_jumah": {
+      "type": "string"
+    },
+    "user": {
+      "type": "relation",
+      "relation": "oneToOne",
+      "target": "plugin::users-permissions.user",
+      "mappedBy": "prayer_time"
+    },
+    "pray_jumah": {
+      "type": "string"
+    }
+  }
+}

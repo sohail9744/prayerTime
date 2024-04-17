@@ -362,6 +362,52 @@ export interface AdminTransferTokenPermission extends Schema.CollectionType {
   };
 }
 
+export interface ApiPrayerTimePrayerTime extends Schema.CollectionType {
+  collectionName: 'prayer_times';
+  info: {
+    singularName: 'prayer-time';
+    pluralName: 'prayer-times';
+    displayName: 'prayerTime';
+    description: '';
+  };
+  options: {
+    draftAndPublish: true;
+  };
+  attributes: {
+    azaan_fazr: Attribute.String;
+    azaan_zuhr: Attribute.String;
+    azaan_asr: Attribute.String;
+    azaan_maghrib: Attribute.String;
+    azaan_isha: Attribute.String;
+    pray_fazr: Attribute.String;
+    pray_zuhr: Attribute.String;
+    pray_maghrib: Attribute.String;
+    pray_isha: Attribute.String;
+    azaan_jumah: Attribute.String;
+    user: Attribute.Relation<
+      'api::prayer-time.prayer-time',
+      'oneToOne',
+      'plugin::users-permissions.user'
+    >;
+    pray_jumah: Attribute.String;
+    createdAt: Attribute.DateTime;
+    updatedAt: Attribute.DateTime;
+    publishedAt: Attribute.DateTime;
+    createdBy: Attribute.Relation<
+      'api::prayer-time.prayer-time',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+    updatedBy: Attribute.Relation<
+      'api::prayer-time.prayer-time',
+      'oneToOne',
+      'admin::user'
+    > &
+      Attribute.Private;
+  };
+}
+
 export interface PluginUploadFile extends Schema.CollectionType {
   collectionName: 'files';
   info: {
@@ -742,7 +788,6 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
   };
   options: {
     draftAndPublish: false;
-    timestamps: true;
   };
   attributes: {
     username: Attribute.String &
@@ -771,6 +816,12 @@ export interface PluginUsersPermissionsUser extends Schema.CollectionType {
       'manyToOne',
       'plugin::users-permissions.role'
     >;
+    prayer_time: Attribute.Relation<
+      'plugin::users-permissions.user',
+      'oneToOne',
+      'api::prayer-time.prayer-time'
+    >;
+    location: Attribute.Text;
     createdAt: Attribute.DateTime;
     updatedAt: Attribute.DateTime;
     createdBy: Attribute.Relation<
@@ -798,6 +849,7 @@ declare module '@strapi/types' {
       'admin::api-token-permission': AdminApiTokenPermission;
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
+      'api::prayer-time.prayer-time': ApiPrayerTimePrayerTime;
       'plugin::upload.file': PluginUploadFile;
       'plugin::upload.folder': PluginUploadFolder;
       'plugin::content-releases.release': PluginContentReleasesRelease;
