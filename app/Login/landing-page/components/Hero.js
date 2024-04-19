@@ -129,7 +129,8 @@ export default function Hero() {
           </Typography>
         </Stack>
         <Stack>
-          <Image showLoading setSrc="/tdclock.svg" alt="something went wrong" />
+          {/* <Box src="/tdclock.svg" component={'img'}></Box> */}
+          <Image showLoading src="/tdclock.svg" alt="something went wrong" />
         </Stack>
         {/* <StyledBox id="image" />   */}
       </Container>
