@@ -101,9 +101,9 @@ export default function Hero() {
             color="text.secondary"
             sx={{ width: { sm: "100%", md: "80%" } }}
           >
-            Say goodbye to traditional clocks! It's time to switch to
-            Mosque-Box.com's digital clock for mosques. Experience accuracy and
-            convenience in just 3 easy steps.
+            Say goodbye to traditional clocks! It&apos;s time to switch to
+            Mosque-Box.com&apos;s digital clock for mosques. Experience accuracy
+            and convenience in just 3 easy steps.
           </Typography>
           <Stack
             direction={{ xs: "column", sm: "row" }}
