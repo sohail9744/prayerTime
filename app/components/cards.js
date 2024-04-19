@@ -2,7 +2,7 @@ import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
 import CardMedia from "@mui/material/CardMedia";
-import SvgComponent from "@/public/clock_screen";
+// import SvgComponent from "@/public/clock_screen";
 import React, { useState } from "react";
 import { CardActionArea } from "@mui/material";
 import { Box, Divider, Switch, Button } from "@mui/material";

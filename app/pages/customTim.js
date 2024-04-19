@@ -1,4 +1,4 @@
-import React, { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import {
   Box,
   Button,
@@ -13,7 +13,9 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import CloseIcon from "@mui/icons-material/Close";
 import AlertBox from "../components/alertBox";
 import dayjs, { Dayjs } from "dayjs";
-import axios from "axios";
+import { GetApiCall, PostApiCall } from "../components/api";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function CustomTime() {
   const [data, setData] = useState({
@@ -30,7 +32,6 @@ function CustomTime() {
     pray_maghrib: null,
     pray_isha: null,
   });
-
   const handleInputChange = (value, name) => {
     const isoDate = value ? value.toISOString() : null;
     setData((prevFormData) => setData({ ...prevFormData, [name]: isoDate }));
@@ -38,28 +39,29 @@ function CustomTime() {
 
   const onSubmitForm = async (ev) => {
     ev.preventDefault();
-    debugger;
+    const apiEndPoint = "prayer-times";
     const detail = {
       data: data,
     };
-    try {
-      const token = localStorage.getItem("token"); // Get the token from local storage
-      const response = await axios.post(
-        `http://localhost:1337/api/prayer-times`,
-        detail,
-        {
-          headers: {
-            Authorization: `Bearer 97283c93b3263a7af733c1356b4a3d4d08dd5924d82926502ce67e6f3eb245f211d36bb63270fc1b78902d5199f8c312e8053d7b838e8171b2e9c81ea9a9854ee0cf44823bd3600f30ec670c60edf9aba63a47018a2bfbc4af810e384b9aba3b9ab688ebaf6b0f4c9cb985db8144f1ce98f012b82320d6b24512734354b18b9b`,
-          },
-        }
-      );
-      console.log(response.data); // Handle your response here
-    } catch (error) {
-      console.error("Request failed:", error.response || error.message);
+    const responseData = await PostApiCall(apiEndPoint, detail);
+    if (responseData?.status === 200) {
+      toast.success("Saved succussfully");
+    } else {
+      toast.error("Data not saved something went wrong!");
     }
   };
+
+  useEffect(() => {
+    const fetchPrayerData = async () => {
+      const endpoint = "prayer-times";
+      const getPrayerData = await GetApiCall(endpoint);
+      // Handle the received data here
+    };
+    fetchPrayerData();
+  }, []);
   return (
     <Box component="main">
+      <ToastContainer />
       <AlertBox
         text="If your internet is connect to your TV the data will reflect in 15 minutes."
         iconText="info"
