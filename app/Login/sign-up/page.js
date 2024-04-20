@@ -1,10 +1,12 @@
+'use client'
 import * as React from 'react';
+import PropTypes from 'prop-types';
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 import Checkbox from '@mui/material/Checkbox';
 import CssBaseline from '@mui/material/CssBaseline';
-import FormControlLabel from '@mui/material/FormControlLabel';
 import Divider from '@mui/material/Divider';
+import FormControlLabel from '@mui/material/FormControlLabel';
 import FormLabel from '@mui/material/FormLabel';
 import FormControl from '@mui/material/FormControl';
 import Link from '@mui/material/Link';
@@ -13,59 +15,16 @@ import ToggleButton from '@mui/material/ToggleButton';
 import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
 import Typography from '@mui/material/Typography';
 import Stack from '@mui/material/Stack';
-import { PaletteMode, Card as MuiCard } from '@mui/material';
-import { ThemeProvider, createTheme, styled } from '@mui/material/styles';
+import { Card as MuiCard } from '@mui/material';
+import { createTheme, ThemeProvider, styled } from '@mui/material/styles';
 
-import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
 import AutoAwesomeRoundedIcon from '@mui/icons-material/AutoAwesomeRounded';
+import ArrowBackRoundedIcon from '@mui/icons-material/ArrowBackRounded';
 
-import ForgotPassword from './ForgotPassword';
-import getSignInTheme from './getSignInTheme';
+import getSignUpTheme from './getSignUpTheme';
 import ToggleColorMode from './ToggleColorMode';
 import { GoogleIcon, FacebookIcon, SitemarkIcon } from './CustomIcons';
 
-interface ToggleCustomThemeProps {
-  showCustomTheme: Boolean;
-  toggleCustomTheme: () => void;
-}
-
-function ToggleCustomTheme({
-  showCustomTheme,
-  toggleCustomTheme,
-}: ToggleCustomThemeProps) {
-  return (
-    <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        width: '100dvw',
-        position: 'fixed',
-        bottom: 24,
-      }}
-    >
-      <ToggleButtonGroup
-        color="primary"
-        exclusive
-        value={showCustomTheme}
-        onChange={toggleCustomTheme}
-        aria-label="Toggle design language"
-        sx={{
-          backgroundColor: 'background.default',
-          '& .Mui-selected': {
-            pointerEvents: 'none',
-          },
-        }}
-      >
-        <ToggleButton value>
-          <AutoAwesomeRoundedIcon sx={{ fontSize: '20px', mr: 1 }} />
-          Custom theme
-        </ToggleButton>
-        <ToggleButton value={false}>Material Design 2</ToggleButton>
-      </ToggleButtonGroup>
-    </Box>
-  );
-}
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: 'flex',
@@ -81,10 +40,11 @@ const Card = styled(MuiCard)(({ theme }) => ({
   [theme.breakpoints.up('sm')]: {
     padding: theme.spacing(4),
     width: '450px',
+    overflow: 'auto'
   },
 }));
 
-const SignInContainer = styled(Stack)(({ theme }) => ({
+const SignUpContainer = styled(Stack)(({ theme }) => ({
   height: 'auto',
   padingBottom: theme.spacing(12),
   backgroundImage:
@@ -98,45 +58,21 @@ const SignInContainer = styled(Stack)(({ theme }) => ({
   },
 }));
 
-export default function SignIn() {
-  const [mode, setMode] = React.useState<PaletteMode>('light');
-  const [showCustomTheme, setShowCustomTheme] = React.useState(true);
+export default function SignUp() {
+  const [mode, setMode] = React.useState('light');
   const defaultTheme = createTheme({ palette: { mode } });
-  const SignInTheme = createTheme(getSignInTheme(mode));
+  const SignUpTheme = createTheme(getSignUpTheme(mode));
   const [emailError, setEmailError] = React.useState(false);
   const [emailErrorMessage, setEmailErrorMessage] = React.useState('');
   const [passwordError, setPasswordError] = React.useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState('');
-  const [open, setOpen] = React.useState(false);
-
-  const toggleColorMode = () => {
-    setMode((prev) => (prev === 'dark' ? 'light' : 'dark'));
-  };
-
-  const toggleCustomTheme = () => {
-    setShowCustomTheme((prev) => !prev);
-  };
-
-  const handleClickOpen = () => {
-    setOpen(true);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-  };
+  const [nameError, setNameError] = React.useState(false);
+  const [nameErrorMessage, setNameErrorMessage] = React.useState('');
 
   const validateInputs = () => {
-    const email = document.getElementById('email') as HTMLInputElement;
-    const password = document.getElementById('password') as HTMLInputElement;
+    const email = document.getElementById('email');
+    const password = document.getElementById('password');
+    const name = document.getElementById('name');
 
     let isValid = true;
 
@@ -158,13 +94,41 @@ export default function SignIn() {
       setPasswordErrorMessage('');
     }
 
+    if (!name.value || name.value.length < 1) {
+      setNameError(true);
+      setNameErrorMessage('Name is required.');
+      isValid = false;
+    } else {
+      setNameError(false);
+      setNameErrorMessage('');
+    }
+
     return isValid;
   };
 
+  const toggleColorMode = () => {
+    setMode((prev) => (prev === 'dark' ? 'light' : 'dark'));
+  };
+
+  const toggleCustomTheme = () => {
+    setShowCustomTheme((prev) => !prev);
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    console.log({
+      name: data.get('name'),
+      lastName: data.get('lastName'),
+      email: data.get('email'),
+      password: data.get('password'),
+    });
+  };
+
   return (
-    <ThemeProvider theme={showCustomTheme ? SignInTheme : defaultTheme}>
+    <ThemeProvider theme={SignUpTheme}>
       <CssBaseline />
-      <SignInContainer direction="column" justifyContent="space-between">
+      <SignUpContainer direction="column" justifyContent="space-between">
         <Stack
           direction="row"
           justifyContent="space-between"
@@ -194,120 +158,106 @@ export default function SignIn() {
               variant="h4"
               sx={{ width: '100%', fontSize: 'clamp(2rem, 10vw, 2.15rem)' }}
             >
-              Sign in
+              Sign up
             </Typography>
             <Box
               component="form"
               onSubmit={handleSubmit}
-              noValidate
-              sx={{
-                display: 'flex',
-                flexDirection: 'column',
-                width: '100%',
-                gap: 2,
-              }}
+              sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}
             >
               <FormControl>
-                <FormLabel htmlFor="email">Email</FormLabel>
+                <FormLabel htmlFor="name">Full name</FormLabel>
                 <TextField
-                  error={emailError}
-                  helperText={emailErrorMessage}
-                  id="email"
-                  type="email"
-                  name="email"
-                  placeholder="your@email.com"
-                  autoComplete="email"
-                  autoFocus
+                  autoComplete="name"
+                  name="name"
                   required
                   fullWidth
-                  variant="outlined"
-                  color={emailError ? 'error' : 'primary'}
-                  sx={{ ariaLabel: 'email' }}
+                  id="name"
+                  placeholder="Jon Snow"
+                  error={nameError}
+                  helperText={nameErrorMessage}
+                  color={nameError ? 'error' : 'primary'}
                 />
               </FormControl>
               <FormControl>
-                <Box
-                  sx={{
-                    display: 'flex',
-                    justifyContent: 'space-between',
-                  }}
-                >
-                  <FormLabel htmlFor="password">Password</FormLabel>
-                  <Link
-                    component="button"
-                    onClick={handleClickOpen}
-                    variant="body2"
-                    sx={{ alignSelf: 'baseline' }}
-                  >
-                    Forgot your password?
-                  </Link>
-                </Box>
+                <FormLabel htmlFor="email">Email</FormLabel>
                 <TextField
-                  error={passwordError}
-                  helperText={passwordErrorMessage}
+                  required
+                  fullWidth
+                  id="email"
+                  placeholder="your@email.com"
+                  name="email"
+                  autoComplete="email"
+                  variant="outlined"
+                  error={emailError}
+                  helperText={emailErrorMessage}
+                  color={passwordError ? 'error' : 'primary'}
+                />
+              </FormControl>
+              <FormControl>
+                <FormLabel htmlFor="password">Password</FormLabel>
+                <TextField
+                  required
+                  fullWidth
                   name="password"
                   placeholder="••••••"
                   type="password"
                   id="password"
-                  autoComplete="current-password"
-                  autoFocus
-                  required
-                  fullWidth
+                  autoComplete="new-password"
                   variant="outlined"
+                  error={passwordError}
+                  helperText={passwordErrorMessage}
                   color={passwordError ? 'error' : 'primary'}
                 />
               </FormControl>
               <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
+                control={<Checkbox value="allowExtraEmails" color="primary" />}
+                label="I want to receive updates via email."
               />
-              <ForgotPassword open={open} handleClose={handleClose} />
               <Button
                 type="submit"
                 fullWidth
                 variant="contained"
                 onClick={validateInputs}
               >
-                Sign in
+                Sign up
               </Button>
               <Link
-                href="/material-ui/getting-started/templates/sign-up/"
+                href="/Login/sign-in"
                 variant="body2"
                 sx={{ alignSelf: 'center' }}
               >
-                Don&apos;t have an account? Sign up
+                Already have an account? Sign in
               </Link>
             </Box>
-            <Divider>or</Divider>
+            <Divider>
+              <Typography color="text.secondary">or</Typography>
+            </Divider>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
               <Button
                 type="submit"
                 fullWidth
                 variant="outlined"
                 color="secondary"
-                onClick={() => alert('Sign in with Google')}
+                onClick={() => alert('Sign up with Google')}
                 startIcon={<GoogleIcon />}
               >
-                Sign in with Google
+                Sign up with Google
               </Button>
-              <Button
+              {/* <Button
                 type="submit"
                 fullWidth
                 variant="outlined"
                 color="secondary"
-                onClick={() => alert('Sign in with Facebook')}
+                onClick={() => alert('Sign up with Facebook')}
                 startIcon={<FacebookIcon />}
               >
-                Sign in with Facebook
-              </Button>
+                Sign up with Facebook
+              </Button> */}
             </Box>
           </Card>
         </Stack>
-      </SignInContainer>
-      <ToggleCustomTheme
-        showCustomTheme={showCustomTheme}
-        toggleCustomTheme={toggleCustomTheme}
-      />
+      </SignUpContainer>
     </ThemeProvider>
   );
 }

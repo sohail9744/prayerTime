@@ -18,6 +18,7 @@ import Features from "./components/Features";
 import Testimonials from "./components/Testimonials";
 import FAQ from "./components/FAQ";
 import Footer from "./components/Footer";
+import LivePrayer from "./components/LivePrayer";
 import getLPTheme from "./getLPTheme";
 
 function ToggleCustomTheme() {
@@ -51,8 +52,9 @@ export default function LandingPage() {
       <AppAppBar mode={mode} toggleColorMode={toggleColorMode} />
       <Hero />
       <Box sx={{ bgcolor: "background.default" }}>
+        {/* <LivePrayer/> Need to add in Future */}
+        <Features />  
         <LogoCollection />
-        <Features />
         <Divider />
         <Testimonials />
         <Divider />

@@ -12,7 +12,10 @@ import { visuallyHidden } from "@mui/utils";
 import { styled } from "@mui/material/styles";
 import { Typewriter } from "react-simple-typewriter";
 import { ArrowRight, PlayCircleOutline } from "@mui/icons-material";
-import { Image } from "mui-image";
+// import { Image } from "mui-image";
+
+import { Divider } from "@mui/material";
+import Image from "next/image";
 // import NextSvg from "/td_clock.svg";
 
 const StyledBox = styled("div")(({ theme }) => ({
@@ -60,7 +63,7 @@ export default function Hero() {
           display: "flex",
           flexDirection: { xs: "row", sm: "column", lg: "row" },
           alignItems: "center",
-          pt: { xs: 14, sm: 20 },
+          pt: { xs: 14, sm: 20, lg: 15 },
           pb: { xs: 8, sm: 12 },
         }}
       >
@@ -129,8 +132,12 @@ export default function Hero() {
           </Typography>
         </Stack>
         <Stack>
-          {/* <Box src="/tdclock.svg" component={'img'}></Box> */}
-          <Image showLoading src="/tdclock.svg" alt="something went wrong" />
+          <Image
+            width={344}
+            height={344}
+            src="/tdclock.svg"
+            alt="something went wrong"
+          />
         </Stack>
         {/* <StyledBox id="image" />   */}
       </Container>
