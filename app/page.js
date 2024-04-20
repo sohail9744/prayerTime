@@ -1,10 +1,8 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import "./globals.css";
-import Dashboard from "./pages/dashboard";
-export default function Home() {
+import LandingPage from "./landing-page/page";
 
-  return (
-    <Dashboard />
-  );
+export default function Home() {
+  return <LandingPage />;
 }

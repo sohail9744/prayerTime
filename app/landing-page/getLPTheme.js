@@ -1,6 +1,6 @@
 'use client'
 import { createTheme, alpha } from '@mui/material/styles';
-import '../../globals.css'
+import '../globals.css'
 const customTheme = createTheme();
 
 export const brand = {

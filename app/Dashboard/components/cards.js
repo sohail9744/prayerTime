@@ -37,7 +37,7 @@ function Cards() {
               justifyContent: "center",
               alignItems: "center",
             }}
-            image={SvgComponent}
+            image="/next.svg"
             title="green iguana"
           >
             <Box>

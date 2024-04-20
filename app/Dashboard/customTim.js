@@ -11,9 +11,9 @@ import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import CloseIcon from "@mui/icons-material/Close";
-import AlertBox from "../components/alertBox";
+import AlertBox from "./components/alertBox";
 import dayjs, { Dayjs } from "dayjs";
-import { GetApiCall, PostApiCall } from "../components/api";
+import { GetApiCall, PostApiCall } from "./components/api";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 

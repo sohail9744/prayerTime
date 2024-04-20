@@ -136,7 +136,7 @@ export default function SignIn() {
           <Button
             startIcon={<ArrowBackRoundedIcon />}
             component="a"
-            href="/material-ui/getting-started/templates/"
+            href="/"
           >
             Back
           </Button>

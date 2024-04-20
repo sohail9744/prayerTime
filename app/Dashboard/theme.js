@@ -1,6 +1,6 @@
 "use client";
 import { createTheme } from "@mui/material/styles";
-import "./app/globals.css";
+import "../globals.css";
 
 const font = "'Open Sans', sans-serif";
 const theme = createTheme({

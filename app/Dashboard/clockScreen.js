@@ -2,8 +2,8 @@ import * as React from "react";
 
 import Typography from "@mui/material/Typography";
 import { Box, Divider, Link, Switch } from "@mui/material";
-import AlertBox from "../components/alertBox";
-import Cards from "../components/cards";
+import AlertBox from "./components/alertBox";
+import Cards from "./components/cards";
 
 export default function ClockScreens() {
   return (

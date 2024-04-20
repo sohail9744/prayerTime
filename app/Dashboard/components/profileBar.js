@@ -12,7 +12,7 @@ import PersonAdd from "@mui/icons-material/PersonAdd";
 import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 import { IoMdSettings } from "react-icons/io";
-import Dashboard from "../pages/dashboard";
+import Dashboard from "../page";
 
 export default function AccountMenu() {
   const [anchorEl, setAnchorEl] = React.useState(null);

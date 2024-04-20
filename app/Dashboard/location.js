@@ -1,7 +1,7 @@
 import { Box, Button, Divider, Typography } from "@mui/material";
 import React, { useState } from "react";
-import Location from "../components/location";
-import AlertBox from "../components/alertBox";
+import Location from "./components/location";
+import AlertBox from "./components/alertBox";
 
 function Config() {
   const [selectedLocation, setSelectedLocation] = useState(null);
