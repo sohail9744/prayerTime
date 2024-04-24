@@ -13,6 +13,7 @@ import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
 import { IoMdSettings } from "react-icons/io";
 import Dashboard from "../page";
+import { signOut } from "next-auth/react";
 
 export default function AccountMenu() {
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -22,6 +23,9 @@ export default function AccountMenu() {
   };
   const handleClose = () => {
     setAnchorEl(null);
+  };
+  const onHandleLogOut = () => {
+    signOut({ callbackUrl: "/" });
   };
   return (
     <React.Fragment>
@@ -92,7 +96,7 @@ export default function AccountMenu() {
           </ListItemIcon>
           <Typography>Settings</Typography>
         </MenuItem> */}
-        <MenuItem onClick={handleClose}>
+        <MenuItem onClick={onHandleLogOut}>
           <ListItemIcon>
             <Logout fontSize="small" />
           </ListItemIcon>

@@ -25,6 +25,7 @@ import ForgotPassword from "./ForgotPassword";
 import getSignInTheme from "./getSignInTheme";
 import ToggleColorMode from "./ToggleColorMode";
 import { GoogleIcon, FacebookIcon, SitemarkIcon } from "./CustomIcons";
+import { getSession, signIn, useSession } from "next-auth/react";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
@@ -67,6 +68,7 @@ export default function SignIn() {
   const [passwordError, setPasswordError] = React.useState(false);
   const [passwordErrorMessage, setPasswordErrorMessage] = React.useState("");
   const [open, setOpen] = React.useState(false);
+  const { data: session, status } = useSession();
 
   const toggleColorMode = () => {
     setMode((prev) => (prev === "dark" ? "light" : "dark"));
@@ -84,13 +86,39 @@ export default function SignIn() {
     setOpen(false);
   };
 
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get("email"),
-      password: data.get("password"),
-    });
+
+    // Extract the email and password from the form data
+    const email = data.get("email");
+    const password = data.get("password");
+    debugger;
+    // Validate the inputs before attempting to sign in
+    if (validateInputs()) {
+      // Use the signIn method from next-auth/react
+      const result = await signIn("credentials", {
+        redirect: false, // Prevents redirecting automatically, allows handling response here in the client
+        email,
+        password,
+        page: "signIn",
+        callbackUrl: "/Dashboard",
+      });
+
+      // Check the response from the signIn method
+      if (result) {
+        console.log(session, status);
+      }
+
+      if (result?.error) {
+        // Handle errors (e.g., display a message to the user)
+        console.error("Login failed:", result.error);
+        setEmailError(true);
+        setEmailErrorMessage("Login failed: " + result.error);
+        setPasswordError(true)
+        setPasswordErrorMessage("Login failed: " + result.error);
+      }
+    }
   };
 
   const validateInputs = () => {
@@ -120,6 +148,9 @@ export default function SignIn() {
     return isValid;
   };
 
+  const signInHandler = () => {
+    signIn("google", { callbackUrl: "/Dashboard" });
+  };
   return (
     <ThemeProvider theme={showCustomTheme ? SignInTheme : defaultTheme}>
       <CssBaseline />
@@ -133,11 +164,7 @@ export default function SignIn() {
             p: { xs: 2, sm: 4 },
           }}
         >
-          <Button
-            startIcon={<ArrowBackRoundedIcon />}
-            component="a"
-            href="/"
-          >
+          <Button startIcon={<ArrowBackRoundedIcon />} component="a" href="/">
             Back
           </Button>
           <ToggleColorMode mode={mode} toggleColorMode={toggleColorMode} />
@@ -244,7 +271,7 @@ export default function SignIn() {
                 fullWidth
                 variant="outlined"
                 color="secondary"
-                onClick={() => alert("Sign in with Google")}
+                onClick={signInHandler}
                 startIcon={<GoogleIcon />}
               >
                 Sign in with Google

@@ -9,7 +9,7 @@ import {
 import React, { useEffect, useState } from "react";
 import TimeCard from "../ThemeComponents/time_card";
 import PrayerTimeCards from "../ThemeComponents/prayertime_card";
-import { getCurrentPrayerTimes } from "../../components/PrayerTime";
+import { getCurrentPrayerTimes } from "../../Dashboard/components/PrayerTime";
 
 const font = "'Montserrat', sans-serif";
 const theme = createTheme({

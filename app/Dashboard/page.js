@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { React, useEffect, useState } from "react";
 import Box from "@mui/material/Box";
 import Drawer from "@mui/material/Drawer";
@@ -27,29 +27,32 @@ import {
 import { BiSupport, BiHelpCircle } from "react-icons/bi";
 import "../globals.css";
 import { IconButton, useMediaQuery } from "@mui/material";
-import { useTheme } from "@mui/system";
+import { useTheme } from "@mui/material/styles";
 import { Settings } from "@mui/icons-material";
 import UserSettings from "./profile_setting";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./theme";
+import { useSession } from "next-auth/react";
 const drawerWidth = 230;
 
 export default function Dashboard() {
   const [focused, setFocused] = useState(0);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const { data: session, status } = useSession();
+
+  useEffect(() => {fetchData()});
+  async function fetchData() {
+    console.log("Session Detail", { session, status });
+  }
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
-  // const handleDrawerClose = () => {
-  //   setMobileOpen(false);
-  // };
-  //I am adding mediquery hook from material ui
-  // if it is down then 900 px the drawer will hidden
   const theme = useTheme();
   const matches = useMediaQuery(theme.breakpoints.down("lg"));
 
   const onHandleItem = (item) => {
+    fetchData();
     setFocused(item.key);
     handleDrawerToggle();
   };
