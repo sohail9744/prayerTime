@@ -16,8 +16,10 @@ import dayjs, { Dayjs } from "dayjs";
 import { GetApiCall, PostApiCall } from "./components/api";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { useSession } from "next-auth/react";
 
-function CustomTime() {
+function CustomTime({ session }) {
+  console.log("CUSTOM TIME", session);
   const [data, setData] = useState({
     azaan_fazr: null,
     azaan_zuhr: null,
@@ -40,8 +42,12 @@ function CustomTime() {
   const onSubmitForm = async (ev) => {
     ev.preventDefault();
     const apiEndPoint = "prayer-times";
+    debugger;
     const detail = {
-      data: data,
+      data: {
+        ...data,
+        user: [session?.id],
+      },
     };
     const responseData = await PostApiCall(apiEndPoint, detail);
     if (responseData?.status === 200) {

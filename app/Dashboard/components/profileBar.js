@@ -8,14 +8,11 @@ import Divider from "@mui/material/Divider";
 import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
 import Tooltip from "@mui/material/Tooltip";
-import PersonAdd from "@mui/icons-material/PersonAdd";
-import Settings from "@mui/icons-material/Settings";
 import Logout from "@mui/icons-material/Logout";
-import { IoMdSettings } from "react-icons/io";
-import Dashboard from "../page";
 import { signOut } from "next-auth/react";
 
-export default function AccountMenu() {
+export default function AccountMenu({ session }) {
+  // console.log("session", session);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -27,6 +24,7 @@ export default function AccountMenu() {
   const onHandleLogOut = () => {
     signOut({ callbackUrl: "/" });
   };
+
   return (
     <React.Fragment>
       <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>
@@ -82,20 +80,12 @@ export default function AccountMenu() {
         <MenuItem>
           <Box>
             <Typography variant="body2" sx={{ fontWeight: "600" }}>
-              Mohammad Sohail
+              {session?.title}
             </Typography>
-            <Typography variant="caption">
-              moahmmadsohail9744@gmail.com
-            </Typography>
+            <Typography variant="caption">{session?.email}</Typography>
           </Box>
         </MenuItem>
         <Divider />
-        {/* <MenuItem onClick={onHandleSettings}>
-          <ListItemIcon>
-            <Settings fontSize="small" />
-          </ListItemIcon>
-          <Typography>Settings</Typography>
-        </MenuItem> */}
         <MenuItem onClick={onHandleLogOut}>
           <ListItemIcon>
             <Logout fontSize="small" />

@@ -52,7 +52,7 @@ export default function Dashboard() {
   const matches = useMediaQuery(theme.breakpoints.down("lg"));
 
   const onHandleItem = (item) => {
-    fetchData();
+    // fetchData();
     setFocused(item.key);
     handleDrawerToggle();
   };
@@ -100,7 +100,7 @@ export default function Dashboard() {
             <Typography variant="h6" noWrap component="div">
               Dashboard
             </Typography>
-            <AccountMenu />
+            <AccountMenu session={session} />
           </Toolbar>
         </AppBar>
         <Drawer
@@ -176,7 +176,7 @@ export default function Dashboard() {
           sx={{ flexGrow: 1, bgcolor: "background.default", p: 3 }}
         >
           <Toolbar />
-          {focused === 0 ? <CustomTime /> : null}
+          {focused === 0 ? <CustomTime  session={session} /> : null}
           {focused === 1 ? <Config /> : null}
           {focused === 2 ? <ClockScreens /> : null}
           {focused === 3 ? <Help /> : null}

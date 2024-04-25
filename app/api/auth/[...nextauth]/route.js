@@ -16,17 +16,21 @@ const authOptions = NextAuth({
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        const { email, password, page } = credentials;
-        console.log(email, password, page);
+        const { title, email, password, page } = credentials;
+        console.log("user credentials", email, password, page);
         try {
           if (page === "signIn") {
             const existingUser = await userSignIn(email, password);
+            // console.log("EXISTING USER", existingUser);
             let user = existingUser;
             return user;
           }
 
           if (page === "signUp") {
-            return await userSignUp(email, password);
+            const newUser = await userSignUp(title, email, password);
+            // console.log("NEW USER", newUser);
+            let user = newUser;
+            return user;
           }
         } catch (error) {
           throw new Error(error?.message);
@@ -40,12 +44,17 @@ const authOptions = NextAuth({
       return true;
     },
     async session({ user, session, token }) {
-      session.user = token.user; // Assign user details from the token to the session object
-      console.log({ SESSION: session, USER: user });
+
+      const obj = {
+        ...token?.user?.user,
+        jwt: token.user.jwt
+      }
+      // console.log({ obj, session });
+      session = obj; // Assign user details from the token to the session object
       return session;
     },
-    async jwt({ token, user }) {
-      // console.log("JWT Callback Method", token, user);
+    async jwt({ token, user, session }) {
+      // console.log("JWT Callback Method", token, user, session);
       if (user) {
         token.user = user; // Persist user details in the JWT if user object is present
       }
@@ -58,11 +67,13 @@ const authOptions = NextAuth({
   debug: true,
 });
 
-const userSignUp = async (email, password) => {
+const userSignUp = async (title, email, password) => {
+  console.log("user details", title, email, password);
   try {
     const SignUpResponse = await axios.post(
       `${process.env.STRAPI_URL}/api/users`,
       {
+        title: title,
         username: email,
         email: email,
         password: password,
@@ -76,10 +87,11 @@ const userSignUp = async (email, password) => {
         },
       }
     );
+    console.log("SIGNUP response!", SignUpResponse.data);
     return SignUpResponse?.data;
   } catch (error) {
     console.log("ERROR!", error.message);
-    throw new Error(error.message);
+    throw new Error("User is already exist buy this email");
   }
 };
 
@@ -108,7 +120,7 @@ const userSignIn = async (email, password) => {
         }
       );
       return authResponse?.data;
-      // // console.log("USER DETAIL!", user);
+      // console.log("USER DETAIL!", user);
       // return user;
     } else {
       throw new Error("No user found with the email");

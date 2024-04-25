@@ -93,12 +93,9 @@ export default function SignIn() {
     // Extract the email and password from the form data
     const email = data.get("email");
     const password = data.get("password");
-    debugger;
     // Validate the inputs before attempting to sign in
     if (validateInputs()) {
-      // Use the signIn method from next-auth/react
       const result = await signIn("credentials", {
-        redirect: false, // Prevents redirecting automatically, allows handling response here in the client
         email,
         password,
         page: "signIn",
@@ -106,13 +103,13 @@ export default function SignIn() {
       });
 
       // Check the response from the signIn method
-      if (result) {
-        console.log(session, status);
-      }
+      // if (result) {
+      //   const session = await getSession()
+      //   console.log(session, status);
+      // }
 
       if (result?.error) {
         // Handle errors (e.g., display a message to the user)
-        console.error("Login failed:", result.error);
         setEmailError(true);
         setEmailErrorMessage("Login failed: " + result.error);
         setPasswordError(true)
@@ -148,9 +145,9 @@ export default function SignIn() {
     return isValid;
   };
 
-  const signInHandler = () => {
-    signIn("google", { callbackUrl: "/Dashboard" });
-  };
+  // const signInHandler = () => {
+  //   signIn("google", { callbackUrl: "/Dashboard" });
+  // };
   return (
     <ThemeProvider theme={showCustomTheme ? SignInTheme : defaultTheme}>
       <CssBaseline />
@@ -264,7 +261,7 @@ export default function SignIn() {
                 Don&apos;t have an account? Sign up
               </Link>
             </Box>
-            <Divider>or</Divider>
+            {/* <Divider>or</Divider>
             <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
               <Button
                 type="submit"
@@ -276,7 +273,7 @@ export default function SignIn() {
               >
                 Sign in with Google
               </Button>
-            </Box>
+            </Box> */}
           </Card>
         </Stack>
       </SignInContainer>
