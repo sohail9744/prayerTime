@@ -33,6 +33,7 @@ import UserSettings from "./profile_setting";
 import { ThemeProvider } from "@mui/material/styles";
 import theme from "./theme";
 import { useSession } from "next-auth/react";
+import FAQ from "../landing-page/components/FAQ";
 const drawerWidth = 230;
 
 export default function Dashboard() {
@@ -40,7 +41,9 @@ export default function Dashboard() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const { data: session, status } = useSession();
 
-  useEffect(() => {fetchData()});
+  useEffect(() => {
+    fetchData();
+  });
   async function fetchData() {
     console.log("Session Detail", { session, status });
   }
@@ -176,8 +179,8 @@ export default function Dashboard() {
           sx={{ flexGrow: 1, bgcolor: "background.default", p: 3 }}
         >
           <Toolbar />
-          {focused === 0 ? <CustomTime  session={session} /> : null}
-          {focused === 1 ? <Config /> : null}
+          {focused === 0 ? <CustomTime session={session} /> : null}
+          {focused === 1 ? <Config session={session} /> : null}
           {focused === 2 ? <ClockScreens /> : null}
           {focused === 3 ? <Help /> : null}
           {focused === 4 ? <UserSettings /> : null}

@@ -13,13 +13,17 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import CloseIcon from "@mui/icons-material/Close";
 import AlertBox from "./components/alertBox";
 import dayjs, { Dayjs } from "dayjs";
-import { GetApiCall, PostApiCall } from "./components/api";
+import { GetApiCall, PostApiCall, UpdateApiCall } from "../api/apiCalls";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { useSession } from "next-auth/react";
+import { getSession, useSession } from "next-auth/react";
 
 function CustomTime({ session }) {
-  console.log("CUSTOM TIME", session);
+  const [apiMethod, setMethod] = useState({
+    method: null,
+    prayerTime: null,
+  });
+  // console.log("CUSTOM TIME", session);
   const [data, setData] = useState({
     azaan_fazr: null,
     azaan_zuhr: null,
@@ -34,6 +38,42 @@ function CustomTime({ session }) {
     pray_maghrib: null,
     pray_isha: null,
   });
+  useEffect(() => {
+    fetchPrayerData();
+  }, [session]);
+
+  const fetchPrayerData = async () => {
+    if (session) {
+      const checkMethod = `prayer-times?&filters[user][id][$eq]=${session?.id}`;
+      const { data, status } = await GetApiCall(checkMethod);
+      // console.log("DATA!", data, status);
+      if (data?.length === 0) {
+        setMethod({
+          method: "POST",
+        });
+      } else {
+        setMethod({
+          method: "PUT",
+          prayerTime: data[0],
+        });
+        let nDetails = data[0]?.attributes;
+        setData({
+          azaan_fazr: nDetails?.azaan_fazr,
+          azaan_zuhr: nDetails?.azaan_zuhr,
+          azaan_asr: nDetails?.azaan_asr,
+          azaan_maghrib: nDetails?.azaan_maghrib,
+          azaan_isha: nDetails?.azaan_isha,
+          azaan_jumah: nDetails?.azaan_jumah,
+          pray_jumah: nDetails?.pray_jumah,
+          pray_fazr: nDetails?.pray_fazr,
+          pray_zuhr: nDetails?.pray_zuhr,
+          pray_asr: nDetails?.pray_asr,
+          pray_maghrib: nDetails?.pray_maghrib,
+          pray_isha: nDetails?.pray_isha,
+        });
+      }
+    }
+  };
   const handleInputChange = (value, name) => {
     const isoDate = value ? value.toISOString() : null;
     setData((prevFormData) => setData({ ...prevFormData, [name]: isoDate }));
@@ -41,30 +81,40 @@ function CustomTime({ session }) {
 
   const onSubmitForm = async (ev) => {
     ev.preventDefault();
-    const apiEndPoint = "prayer-times";
-    debugger;
-    const detail = {
-      data: {
-        ...data,
-        user: [session?.id],
-      },
-    };
-    const responseData = await PostApiCall(apiEndPoint, detail);
-    if (responseData?.status === 200) {
-      toast.success("Saved succussfully");
-    } else {
-      toast.error("Data not saved something went wrong!");
+
+    if (apiMethod?.method === "PUT") {
+      const apiEndPoint = `prayer-times/${apiMethod?.prayerTime?.id}`;
+      const detail = {
+        data: {
+          ...data,
+        },
+      };
+      const responseData = await UpdateApiCall(apiEndPoint, detail);
+      if (responseData?.status === 200) {
+        toast.success("Updated succussfully");
+      } else {
+        toast.error("Data not saved something went wrong!");
+      }
+    }
+
+    if (apiMethod?.method === "POST") {
+      const apiEndPoint = "prayer-times";
+      const detail = {
+        data: {
+          ...data,
+          user: [session?.id],
+        },
+      };
+      const responseData = await PostApiCall(apiEndPoint, detail);
+      if (responseData?.status === 200) {
+        fetchPrayerData()
+        toast.success("Saved succussfully");
+      } else {
+        toast.error("Data not saved something went wrong!");
+      }
     }
   };
 
-  useEffect(() => {
-    const fetchPrayerData = async () => {
-      const endpoint = "prayer-times";
-      const getPrayerData = await GetApiCall(endpoint);
-      // Handle the received data here
-    };
-    fetchPrayerData();
-  }, []);
   return (
     <Box component="main">
       <ToastContainer />

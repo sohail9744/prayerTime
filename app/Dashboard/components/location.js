@@ -9,7 +9,7 @@ import Typography from "@mui/material/Typography";
 import parse from "autosuggest-highlight/parse";
 import { debounce } from "@mui/material/utils";
 
-const GOOGLE_MAPS_API_KEY = process.env.GOOGLE_MAPS_KEY;
+const GOOGLE_MAPS_API_KEY = "AIzaSyD3QQH8b4zZn4CFuhxuZyksdwRRZVbOtWQ";
 
 function loadScript(src, position, id) {
   if (!position) {
@@ -26,8 +26,9 @@ function loadScript(src, position, id) {
 const autocompleteService = { current: null };
 const geocoderService = { current: null };
 
-export default function Location({ onSelect }) {
-  const [value, setValue] = React.useState(null);
+export default function Location({ onSelect, selectedLocation }) {
+  console.log("selcted location default", selectedLocation);
+  const [value, setValue] = React.useState(selectedLocation || null);
   const [inputValue, setInputValue] = React.useState("");
   const [options, setOptions] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
@@ -69,9 +70,9 @@ export default function Location({ onSelect }) {
       if (status === "OK" && results[0]) {
         const location = results[0].geometry.location;
         const placeName = results[0].formatted_address;
-        console.log("Place Name:", placeName);
-        console.log("Latitude:", location.lat());
-        console.log("Longitude:", location.lng());
+        // console.log("Place Name:", placeName);
+        // console.log("Latitude:", location.lat());
+        // console.log("Longitude:", location.lng());
 
         // Call onSelect callback with selected location details
         onSelect({
@@ -125,13 +126,18 @@ export default function Location({ onSelect }) {
     };
   }, [value, inputValue, fetch]);
 
+  const getOptionLabel = (option) => {
+    if (option?.description) {
+      return option.description;
+    } else {
+      return (option.description = selectedLocation?.placeName);
+    }
+  };
   return (
     <Autocomplete
       id="google-map-demo"
       sx={{ width: 300 }}
-      getOptionLabel={(option) =>
-        typeof option === "string" ? option : option.description
-      }
+      getOptionLabel={(option) => getOptionLabel(option)}
       filterOptions={(x) => x}
       options={options}
       autoComplete
@@ -168,12 +174,13 @@ export default function Location({ onSelect }) {
         />
       )}
       renderOption={(props, option) => {
+        debugger
         const matches =
-          option.structured_formatting.main_text_matched_substrings || [];
+          option?.structured_formatting?.main_text_matched_substrings || [];
 
         const parts = parse(
-          option.structured_formatting.main_text,
-          matches.map((match) => [match.offset, match.offset + match.length])
+          option?.structured_formatting?.main_text,
+          matches.map((match) => [match?.offset, match?.offset + match?.length])
         );
 
         return (
