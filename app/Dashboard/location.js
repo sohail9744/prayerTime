@@ -43,7 +43,6 @@ function Config({ session }) {
       },
     };
     const responseData = await UpdateApiCall(apiEndPoint, detail);
-    debugger;
     if (responseData?.status === 200) {
       toast.success("Updated succussfully");
     } else {

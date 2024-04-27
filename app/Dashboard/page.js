@@ -31,13 +31,11 @@ import { useTheme } from "@mui/material/styles";
 import { Settings } from "@mui/icons-material";
 import UserSettings from "./profile_setting";
 import { ThemeProvider } from "@mui/material/styles";
-import theme from "./theme";
 import { useSession } from "next-auth/react";
-import FAQ from "../landing-page/components/FAQ";
 const drawerWidth = 230;
 
 export default function Dashboard() {
-  const [focused, setFocused] = useState(0);
+  const [focused, setFocused] = useState(4);
   const [mobileOpen, setMobileOpen] = useState(false);
   const { data: session, status } = useSession();
 
@@ -183,7 +181,7 @@ export default function Dashboard() {
           {focused === 1 ? <Config session={session} /> : null}
           {focused === 2 ? <ClockScreens /> : null}
           {focused === 3 ? <Help /> : null}
-          {focused === 4 ? <UserSettings /> : null}
+          {focused === 4 ? <UserSettings session={session} /> : null}
           {focused === 5 ? <Support /> : null}
         </Box>
       </Box>

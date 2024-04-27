@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Box,
   Grid,
@@ -8,65 +8,144 @@ import {
   TextField,
   Avatar,
 } from "@mui/material";
+import { GetApiCall, UpdateApiCall } from "../api/apiCalls";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import ImageUploading from "react-images-uploading";
 
-function UserSettings() {
-  const [formData, setFormData] = useState({
-    name: "",
+function UserSettings({ session }) {
+  const [userFormData, setFormData] = useState({
+    title: "",
     email: "",
-    phoneNumber: "",
+    mobileNumber: "",
     address: "",
     country: "",
     state: "",
     city: "",
-    zip: "",
-    about: "",
+    zipcode: "",
+    photo: "",
   });
+  const [profileImage, setProfileImage] = useState(null);
+  useEffect(() => {
+    fetchPrayerData();
+  }, [session]);
 
+  const fetchPrayerData = async () => {
+    if (session) {
+      const checkMethod = `users/${session?.id}?fields=title&fields=email&fields=mobileNumber&fields=address&fields=country&fields=state&fields=city&fields=zipcode&fields=photo`;
+      const users = await GetApiCall(checkMethod);
+      if (users?.status === 200) {
+        delete users?.status;
+        setFormData((prevuserFormData) => ({
+          ...prevuserFormData,
+          title: users?.title,
+          email: users?.email,
+          mobileNumber: users?.mobileNumber,
+          address: users?.address,
+          country: users?.country,
+          state: users?.state,
+          city: users?.city,
+          zipcode: users?.zipcode,
+          photo: users?.photo,
+        }));
+      } else {
+        toast.error("Something went wrong! Please reload the page");
+      }
+    }
+  };
   const handleInputChange = (event) => {
-    debugger;
     const { name, value } = event.target;
-    setFormData((prevFormData) => ({
-      ...prevFormData,
+    setFormData((prevuserFormData) => ({
+      ...prevuserFormData,
       [name]: value,
     }));
   };
 
-  const handleSubmit = async (event) => {
-    event.preventDefault(); // Prevent default form submission
-    console.log(formData); // Here you have all your data
-    // TODO: POST request with formData
-    // You might want to validate your data before sending
-    /*     try {
-      const response = await axios.post("/your-endpoint", formData);
-      console.log(response.data); // Handle the response
-    } catch (error) {
-      console.error("There was an error!", error);
-    } */
+  const handleSubmit = async (ev) => {
+    ev.preventDefault();
+    const apiEndPoint = `users/${session.id}`;
+    delete userFormData?.photo;
+    const detail = {
+      ...userFormData,
+    };
+    const responseData = await UpdateApiCall(apiEndPoint, detail);
+    if (responseData?.status === 200) {
+      toast.success("Updated succussfully");
+    } else {
+      toast.error("Data not saved something went wrong!");
+    }
+  };
+
+  //Image code start from here
+  const onImageChange = async (imageList) => {
+    if (imageList.length > 0) {
+      const image = imageList[0];
+      const apiEndPoint = `users/${session.id}`;
+      const detail = {
+        photo: image?.data_url,
+      };
+      const responseData = await UpdateApiCall(apiEndPoint, detail);
+      if (responseData?.status === 200) {
+        fetchPrayerData();
+        toast.success("Image Uploaded succussfully");
+      } else {
+        toast.error("Image not saved something went wrong!");
+      }
+    }
+  };
+  const onImageError = (errors) => {
+    if (errors.maxFileSize || errors.acceptType) {
+      toast.error("Image must be in limit");
+    }
   };
   return (
     <Grid container spacing={2}>
+      <ToastContainer />
       <Grid item xs={12} md={4}>
-        <Paper
-          sx={{
-            p: 4,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
+        <ImageUploading
+          value={profileImage ? [profileImage] : []}
+          onChange={onImageChange}
+          maxNumber={1} // Assuming only one image for profile
+          dataURLKey="data_url"
+          maxFileSize={1048576} // Max image size (1MB = 1048576 bytes)
+          acceptType={["jpg", "jpeg", "png", "svg"]} // Acceptable file types
+          onError={onImageError}
         >
-          <Avatar sx={{ width: 100, height: 100 }}>MK</Avatar>
-          <Typography variant="caption" sx={{ mt: 2 }}>
-            Allowed *.jpg, *.png max size of 3MB
-          </Typography>
-          <Box sx={{ mt: 2 }}>
-            <Button variant="outlined" sx={{ mr: 1 }}>
-              Upload
-            </Button>
-            <Button variant="outlined" color="error">
-              Remove
-            </Button>
-          </Box>
-        </Paper>
+          {({ onImageUpload, onImageRemoveAll, isDragging, dragProps }) => (
+            <Paper
+              sx={{
+                p: 4,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              <Avatar
+                src={userFormData?.photo}
+                sx={{ width: 100, height: 100 }}
+              />
+              <Typography variant="caption" sx={{ mt: 2 }}>
+                Allowed *.jpg, *.png max size of 1MB
+              </Typography>
+              <Box sx={{ mt: 2 }}>
+                <Button
+                  onClick={onImageUpload}
+                  variant="outlined"
+                  sx={{ mr: 1 }}
+                >
+                  Upload
+                </Button>
+                <Button
+                  onClick={onImageRemoveAll}
+                  variant="outlined"
+                  color="error"
+                >
+                  Remove
+                </Button>
+              </Box>
+            </Paper>
+          )}
+        </ImageUploading>
       </Grid>
       <Grid item xs={12} md={8}>
         <Paper sx={{ p: 4 }}>
@@ -74,10 +153,10 @@ function UserSettings() {
             <Grid container spacing={2}>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  value={formData.name}
+                  value={userFormData.title}
                   onChange={handleInputChange}
                   label="Name"
-                  name="name"
+                  name="title"
                   placeholder="Enter Your Name"
                   fullWidth
                   type="text"
@@ -86,7 +165,7 @@ function UserSettings() {
               <Grid item xs={12} sm={6}>
                 <TextField
                   name="email"
-                  value={formData.email}
+                  value={userFormData.email}
                   onChange={handleInputChange}
                   label="Email Address"
                   fullWidth
@@ -94,8 +173,8 @@ function UserSettings() {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  name="phoneNumber"
-                  value={formData.phoneNumber}
+                  name="mobileNumber"
+                  value={userFormData.mobileNumber}
                   onChange={handleInputChange}
                   label="Phone Number"
                   fullWidth
@@ -104,7 +183,7 @@ function UserSettings() {
               <Grid item xs={12} sm={6}>
                 <TextField
                   name="address"
-                  value={formData.address}
+                  value={userFormData.address}
                   onChange={handleInputChange}
                   label="Address"
                   fullWidth
@@ -113,7 +192,7 @@ function UserSettings() {
               <Grid item xs={12} sm={6}>
                 <TextField
                   name="country"
-                  value={formData.country}
+                  value={userFormData.country}
                   onChange={handleInputChange}
                   label="Country"
                   fullWidth
@@ -122,7 +201,7 @@ function UserSettings() {
               <Grid item xs={12} sm={6}>
                 <TextField
                   name="state"
-                  value={formData.state}
+                  value={userFormData.state}
                   onChange={handleInputChange}
                   label="State"
                   fullWidth
@@ -131,7 +210,7 @@ function UserSettings() {
               <Grid item xs={12} sm={6}>
                 <TextField
                   name="city"
-                  value={formData.city}
+                  value={userFormData.city}
                   onChange={handleInputChange}
                   label="City"
                   fullWidth
@@ -139,22 +218,11 @@ function UserSettings() {
               </Grid>
               <Grid item xs={12} sm={6}>
                 <TextField
-                  name="zip"
+                  name="zipcode"
                   label="Zip/Code"
-                  value={formData.zip}
+                  value={userFormData.zipcode}
                   onChange={handleInputChange}
                   fullWidth
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  name="about"
-                  multiline
-                  rows={3}
-                  fullWidth
-                  label="About"
-                  value={formData.about}
-                  onChange={handleInputChange}
                 />
               </Grid>
               <Grid textAlign={"end"} item xs={12}>

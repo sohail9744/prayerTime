@@ -10,9 +10,14 @@ import Typography from "@mui/material/Typography";
 import Tooltip from "@mui/material/Tooltip";
 import Logout from "@mui/icons-material/Logout";
 import { signOut } from "next-auth/react";
+import { GetApiCall } from "../../api/apiCalls";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 export default function AccountMenu({ session }) {
-  // console.log("session", session);
+  const [profile, setProfile] = React.useState({
+    profilePhoto: "",
+  });
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -24,9 +29,27 @@ export default function AccountMenu({ session }) {
   const onHandleLogOut = () => {
     signOut({ callbackUrl: "/" });
   };
+  React.useEffect(() => {
+    fetchPrayerData();
+  }, [session]);
 
+  const fetchPrayerData = async () => {
+    if (session) {
+      const checkMethod = `users/${session?.id}?fields=photo`;
+      const { photo, status } = await GetApiCall(checkMethod);
+
+      if (status === 200) {
+        setProfile({
+          profilePhoto: photo,
+        });
+      } else {
+        toast.error("Something went wrong! Please reload the page");
+      }
+    }
+  };
   return (
     <React.Fragment>
+      <ToastContainer/>
       <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>
         <Tooltip title="Account settings">
           <IconButton
@@ -37,7 +60,7 @@ export default function AccountMenu({ session }) {
             aria-haspopup="true"
             aria-expanded={open ? "true" : undefined}
           >
-            <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
+            <Avatar src={profile?.profilePhoto} sx={{ width: 32, height: 32 }} />
           </IconButton>
         </Tooltip>
       </Box>
