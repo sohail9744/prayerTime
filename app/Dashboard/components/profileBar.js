@@ -35,12 +35,12 @@ export default function AccountMenu({ session }) {
 
   const fetchPrayerData = async () => {
     if (session) {
-      const checkMethod = `users/${session?.id}?fields=photo`;
+      const checkMethod = `users/${session?.id}?fields=id&fields&populate=photo`;
       const { photo, status } = await GetApiCall(checkMethod);
 
       if (status === 200) {
         setProfile({
-          profilePhoto: photo,
+          profilePhoto: photo?.url,
         });
       } else {
         toast.error("Something went wrong! Please reload the page");
@@ -49,7 +49,7 @@ export default function AccountMenu({ session }) {
   };
   return (
     <React.Fragment>
-      <ToastContainer/>
+      <ToastContainer />
       <Box sx={{ display: "flex", alignItems: "center", textAlign: "center" }}>
         <Tooltip title="Account settings">
           <IconButton
@@ -60,7 +60,10 @@ export default function AccountMenu({ session }) {
             aria-haspopup="true"
             aria-expanded={open ? "true" : undefined}
           >
-            <Avatar src={profile?.profilePhoto} sx={{ width: 32, height: 32 }} />
+            <Avatar
+              src={`http://localhost:1337${profile?.profilePhoto}`}
+              sx={{ width: 32, height: 32 }}
+            />
           </IconButton>
         </Tooltip>
       </Box>

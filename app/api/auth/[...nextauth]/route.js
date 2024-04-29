@@ -56,7 +56,7 @@ const authOptions = NextAuth({
     async jwt({ token, user, session }) {
       // console.log("JWT Callback Method", token, user, session);
       if (user) {
-        token.user = user; // Persist user details in the JWT if user object is present
+        token.user = user;
       }
       return token;
     },

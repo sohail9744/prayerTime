@@ -8,7 +8,12 @@ import {
   TextField,
   Avatar,
 } from "@mui/material";
-import { GetApiCall, UpdateApiCall } from "../api/apiCalls";
+import {
+  GetApiCall,
+  PostApiCall,
+  PostMedia,
+  UpdateApiCall,
+} from "../api/apiCalls";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ImageUploading from "react-images-uploading";
@@ -32,7 +37,7 @@ function UserSettings({ session }) {
 
   const fetchPrayerData = async () => {
     if (session) {
-      const checkMethod = `users/${session?.id}?fields=title&fields=email&fields=mobileNumber&fields=address&fields=country&fields=state&fields=city&fields=zipcode&fields=photo`;
+      const checkMethod = `users/${session?.id}?fields=title&fields=email&fields=mobileNumber&fields=address&fields=country&fields=state&fields=city&fields=zipcode&fields&populate=photo`;
       const users = await GetApiCall(checkMethod);
       if (users?.status === 200) {
         delete users?.status;
@@ -46,7 +51,7 @@ function UserSettings({ session }) {
           state: users?.state,
           city: users?.city,
           zipcode: users?.zipcode,
-          photo: users?.photo,
+          photo: users?.photo?.url,
         }));
       } else {
         toast.error("Something went wrong! Please reload the page");
@@ -79,12 +84,10 @@ function UserSettings({ session }) {
   //Image code start from here
   const onImageChange = async (imageList) => {
     if (imageList.length > 0) {
-      const image = imageList[0];
-      const apiEndPoint = `users/${session.id}`;
-      const detail = {
-        photo: image?.data_url,
-      };
-      const responseData = await UpdateApiCall(apiEndPoint, detail);
+      const ImageFile = imageList[0].file;
+
+      let apiEndPoint = "upload";
+      const responseData = await PostMedia(apiEndPoint, ImageFile, session?.id);
       if (responseData?.status === 200) {
         fetchPrayerData();
         toast.success("Image Uploaded succussfully");
@@ -121,7 +124,7 @@ function UserSettings({ session }) {
               }}
             >
               <Avatar
-                src={userFormData?.photo}
+                src={`http://localhost:1337${userFormData?.photo}`}
                 sx={{ width: 100, height: 100 }}
               />
               <Typography variant="caption" sx={{ mt: 2 }}>
