@@ -29,6 +29,7 @@ const theme = createTheme({
 function DefaultTheme() {
   const [updateKey, setUpdateKey] = useState(0);
   const [prayerTimes, setPrayerTimesData] = useState(null);
+ 
   const formatTime = (timeString) => {
     const [time, format] = timeString.split(" "); // Split by space to separate time from AM/PM
     const [hours, minutes] = time.split(":"); // Split by colon to separate hours and minutes
@@ -38,6 +39,7 @@ function DefaultTheme() {
     const fetchData = async () => {
       try {
         const data = await getCurrentPrayerTimes();
+        debugger
         const newData = data?.prayerTimes.map((item) => {
           return {
             ...item,
@@ -55,7 +57,6 @@ function DefaultTheme() {
         console.error("Error fetching prayer times and day:", error);
       }
     };
-    // Set up an interval to increment updateKey every minute
     fetchData();
   }, [updateKey]);
 

@@ -51,7 +51,7 @@ function Config({ session }) {
   };
   return (
     <Box component="main">
-      <ToastContainer />
+      <ToastContainer containerId={'containerLocation'}/>
       <AlertBox
         text="Make sure your internet is 'ON' to change the location!"
         iconText="info"

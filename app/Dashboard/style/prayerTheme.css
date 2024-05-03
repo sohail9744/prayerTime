@@ -1,9 +1,13 @@
 .page-theme {
-    background: #000000;
-    /* fallback for old browsers */
-    background: -webkit-linear-gradient(to right, #201e1e, #000000);
-    /* Chrome 10-25, Safari 5.1-6 */
-    background: linear-gradient(to left, #201e1e, #000000);
-    /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-    color: #e82e2e;
-  }
+  background: #000000;
+  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #201e1e, #000000);
+  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to left, #201e1e, #000000);
+  /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  color: #e82e2e;
+}
+
+.css-uzgb0i-MuiTypography-root {
+  margin: 0;
+}

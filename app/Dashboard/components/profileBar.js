@@ -31,7 +31,7 @@ export default function AccountMenu({ session }) {
   };
   React.useEffect(() => {
     fetchPrayerData();
-  }, [session]);
+  }, [session, setProfile]);
 
   const fetchPrayerData = async () => {
     if (session) {

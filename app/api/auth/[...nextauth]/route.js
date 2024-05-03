@@ -28,7 +28,7 @@ const authOptions = NextAuth({
 
           if (page === "signUp") {
             const newUser = await userSignUp(title, email, password);
-            // console.log("NEW USER", newUser);
+            console.log("NEW USER with SIGNUP", newUser);
             let user = newUser;
             return user;
           }
@@ -44,12 +44,11 @@ const authOptions = NextAuth({
       return true;
     },
     async session({ user, session, token }) {
-
       const obj = {
         ...token?.user?.user,
-        jwt: token.user.jwt
-      }
-      // console.log({ obj, session });
+        jwt: token.user.jwt,
+      };
+      // console.log("setting session", { obj, session });
       session = obj; // Assign user details from the token to the session object
       return session;
     },
@@ -68,9 +67,9 @@ const authOptions = NextAuth({
 });
 
 const userSignUp = async (title, email, password) => {
-  console.log("user details", title, email, password);
+  // console.log("user details", title, email, password);
   try {
-    const SignUpResponse = await axios.post(
+    const { data, status } = await axios.post(
       `${process.env.STRAPI_URL}/api/users`,
       {
         title: title,
@@ -87,8 +86,21 @@ const userSignUp = async (title, email, password) => {
         },
       }
     );
-    console.log("SIGNUP response!", SignUpResponse.data);
-    return SignUpResponse?.data;
+    if (status === 200 || 201) {
+      const authResponse = await axios.post(
+        `${process.env.STRAPI_URL}/api/auth/local`,
+        { identifier: data?.email, password: password },
+        {
+          headers: {
+            Authorization: `Bearer ${process.env.DEV_API_TOKEN}`,
+          },
+        }
+      );
+      // console.log("SIGNUP: New User JWT", authResponse);
+      return authResponse?.data;
+    } else {
+      throw new Error("No user found with the email");
+    }
   } catch (error) {
     console.log("ERROR!", error.message);
     throw new Error("User is already exist buy this email");

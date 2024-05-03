@@ -10,7 +10,6 @@ import {
 import { TimePicker } from "@mui/x-date-pickers/TimePicker";
 import { LocalizationProvider } from "@mui/x-date-pickers";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import CloseIcon from "@mui/icons-material/Close";
 import AlertBox from "./components/alertBox";
 import dayjs, { Dayjs } from "dayjs";
 import { GetApiCall, PostApiCall, UpdateApiCall } from "../api/apiCalls";
@@ -117,7 +116,7 @@ function CustomTime({ session }) {
 
   return (
     <Box component="main">
-      <ToastContainer />
+      <ToastContainer containerId={'containerCustomTim'}/>
       <AlertBox
         text="If your internet is connect to your TV the data will reflect in 15 minutes."
         iconText="info"

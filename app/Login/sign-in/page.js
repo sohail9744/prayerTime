@@ -102,17 +102,11 @@ export default function SignIn() {
         callbackUrl: "/Dashboard",
       });
 
-      // Check the response from the signIn method
-      // if (result) {
-      //   const session = await getSession()
-      //   console.log(session, status);
-      // }
-
       if (result?.error) {
         // Handle errors (e.g., display a message to the user)
         setEmailError(true);
         setEmailErrorMessage("Login failed: " + result.error);
-        setPasswordError(true)
+        setPasswordError(true);
         setPasswordErrorMessage("Login failed: " + result.error);
       }
     }
@@ -244,7 +238,9 @@ export default function SignIn() {
                 control={<Checkbox value="remember" color="primary" />}
                 label="Remember me"
               />
-              <ForgotPassword open={open} handleClose={handleClose} />
+              {open ? (
+                <ForgotPassword open={open} handleClose={handleClose} />
+              ) : null}
               <Button
                 type="submit"
                 fullWidth

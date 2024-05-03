@@ -32,10 +32,11 @@ import { Settings } from "@mui/icons-material";
 import UserSettings from "./profile_setting";
 import { ThemeProvider } from "@mui/material/styles";
 import { useSession } from "next-auth/react";
+import { ToastContainer } from "react-toastify";
 const drawerWidth = 230;
 
 export default function Dashboard() {
-  const [focused, setFocused] = useState(4);
+  const [focused, setFocused] = useState(0);
   const [mobileOpen, setMobileOpen] = useState(false);
   const { data: session, status } = useSession();
 
@@ -60,9 +61,9 @@ export default function Dashboard() {
 
   const handleItemClick = (index) => {};
   const listData = [
-    { name: "Prayer Time", key: 0, icon: <MdMoreTime /> },
-    { name: "Location", key: 1, icon: <MdShareLocation /> },
-    { name: "Screens", key: 2, icon: <MdOutlineScreenshotMonitor /> },
+    { name: "Screens", key: 0, icon: <MdOutlineScreenshotMonitor /> },
+    { name: "Prayer Time", key: 1, icon: <MdMoreTime /> },
+    { name: "Location", key: 2, icon: <MdShareLocation /> },
     { name: "User Guide", key: 3, icon: <BiHelpCircle /> },
     { name: "Settings", key: 4, icon: <Settings /> },
     { name: "Support", key: 5, icon: <BiSupport /> },
@@ -177,12 +178,12 @@ export default function Dashboard() {
           sx={{ flexGrow: 1, bgcolor: "background.default", p: 3 }}
         >
           <Toolbar />
-          {focused === 0 ? <CustomTime session={session} /> : null}
-          {focused === 1 ? <Config session={session} /> : null}
-          {focused === 2 ? <ClockScreens /> : null}
+          {focused === 0 ? <ClockScreens /> : null}
+          {focused === 1 ? <CustomTime session={session} /> : null}
+          {focused === 2 ? <Config session={session} /> : null}
           {focused === 3 ? <Help /> : null}
           {focused === 4 ? <UserSettings session={session} /> : null}
-          {focused === 5 ? <Support /> : null}
+          {focused === 5 ? <Support session={session} /> : null}
         </Box>
       </Box>
     </ThemeProvider>
