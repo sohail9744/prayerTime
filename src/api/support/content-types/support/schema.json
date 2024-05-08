@@ -1,0 +1,29 @@
+{
+  "kind": "collectionType",
+  "collectionName": "supports",
+  "info": {
+    "singularName": "support",
+    "pluralName": "supports",
+    "displayName": "support",
+    "description": ""
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "email": {
+      "type": "email",
+      "required": true
+    },
+    "subtitle": {
+      "type": "string"
+    },
+    "feedback": {
+      "type": "text"
+    },
+    "userId": {
+      "type": "integer"
+    }
+  }
+}

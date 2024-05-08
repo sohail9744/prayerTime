@@ -12,10 +12,10 @@
   },
   "pluginOptions": {},
   "attributes": {
-    "azaan_fazr": {
+    "azaan_fajr": {
       "type": "string"
     },
-    "azaan_zuhr": {
+    "azaan_dhuhr": {
       "type": "string"
     },
     "azaan_asr": {
@@ -27,10 +27,10 @@
     "azaan_isha": {
       "type": "string"
     },
-    "pray_fazr": {
+    "pray_fajr": {
       "type": "string"
     },
-    "pray_zuhr": {
+    "pray_dhuhr": {
       "type": "string"
     },
     "pray_maghrib": {
@@ -49,6 +49,9 @@
       "mappedBy": "prayer_time"
     },
     "pray_jumah": {
+      "type": "string"
+    },
+    "pray_asr": {
       "type": "string"
     }
   }

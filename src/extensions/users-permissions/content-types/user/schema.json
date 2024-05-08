@@ -71,8 +71,40 @@
       "target": "api::prayer-time.prayer-time",
       "inversedBy": "user"
     },
+    "title": {
+      "type": "string"
+    },
     "location": {
+      "type": "json"
+    },
+    "address": {
       "type": "text"
+    },
+    "country": {
+      "type": "string"
+    },
+    "state": {
+      "type": "string"
+    },
+    "city": {
+      "type": "string"
+    },
+    "zipcode": {
+      "type": "string"
+    },
+    "mobileNumber": {
+      "type": "string"
+    },
+    "photo": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": [
+        "images"
+      ]
+    },
+    "otp": {
+      "type": "integer"
     }
   }
 }
