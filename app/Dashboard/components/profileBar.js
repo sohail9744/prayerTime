@@ -36,7 +36,7 @@ export default function AccountMenu({ session }) {
   const fetchPrayerData = async () => {
     if (session) {
       const checkMethod = `users/${session?.id}?fields=id&fields&populate=photo`;
-      const { photo, status } = await GetApiCall(checkMethod);
+      const { photo, status } = await GetApiCall(checkMethod, session?.jwt);
 
       if (status === 200) {
         setProfile({

@@ -24,15 +24,15 @@ function CustomTime({ session }) {
   });
   // console.log("CUSTOM TIME", session);
   const [data, setData] = useState({
-    azaan_fazr: null,
-    azaan_zuhr: null,
+    azaan_fajr: null,
+    azaan_dhuhr: null,
     azaan_asr: null,
     azaan_maghrib: null,
     azaan_isha: null,
     azaan_jumah: null,
     pray_jumah: null,
-    pray_fazr: null,
-    pray_zuhr: null,
+    pray_fajr: null,
+    pray_dhuhr: null,
     pray_asr: null,
     pray_maghrib: null,
     pray_isha: null,
@@ -44,7 +44,7 @@ function CustomTime({ session }) {
   const fetchPrayerData = async () => {
     if (session) {
       const checkMethod = `prayer-times?&filters[user][id][$eq]=${session?.id}`;
-      const { data, status } = await GetApiCall(checkMethod);
+      const { data, status } = await GetApiCall(checkMethod, session?.jwt);
       // console.log("DATA!", data, status);
       if (data?.length === 0) {
         setMethod({
@@ -57,15 +57,15 @@ function CustomTime({ session }) {
         });
         let nDetails = data[0]?.attributes;
         setData({
-          azaan_fazr: nDetails?.azaan_fazr,
-          azaan_zuhr: nDetails?.azaan_zuhr,
+          azaan_fajr: nDetails?.azaan_fajr,
+          azaan_dhuhr: nDetails?.azaan_dhuhr,
           azaan_asr: nDetails?.azaan_asr,
           azaan_maghrib: nDetails?.azaan_maghrib,
           azaan_isha: nDetails?.azaan_isha,
           azaan_jumah: nDetails?.azaan_jumah,
           pray_jumah: nDetails?.pray_jumah,
-          pray_fazr: nDetails?.pray_fazr,
-          pray_zuhr: nDetails?.pray_zuhr,
+          pray_fajr: nDetails?.pray_fajr,
+          pray_dhuhr: nDetails?.pray_dhuhr,
           pray_asr: nDetails?.pray_asr,
           pray_maghrib: nDetails?.pray_maghrib,
           pray_isha: nDetails?.pray_isha,
@@ -88,7 +88,7 @@ function CustomTime({ session }) {
           ...data,
         },
       };
-      const responseData = await UpdateApiCall(apiEndPoint, detail);
+      const responseData = await UpdateApiCall(apiEndPoint, detail, session?.jwt);
       if (responseData?.status === 200) {
         toast.success("Updated succussfully");
       } else {
@@ -104,9 +104,9 @@ function CustomTime({ session }) {
           user: [session?.id],
         },
       };
-      const responseData = await PostApiCall(apiEndPoint, detail);
+      const responseData = await PostApiCall(apiEndPoint, detail, session?.jwt);
       if (responseData?.status === 200) {
-        fetchPrayerData()
+        fetchPrayerData();
         toast.success("Saved succussfully");
       } else {
         toast.error("Data not saved something went wrong!");
@@ -116,7 +116,7 @@ function CustomTime({ session }) {
 
   return (
     <Box component="main">
-      <ToastContainer containerId={'containerCustomTim'}/>
+      <ToastContainer containerId={"containerCustomTim"} />
       <AlertBox
         text="If your internet is connect to your TV the data will reflect in 15 minutes."
         iconText="info"
@@ -126,21 +126,21 @@ function CustomTime({ session }) {
       <Box component="form" display="flex" flexWrap="wrap" gap={4} pt={3}>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <TimePicker
-            label="Fazr Time"
+            label="Fajr Time"
             value={
-              data?.azaan_fazr ? dayjs(data?.azaan_fazr) : data?.azaan_fazr
+              data?.azaan_fajr ? dayjs(data?.azaan_fajr) : data?.azaan_fajr
             }
-            onChange={(newValue) => handleInputChange(newValue, "azaan_fazr")}
+            onChange={(newValue) => handleInputChange(newValue, "azaan_fajr")}
           />
         </LocalizationProvider>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <TimePicker
-            label="Zohr Time"
+            label="Dhuhr Time"
             value={
-              data?.azaan_zuhr ? dayjs(data?.azaan_zuhr) : data?.azaan_zuhr
+              data?.azaan_dhuhr ? dayjs(data?.azaan_dhuhr) : data?.azaan_dhuhr
             }
-            name="azaan_zuhr"
-            onChange={(newValue) => handleInputChange(newValue, "azaan_zuhr")}
+            name="azaan_dhuhr"
+            onChange={(newValue) => handleInputChange(newValue, "azaan_dhuhr")}
           />
         </LocalizationProvider>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -200,18 +200,20 @@ function CustomTime({ session }) {
       >
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <TimePicker
-            label="Fazr Time"
-            value={data?.pray_fazr ? dayjs(data?.pray_fazr) : data?.pray_fazr}
-            name="pray_fazr"
-            onChange={(newValue) => handleInputChange(newValue, "pray_fazr")}
+            label="Fajr Time"
+            value={data?.pray_fajr ? dayjs(data?.pray_fajr) : data?.pray_fajr}
+            name="pray_fajr"
+            onChange={(newValue) => handleInputChange(newValue, "pray_fajr")}
           />
         </LocalizationProvider>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <TimePicker
-            label="Zohr Time"
-            value={data?.pray_zuhr ? dayjs(data?.pray_zuhr) : data?.pray_zuhr}
-            name="pray_zuhr"
-            onChange={(newValue) => handleInputChange(newValue, "pray_zuhr")}
+            label="Dhuhr Time"
+            value={
+              data?.pray_dhuhr ? dayjs(data?.pray_dhuhr) : data?.pray_dhuhr
+            }
+            name="pray_dhuhr"
+            onChange={(newValue) => handleInputChange(newValue, "pray_dhuhr")}
           />
         </LocalizationProvider>
         <LocalizationProvider dateAdapter={AdapterDayjs}>

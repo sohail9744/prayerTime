@@ -50,7 +50,7 @@ function Support({ session }) {
           userId: session?.id,
         },
       };
-      const response = await PostApiCall(apiEndPoint, detail);
+      const response = await PostApiCall(apiEndPoint, detail, session?.jwt);
       if (response?.status === 200 || response?.status === 201) {
         setFormData({
           email: "",

@@ -33,12 +33,7 @@ const templateCards = [
 
 export default function ClockScreens() {
   const [isButtonVisible, setIsButtonVisible] = useState(false);
-  const [isChecked, setIsChecked] = useState(true);
   const [isMounted, setIsMounted] = useState(false);
-  const handleThemeChange = (event) => {
-    setIsChecked(event.target.checked);
-    toast.warn("Saved successfully");
-  };
   useEffect(() => {
     setIsMounted(true);
     return () => setIsMounted(false);
@@ -64,12 +59,6 @@ export default function ClockScreens() {
               >
                 {template.title}
               </Typography>
-              <Switch
-                onChange={handleThemeChange}
-                aria-label="Switch"
-                color="success"
-                checked={isChecked}
-              />
             </CardActions>
             <CardActionArea
               onMouseLeave={() => setIsButtonVisible(false)}

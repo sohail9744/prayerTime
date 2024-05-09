@@ -37,7 +37,7 @@ function UserSettings({ session }) {
   const fetchPrayerData = async () => {
     if (session) {
       const checkMethod = `users/${session?.id}?fields=title&fields=email&fields=mobileNumber&fields=address&fields=country&fields=state&fields=city&fields=zipcode&fields&populate=photo`;
-      const users = await GetApiCall(checkMethod);
+      const users = await GetApiCall(checkMethod, session?.jwt);
       if (users?.status === 200) {
         delete users?.status;
         setFormData((prevuserFormData) => ({
@@ -73,7 +73,7 @@ function UserSettings({ session }) {
     const detail = {
       ...userFormData,
     };
-    const responseData = await UpdateApiCall(apiEndPoint, detail);
+    const responseData = await UpdateApiCall(apiEndPoint, detail, session?.jwt);
     if (responseData?.status === 200) {
       toast.success("Updated succussfully");
     } else {
@@ -87,7 +87,7 @@ function UserSettings({ session }) {
       const ImageFile = imageList[0].file;
 
       let apiEndPoint = "upload";
-      const responseData = await PostMedia(apiEndPoint, ImageFile, session?.id);
+      const responseData = await PostMedia(apiEndPoint, ImageFile, session?.id, session?.jwt);
       if (responseData?.status === 200) {
         fetchPrayerData();
         toast.success("Image Uploaded succussfully");
@@ -108,7 +108,7 @@ function UserSettings({ session }) {
     if (getPhotoId) {
       let apiEndPoint = `upload/files/${getPhotoId}`;
 
-      const { status } = await DeleteMedia(apiEndPoint);
+      const { status } = await DeleteMedia(apiEndPoint, session?.jwt);
 
       if (status === 200) {
         fetchPrayerData();

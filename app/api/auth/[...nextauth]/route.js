@@ -70,7 +70,7 @@ const userSignUp = async (title, email, password) => {
   // console.log("user details", title, email, password);
   try {
     const { data, status } = await axios.post(
-      `${process.env.STRAPI_URL}/api/users`,
+      `${process.env.HOSTNAME}/api/users`,
       {
         title: title,
         username: email,
@@ -88,7 +88,7 @@ const userSignUp = async (title, email, password) => {
     );
     if (status === 200 || 201) {
       const authResponse = await axios.post(
-        `${process.env.STRAPI_URL}/api/auth/local`,
+        `${process.env.HOSTNAME}/api/auth/local`,
         { identifier: data?.email, password: password },
         {
           headers: {
@@ -111,7 +111,7 @@ const userSignIn = async (email, password) => {
   try {
     // Check if the user exist in the database
     let { data, status } = await axios.get(
-      `${process.env.STRAPI_URL}/api/users?filters[email][$eq]=${email}`,
+      `${process.env.HOSTNAME}/api/users?filters[email][$eq]=${email}`,
       {
         headers: {
           Authorization: `Bearer ${process.env.DEV_API_TOKEN}`,
@@ -123,7 +123,7 @@ const userSignIn = async (email, password) => {
       //If the user exist in the database then get the user details with JWT
       // console.log("Process DETAILS of SignIn", status, email, password);
       const authResponse = await axios.post(
-        `${process.env.STRAPI_URL}/api/auth/local`,
+        `${process.env.HOSTNAME}/api/auth/local`,
         { identifier: email, password: password },
         {
           headers: {

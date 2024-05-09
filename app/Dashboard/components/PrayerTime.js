@@ -1,35 +1,24 @@
 // prayerTimesUtils.js
-import { Coordinates, CalculationMethod, PrayerTimes } from "adhan";
+import {
+  Coordinates,
+  CalculationMethod,
+  PrayerTimes,
+  SunnahTimes,
+} from "adhan";
+import { getSession } from "next-auth/react";
+import { GetApiCall, getTimezone } from "../../api/apiCalls";
+import moment from "moment-timezone";
 
-export async function getCurrentPrayerTimes({ location, country } = {}) {
-  const timeConverter = (timing, format) => {
-    const dateConverting = new Date(timing);
-    // Convert to local time string with options for 12-hour format including AM/PM
-    return dateConverting.toLocaleTimeString("en-US", {
-      hour: "numeric",
-      minute: "numeric",
-      second: "numeric",
-      hour12: format, // This ensures the time is in 12-hour format with AM/PM
-    });
-  };
+export async function getCurrentPrayerTimes() {
   return new Promise(async (resolve, reject) => {
     let latitude, longitude;
 
-    // If location and country are provided, get coordinates for the custom location
-    if (location && country) {
-      try {
-        const response = await fetch(
-          `https://api.openweathermap.org/data/2.5/weather?q=${location},${country}&appid=${process.env.GOOGLE_MAPS_KEY}`
-        );
-        const data = await response.json();
-        latitude = data.coord.lat;
-        longitude = data.coord.lon;
-      } catch (error) {
-        reject(
-          new Error("Error fetching coordinates for the custom location.")
-        );
-        return;
-      }
+    const session = await getSession();
+    const checkMethod = `users/${session?.id}?fields=location`;
+    const { location } = await GetApiCall(checkMethod, session?.jwt);
+    if (location) {
+      latitude = location?.latitude;
+      longitude = location?.longitude;
     } else {
       // Default to current location if no custom location is provided
       if (navigator.geolocation) {
@@ -51,36 +40,48 @@ export async function getCurrentPrayerTimes({ location, country } = {}) {
 
     // Use default location (current location) if custom location is not provided
     const coordinates = new Coordinates(latitude, longitude);
-    const params = CalculationMethod.MoonsightingCommittee();
-    const date = new Date(); // Current date
+    const params = CalculationMethod.MuslimWorldLeague();
 
+    const timeZoneDetails = await getTimezone(latitude, longitude);
+    const timeZoneDate = moment.tz(new Date(), timeZoneDetails); // Bhopal uses the same timezone as Kolkata
+    const date = timeZoneDate.toDate();
+    const prayerTimesObj = new PrayerTimes(coordinates, date, params);
+    const sunnahTimes = new SunnahTimes(prayerTimesObj);
+    // Format prayer times
     try {
-      const prayerTimesObj = new PrayerTimes(coordinates, date, params);
-
-      // Format prayer times
       const formatePrayerTime = [
         {
           name: "FAJR",
-          azaanTime: prayerTimesObj.fajr.toLocaleTimeString(),
+          azaanTime: moment(prayerTimesObj?.fajr)
+          .tz(timeZoneDetails)
+          .format("h:mm A"),
         },
         {
           name: "ZUHR",
-          azaanTime: prayerTimesObj.dhuhr.toLocaleTimeString(),
-        },
-        {
-          name: "ASR",
-          azaanTime: prayerTimesObj.asr.toLocaleTimeString(),
-        },
-        {
-          name: "MAGHRIB",
-          azaanTime: prayerTimesObj.maghrib.toLocaleTimeString(),
+          azaanTime: moment(prayerTimesObj?.dhuhr)
+            .tz(timeZoneDetails)
+            .format("h:mm A"),
+          },
+          {
+            name: "ASR",
+            azaanTime: moment(prayerTimesObj?.asr)
+            .tz(timeZoneDetails)
+            .format("h:mm A"),
+          },
+          {
+            name: "MAGHRIB",
+          azaanTime: moment(prayerTimesObj?.maghrib)
+          .tz(timeZoneDetails)
+          .format("h:mm A"),
         },
         {
           name: "ISHA",
-          azaanTime: prayerTimesObj.isha.toLocaleTimeString(),
+          azaanTime: moment(prayerTimesObj?.isha)
+          .tz(timeZoneDetails)
+          .format("h:mm A"),
         },
       ];
-
+      
       // Calculate Jamat times (15 minutes after prayer times)
       const prayerTimings = formatePrayerTime.map((Time) => {
         const AzaanTimeDate = new Date(`01/01/1970 ${Time.azaanTime}`);
@@ -88,42 +89,44 @@ export async function getCurrentPrayerTimes({ location, country } = {}) {
         Time.jamatTime = JamatTime.toLocaleTimeString();
         return Time;
       });
-
+      
       // Get current day
       const days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
       const currentDayIndex = date.getDay();
       const currentDay = days[currentDayIndex];
       //next prayer
       var current = prayerTimesObj.currentPrayer();
-      var nextPrayerName = prayerTimesObj.nextPrayer(); // it will give you name
-      var nextPrayerTime = timeConverter(
-        prayerTimesObj.timeForPrayer(nextPrayerName),
-        true
-      ); // it will give you 12 formatted time
+      var nextPrayerName = prayerTimesObj.nextPrayer() === 'none' ? 'fajr': prayerTimesObj.nextPrayer(); // it will give you name
+      const nextPrayerCountDown = prayerTimesObj.timeForPrayer(nextPrayerName);
+      var nextPrayerTime = moment(nextPrayerCountDown)
+        .tz(timeZoneDetails)
+        .format("hh:mm");
 
-      const prayers = ["Fajr", "Dhuhr", "Asr", "Maghrib", "Isha"];
-      const currentPrayerKey = prayers.findIndex(
-        (prayer) => prayer.toLowerCase() === current.toLowerCase()
-      );
-      // Calculate the next prayer key, wrapping around if needed
-      const nextPrayerKey = (currentPrayerKey + 1) % prayers.length;
-
-      // Use nextPrayerKey to access the next prayer
-      const nextPrayer = prayers[nextPrayerKey];
       resolve({
         currentDate: date.toLocaleDateString(),
         prayerTimes: prayerTimings,
         currentDay: currentDay.toLocaleUpperCase(),
         currentPrayerName: {
           name: current.toLocaleUpperCase(),
-          key: currentPrayerKey,
         },
         nextPrayerTime: {
-          time: nextPrayerTime,
-          key: nextPrayer.toLocaleUpperCase(),
+          countDown: nextPrayerTime,
+          key: nextPrayerName.toLocaleUpperCase(),
         },
+        timeZone: timeZoneDetails,
+        tahajjud: {
+          middleOfTheNight: moment(sunnahTimes.middleOfTheNight)
+            .tz(timeZoneDetails)
+            .format("h:mm A"),
+          lastThirdOfTheNight: moment(sunnahTimes.lastThirdOfTheNight)
+            .tz(timeZoneDetails)
+            .format("h:mm A"),
+        },
+        coordinates: coordinates,
+        params: params,
       });
     } catch (error) {
+      console.log(error);
       reject(new Error("Error calculating prayer times."));
     }
   });

@@ -26,7 +26,7 @@ function Config({ session }) {
   const fetchPrayerData = async () => {
     if (session) {
       const checkMethod = `users/${session.id}?fields=location`;
-      const { id, location, status } = await GetApiCall(checkMethod);
+      const { id, location, status } = await GetApiCall(checkMethod, session?.jwt);
       setSelectedLocation({
         placeName: location?.placeName,
         latitude: location?.latitude,
@@ -42,7 +42,7 @@ function Config({ session }) {
         ...selectedLocation,
       },
     };
-    const responseData = await UpdateApiCall(apiEndPoint, detail);
+    const responseData = await UpdateApiCall(apiEndPoint, detail, session?.jwt);
     if (responseData?.status === 200) {
       toast.success("Updated succussfully");
     } else {

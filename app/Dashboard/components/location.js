@@ -9,13 +9,11 @@ import Typography from "@mui/material/Typography";
 import parse from "autosuggest-highlight/parse";
 import { debounce } from "@mui/material/utils";
 
-const GOOGLE_MAPS_API_KEY = "AIzaSyD3QQH8b4zZn4CFuhxuZyksdwRRZVbOtWQ";
-
+const GOOGLE_MAPS_API_KEY = process.env.GOOGLE_MAPS_KEY;
 function loadScript(src, position, id) {
   if (!position) {
     return;
   }
-
   const script = document.createElement("script");
   script.setAttribute("async", "");
   script.setAttribute("id", id);
@@ -202,9 +200,9 @@ export default function Location({ onSelect, selectedLocation }) {
                     {part.text}
                   </Box>
                 ))}
-                <Typography variant="body2" color="text.secondary">
+                {/* <Typography variant="body2" color="text.secondary">
                   {option.structured_formatting.secondary_text}
-                </Typography>
+                </Typography> */}
               </Grid>
             </Grid>
           </li>
