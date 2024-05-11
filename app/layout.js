@@ -1,6 +1,7 @@
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import SessionProvider from "../Session/SessionProvider";
+import StoreProvider from './StoreProvider'
 import "./globals.css";
 export const metadata = {
   title: "Create Next App",
@@ -10,11 +11,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
-        <>
-          <SessionProvider>
-            {children}
-          </SessionProvider>
-        </>
+        <StoreProvider>
+          <SessionProvider>{children}</SessionProvider>
+        </StoreProvider>
       </body>
     </html>
   );

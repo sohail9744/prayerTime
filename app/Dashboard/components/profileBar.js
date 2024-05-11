@@ -61,7 +61,7 @@ export default function AccountMenu({ session }) {
             aria-expanded={open ? "true" : undefined}
           >
             <Avatar
-              src={`http://localhost:1337${profile?.profilePhoto}`}
+              src={`${process.env.NEXT_PUBLIC_IMAGE}${profile?.profilePhoto}`}
               sx={{ width: 32, height: 32 }}
             />
           </IconButton>

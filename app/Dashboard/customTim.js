@@ -88,6 +88,7 @@ function CustomTime({ session }) {
           ...data,
         },
       };
+      debugger
       const responseData = await UpdateApiCall(apiEndPoint, detail, session?.jwt);
       if (responseData?.status === 200) {
         toast.success("Updated succussfully");
@@ -104,6 +105,7 @@ function CustomTime({ session }) {
           user: [session?.id],
         },
       };
+      debugger
       const responseData = await PostApiCall(apiEndPoint, detail, session?.jwt);
       if (responseData?.status === 200) {
         fetchPrayerData();

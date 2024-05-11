@@ -122,52 +122,26 @@ function DefaultTheme() {
   useEffect(() => {
     const intervalId = setInterval(async () => {
       const nextPrayerTime = await getPrayerTimings();
-   
       // Format azaan time and current time
       const azaanTime = `${nextPrayerTime?.azaanTime} ${nextPrayerTime?.format}`;
       const currentTime = moment()
         .tz(prayerTimes?.timeZone)
         .format("hh:mm:ss A"); // Include seconds in current time format
-      const azaanMoment = moment(azaanTime, "hh:mm A");
+      const azaanMoment = moment(azaanTime, "hh:mm:ss A");
       const currentMoment = moment(currentTime, "hh:mm:ss A");
+      debugger
       let duration = moment.duration(azaanMoment.diff(currentMoment));
-      // NEW CODE BELOW WHICH IS HANDLING BUFFER TIME FOR 1 hour 30 minutes
-      debugger;
-      if (duration.asMilliseconds() <= 0 && !stopwatchActive) {
-        // Start stopwatch for 1 hour 30 minutes
-        setStopwatchActive(true);
-        const timeout = setTimeout(() => {
-          setStopwatchActive(false);
-          setStopwatchTimeout(null);
-        }, 5400000); // 1 hour 30 minutes in milliseconds
-        setStopwatchTimeout(timeout);
+      // If remaining time is less than or equal to 0, add 1 hour
+      if (duration.asMilliseconds() <= 0) {
       }
-
-      // Update the remaining time if the stopwatch is not active
-      if (!stopwatchActive) {
-        setRemainTime({
-          hours: duration.hours(),
-          minutes: duration.minutes(),
-          seconds: duration.seconds(),
-        });
-      } else {
-        // While stopwatch is active, display the stopwatch time
-        const elapsed = moment.duration(moment().diff(currentMoment));
-        debugger;
-        setRemainTime({
-          hours: elapsed.hours(),
-          minutes: elapsed.minutes(),
-          seconds: elapsed.seconds(),
-        });
-      }
+      setRemainTime({
+        hours: duration.hours(),
+        minutes: duration.minutes(),
+        seconds: duration.seconds(),
+      });
     }, 1000);
-    return () => {
-      clearInterval(intervalId);
-      if (stopwatchTimeout) {
-        clearTimeout(stopwatchTimeout);
-      }
-    };
-  }, [prayerTimes, stopwatchActive, stopwatchTimeout]);
+    return () => clearInterval(intervalId);
+  }, [prayerTimes]);
 
   const getPrayerTimings = () => {
     const timeZoneDate = moment.tz(new Date(), prayerTimes?.timeZone); // Bhopal uses the same timezone as Kolkata

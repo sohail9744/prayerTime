@@ -1,13 +1,15 @@
-'use server'
+
 import axios from "axios";
 export const PostApiCall = async (endPoint, data, token) => {
+  debugger
   try {
     const response = await axios.post(
-      `${HOSTNAME}/api/${endPoint}`,
+      `${process.env.HOSTNAME}/api/${endPoint}`,
       data,
       {
         headers: {
-          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`, // Make sure you have the token variable available
         },
       }
     );
@@ -24,7 +26,7 @@ export const PostApiCall = async (endPoint, data, token) => {
 export const UpdateApiCall = async (endPoint, data, token) => {
   try {
     const response = await axios.put(
-      `${HOSTNAME}/api/${endPoint}`,
+      `${process.env.HOSTNAME}/api/${endPoint}`,
       data,
       {
         headers: {
@@ -69,7 +71,7 @@ export const PostMedia = async (endPoint, ImageFile, userId, token) => {
     formData.append("source", "users-permissions");
     const response = await axios({
       method: "post",
-      url: `${HOSTNAME}/api/${endPoint}`, // Change this to the actual URL provided by your CMS.
+      url: `${process.env.HOSTNAME}/api/${endPoint}`, // Change this to the actual URL provided by your CMS.
       data: formData,
       headers: {
         "Content-Type": "multipart/form-data",
@@ -90,7 +92,7 @@ export const DeleteMedia = async (endPoint, token) => {
   try {
     const response = await axios({
       method: "delete",
-      url: `${HOSTNAME}/api/${endPoint}`,
+      url: `${process.env.HOSTNAME}/api/${endPoint}`,
       headers: {
         Authorization: `Bearer ${token}`, // Make sure you have the token variable available
       },
@@ -107,7 +109,7 @@ export const SendingEmail = async (endPoint, token) => {
   try {
     const response = await axios({
       method: "post",
-      url: `${HOSTNAME}/api/${endPoint}`,
+      url: `${process.env.HOSTNAME}/api/${endPoint}`,
       headers: {
         Authorization: `Bearer ${token}`, // Make sure you have the token variable available
       },

@@ -46,14 +46,6 @@ export default function PrayerTheme() {
 
     fetchData();
   }, []);
-  // const prayerTimes = [
-  //   { name: 'FAJR', time: '5:00 AM' },
-  //   { name: 'ZUHR', time: '12:00 PM' },
-  //   { name: 'ASR', time: '3:30 PM' },
-  //   { name: 'MAGHRIB', time: '6:00 PM' },
-  //   { name: 'ISHA', time: '7:30 PM' }
-  // ];
-
   return (
     <Box className="page-theme" component="div" sx={{ width: '100%', display: 'flex', justifyContent: 'center', p: 5, border: '1px dashed grey' }}>
       {prayerTimes && (

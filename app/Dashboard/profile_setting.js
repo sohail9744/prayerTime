@@ -143,7 +143,7 @@ function UserSettings({ session }) {
                 }}
               >
                 <Avatar
-                  src={`http://localhost:1337${userFormData?.photo?.url}`}
+                  src={`${process.env.NEXT_PUBLIC_IMAGE}${userFormData?.photo?.url}`}
                   sx={{ width: 100, height: 100 }}
                 />
                 <Typography variant="caption" sx={{ mt: 2 }}>

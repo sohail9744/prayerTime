@@ -5,7 +5,6 @@ import AlertBox from "./components/alertBox";
 import { GetApiCall, UpdateApiCall } from "../api/apiCalls";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-
 function Config({ session }) {
   const [selectedLocation, setSelectedLocation] = useState({
     placeName: "",
@@ -26,7 +25,10 @@ function Config({ session }) {
   const fetchPrayerData = async () => {
     if (session) {
       const checkMethod = `users/${session.id}?fields=location`;
-      const { id, location, status } = await GetApiCall(checkMethod, session?.jwt);
+      const { id, location, status } = await GetApiCall(
+        checkMethod,
+        session?.jwt
+      );
       setSelectedLocation({
         placeName: location?.placeName,
         latitude: location?.latitude,
@@ -51,7 +53,7 @@ function Config({ session }) {
   };
   return (
     <Box component="main">
-      <ToastContainer containerId={'containerLocation'}/>
+      <ToastContainer containerId={"containerLocation"} />
       <AlertBox
         text="Make sure your internet is 'ON' to change the location!"
         iconText="info"
@@ -65,7 +67,10 @@ function Config({ session }) {
         display="flex"
         flexWrap="wrap"
       >
-        <Location selectedLocation={selectedLocation} onSelect={handleLocationSelect} />
+        <Location
+          selectedLocation={selectedLocation}
+          onSelect={handleLocationSelect}
+        />
         {selectedLocation && (
           <Box>
             <Typography>
@@ -77,6 +82,7 @@ function Config({ session }) {
             <Typography>
               <strong>Longitude:</strong> {selectedLocation.longitude}
             </Typography>
+            <Typography>Visible: {time}</Typography>
           </Box>
         )}
       </Box>
