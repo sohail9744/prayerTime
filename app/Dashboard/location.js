@@ -82,7 +82,6 @@ function Config({ session }) {
             <Typography>
               <strong>Longitude:</strong> {selectedLocation.longitude}
             </Typography>
-            <Typography>Visible: {time}</Typography>
           </Box>
         )}
       </Box>
