@@ -123,7 +123,6 @@ export const SendingEmail = async (endPoint, token) => {
 
 export async function getTimezone(latitude, longitude) {
   const apiKey = process.env.GOOGLE_MAPS_KEY; // Replace with your Google API key
-  debugger
   const apiUrl = `https://maps.googleapis.com/maps/api/timezone/json?location=${latitude},${longitude}&timestamp=${
     Date.now() / 1000
   }&key=${apiKey}`;

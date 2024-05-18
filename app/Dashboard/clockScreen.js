@@ -1,3 +1,4 @@
+"use client";
 import React, { useEffect, useState } from "react";
 import {
   Box,
@@ -20,24 +21,48 @@ import DoneIcon from "@mui/icons-material/Done";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import AlertBox from "./components/alertBox";
+import { PrayerDetail } from "./components/PrayerDetail";
+import { PrayerNamazTime } from "./components/PrayerTime";
 import "./style/prayerTheme.css";
+import { useAppDispatch, useAppSelector } from "../lib/hooks";
+import { add } from "../lib/features/Time/curTimeSlice";
 const templateCards = [
   {
     id: 1,
-    title: "Blue Theme",
+    title: "Default Theme",
     points: ["Prayer Times", "Real Time Clock", "Custom location"],
     image: "/blueTheme.png",
-    link: "/templates/blueTheme",
-  }
+    link: "/template/default",
+  },
 ];
 
 export default function ClockScreens() {
   const [isButtonVisible, setIsButtonVisible] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
+  const dispatch = useAppDispatch();
+  const timingData = useAppSelector((state) => state.currentTime.time);
   useEffect(() => {
     setIsMounted(true);
     return () => setIsMounted(false);
   }, []);
+  
+  // useEffect(() => {
+  //   const saveNamzTimings = async () => {
+  //     try {
+  //       const namazLocationIfo = await PrayerDetail();
+  //       const refershTime = setInterval(async () => {
+  //         const namazDetails = await PrayerNamazTime(namazLocationIfo);
+  //         dispatch(add(namazDetails));
+  //       }, 1000);
+  //       // return () => clearInterval(refershTime);
+  //       // return () => clearInterval(refershTime);
+  //     } catch (error) {
+  //       console.error("Error fetching prayer times:", error);
+  //     }
+  //   };
+    
+  //   saveNamzTimings();
+  // }, [dispatch]);
   return (
     <Box display="flex" flexDirection="column" justifyContent="start">
       <ToastContainer containerId="sohail" />

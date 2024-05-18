@@ -18,6 +18,7 @@ import {
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import ImageUploading from "react-images-uploading";
+import { useAppSelector } from "../lib/hooks";
 
 function UserSettings({ session }) {
   const [userFormData, setFormData] = useState({
@@ -87,7 +88,12 @@ function UserSettings({ session }) {
       const ImageFile = imageList[0].file;
 
       let apiEndPoint = "upload";
-      const responseData = await PostMedia(apiEndPoint, ImageFile, session?.id, session?.jwt);
+      const responseData = await PostMedia(
+        apiEndPoint,
+        ImageFile,
+        session?.id,
+        session?.jwt
+      );
       if (responseData?.status === 200) {
         fetchPrayerData();
         toast.success("Image Uploaded succussfully");

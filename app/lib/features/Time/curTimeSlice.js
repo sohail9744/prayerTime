@@ -1,7 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  time: "",
+  time: {},
 };
 
 export const curntTime = createSlice({

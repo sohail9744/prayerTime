@@ -12,4 +12,4 @@ const StoreProvider = ({ children }) => {
   return <Provider store={storeRef.current}>{children}</Provider>;
 };
 
-export default StoreProvider; 
+export default StoreProvider;
