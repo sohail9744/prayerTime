@@ -4,7 +4,7 @@ const nextConfig = {
     GOOGLE_CLIENT_ID:
       "608470383876-q5atqm8cd5k02gejn3t4g491fnf3tim6.apps.googleusercontent.com",
     GOOGLE_CLIENT_SECRET: "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",
-    NEXTAUTH_URL: "http://localhost:3000",
+    NEXTAUTH_URL: "https://main.d39t7wzdrffcbl.amplifyapp.com/",
     NEXTAUTH_SECRET: "zO5TC/ir3qOHwafVy7Ss2zpohjemaVbGEIdYE3ELMDo=",
     GOOGLE_MAPS_KEY: "AIzaSyD3QQH8b4zZn4CFuhxuZyksdwRRZVbOtWQ",
     HOSTNAME: "http://54.160.190.5:1337", // Backend Hosted on this url
