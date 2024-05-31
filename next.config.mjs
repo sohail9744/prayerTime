@@ -1,15 +1,16 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   env: {
-    NEXTAUTH_SECRET: "zO5TC/ir3qOHwafVy7Ss2zpohjemaVbGEIdYE3ELMDo=",
-    GOOGLE_MAPS_KEY: "AIzaSyD3QQH8b4zZn4CFuhxuZyksdwRRZVbOtWQ",
-    NEXT_PUBLIC_IMAGE: "http://54.160.190.5:1337", // Backend Image Url for frontend side
-    NEXTAUTH_URL: "http://54.160.190.5:3000",
-    HOSTNAME: "http://54.160.190.5:1337", // Backend Hosted on this url
+    // NEXT_PUBLIC_IMAGE: "http://54.160.190.5:1337", // Backend Image Url for frontend side
+    // NEXTAUTH_URL: "http://54.160.190.5:3000",
+    // HOSTNAME: "http://54.160.190.5:1337", // Backend Hosted on this url
     // Server url
-    // NEXT_PUBLIC_IMAGE: "http://localhost:1337", // Backend Image Url for frontend side
-    // NEXTAUTH_URL: "http://localhost:3000",
-    // HOSTNAME: "http://localhost:1337", 
+    NEXT_PUBLIC_IMAGE: "http://localhost:1337", // Backend Image Url for frontend side
+    NEXTAUTH_URL: "http://localhost:3000",
+    HOSTNAME: "http://localhost:1337",
+    // Common URL 
+    GOOGLE_MAPS_KEY: "AIzaSyD3QQH8b4zZn4CFuhxuZyksdwRRZVbOtWQ",
+    NEXTAUTH_SECRET: "zO5TC/ir3qOHwafVy7Ss2zpohjemaVbGEIdYE3ELMDo=",
     DEV_API_TOKEN:
     "c154795a497a879ca4a044afbb1479621cb9aa9eb059f5e1dd3ba98d036338d00aad6d3d8e0208386da83aa913f6dcc35ccebfe2c6ee8f91995a30399ec16160f83c9b08071deec0d0c145fdfb4d0a0455f88fc05d0c21bbfeeafc82049d47efc8efc0296fc95eed124d4605e09462f7adca8f59e49b144d7fc155885bacbbb1", // Full access token for autharization
     LOCAL_DEV_API_TOKEN:
