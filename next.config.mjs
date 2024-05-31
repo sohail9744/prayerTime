@@ -1,13 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   env: {
-    // NEXT_PUBLIC_IMAGE: "http://54.160.190.5:1337", // Backend Image Url for frontend side
-    // NEXTAUTH_URL: "http://54.160.190.5:3000",
-    // HOSTNAME: "http://54.160.190.5:1337", // Backend Hosted on this url
-    // Server url
-    NEXT_PUBLIC_IMAGE: "http://localhost:1337", // Backend Image Url for frontend side
-    NEXTAUTH_URL: "http://localhost:3000",
-    HOSTNAME: "http://localhost:1337",
+    NEXT_PUBLIC_IMAGE: "http://54.160.190.5:1337", // Backend Image Url for frontend side
+    NEXTAUTH_URL: "http://54.160.190.5:3000",
+    HOSTNAME: "http://54.160.190.5:1337", // Backend Hosted on this url
     // Common URL 
     GOOGLE_MAPS_KEY: "AIzaSyD3QQH8b4zZn4CFuhxuZyksdwRRZVbOtWQ",
     NEXTAUTH_SECRET: "zO5TC/ir3qOHwafVy7Ss2zpohjemaVbGEIdYE3ELMDo=",
