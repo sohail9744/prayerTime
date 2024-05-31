@@ -1,7 +1,6 @@
-
 import axios from "axios";
 export const PostApiCall = async (endPoint, data, token) => {
-  debugger
+  debugger;
   try {
     const response = await axios.post(
       `${process.env.HOSTNAME}/api/${endPoint}`,
@@ -30,6 +29,7 @@ export const UpdateApiCall = async (endPoint, data, token) => {
       data,
       {
         headers: {
+          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
       }
@@ -46,11 +46,15 @@ export const UpdateApiCall = async (endPoint, data, token) => {
 
 export const GetApiCall = async (endPoint, token) => {
   try {
-    const response = await axios.get(`${process.env.HOSTNAME}/api/${endPoint}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await axios.get(
+      `${process.env.HOSTNAME}/api/${endPoint}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
     return {
       ...response?.data,
       status: response?.status,
