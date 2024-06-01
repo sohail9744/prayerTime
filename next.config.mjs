@@ -1,9 +1,9 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   env: {
-    NEXT_PUBLIC_IMAGE: "http://13.38.32.2:1337", // Backend Image Url for frontend side
+    NEXT_PUBLIC_IMAGE: "https://mosq.asyncloud.com", // Backend Image Url for frontend side
     // NEXTAUTH_URL: "http://localhost:3000",
-    HOSTNAME: "http://13.38.32.2:1337", // Backend Hosted on this url
+    HOSTNAME: "https://mosq.asyncloud.com", // Backend Hosted on this url
     // Server URL
     NEXTAUTH_URL: "https://main.d2d0x8dpvmgskk.amplifyapp.com",
     // Common URL 
