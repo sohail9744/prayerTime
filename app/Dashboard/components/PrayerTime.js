@@ -141,7 +141,7 @@ export async function PrayerNamazTime({
         : prayerTimesObj.nextPrayer(); // it will give you name
 
     return {
-      currentDate: moment().format("MMM Do YYYY"),
+      currentDate: moment().format("Do MMM YYYY"),
       prayerTimes: prayerTimings,
       currentTime: moment().tz(timeZoneDetails).format("hh:mm:ss A"),
       currentDay: currentDay.toLocaleUpperCase(),

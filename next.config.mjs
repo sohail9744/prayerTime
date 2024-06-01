@@ -2,11 +2,11 @@
 const nextConfig = {
   env: {
     NEXT_PUBLIC_IMAGE: "https://mosq.asyncloud.com", // Backend Image Url for frontend side
-    // NEXTAUTH_URL: "http://localhost:3000",
+    NEXTAUTH_URL: "http://localhost:3000",
     HOSTNAME: "https://mosq.asyncloud.com", // Backend Hosted on this url
     // Server URL
     // NEXTAUTH_URL: "https://main.d2d0x8dpvmgskk.amplifyapp.com",
-    NEXTAUTH_URL: "https://www.asyncloud.in",
+    // NEXTAUTH_URL: "https://www.asyncloud.in",
     // Common URL 
     GOOGLE_MAPS_KEY: "AIzaSyD3QQH8b4zZn4CFuhxuZyksdwRRZVbOtWQ",
     NEXTAUTH_SECRET: "zO5TC/ir3qOHwafVy7Ss2zpohjemaVbGEIdYE3ELMDo=",

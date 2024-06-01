@@ -38,6 +38,14 @@ function DefaultTheme() {
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
+        background: "linear-gradient(45deg, #f3ec78, #af4261, #f3ec78, #af4261)",
+        backgroundSize: "600% 600%",
+        animation: "gradientFlow 10s ease infinite",
+        "@keyframes gradientFlow": {
+          "0%": { backgroundPosition: "0% 50%" },
+          "50%": { backgroundPosition: "100% 50%" },
+          "100%": { backgroundPosition: "0% 50%" },
+        },
       }}
     >
       <Box
@@ -63,32 +71,38 @@ function DefaultTheme() {
         >
           <Typography
             variant="h2"
-            sx={{ fontSize: { xs: '4rem', sm: '5rem', md: '5rem', lg: '7rem', xl: '8rem' } }}
-          >
-            {redux.currentDay}
-          </Typography>
-          <Typography
-            variant="h2"
-            sx={{ fontSize: { xs: '4rem', sm: '5rem', md: '5rem', lg: '7rem', xl: '8rem' } }}
+            sx={{
+              fontSize: { xs: "4rem", md: "5rem", lg: "5rem", xl: "8rem" },
+            }}
           >
             {moment().format("iD/iM/iYYYY")}
           </Typography>
           <Typography
             variant="h2"
-            sx={{ fontSize: { xs: '4rem', sm: '5rem', md: '5rem', lg: '7rem', xl: '8rem' } }}
+            sx={{
+              fontSize: { xs: "4rem", md: "4rem", lg: "4rem", xl: "8rem" },
+            }}
           >
             {redux.currentDate}
+          </Typography>
+          <Typography
+            variant="h2"
+            sx={{
+              fontSize: { xs: "4rem", md: "4rem", lg: "4rem", xl: "8rem" },
+            }}
+          >
+            {redux.currentDay}
           </Typography>
         </Box>
         <Typography
           variant="h1"
-          sx={{ fontSize: { xs: '5rem', sm: '6rem', md: '8rem', lg: '8rem', xl: '9rem' } }}
+          sx={{ fontSize: { xs: "5rem", md: "8rem", lg: "8rem", xl: "9rem" } }}
         >
           {redux.currentTime}
         </Typography>
         <Typography
           variant="h3"
-          sx={{ fontSize: { xs: '3rem', sm: '4rem', md: '5rem', lg: '6rem', xl: '7rem' } }}
+          sx={{ fontSize: { xs: "3rem", md: "5rem", lg: "3rem", xl: "7rem" } }}
         >
           <Typewriter
             words={[
@@ -126,20 +140,44 @@ function DefaultTheme() {
                   <Box sx={{ display: "flex", gap: 2, alignItems: "baseline" }}>
                     <Typography
                       variant="h2"
-                      sx={{ fontSize: { xs: '3rem', sm: '4rem', md: '5rem', lg: '6rem', xl: '7rem' } }}
+                      sx={{
+                        fontSize: {
+                          xs: "3rem",
+                          sm: "4rem",
+                          md: "5rem",
+                          lg: "5rem",
+                          xl: "7rem",
+                        },
+                      }}
                     >
                       {item.azaanTime}
                     </Typography>
                     <Typography
                       variant="h4"
-                      sx={{ fontSize: { xs: '2rem', sm: '2.5rem', md: '3rem', lg: '3.5rem', xl: '4rem' } }}
+                      sx={{
+                        fontSize: {
+                          xs: "2rem",
+                          sm: "2.5rem",
+                          md: "3rem",
+                          lg: "3rem",
+                          xl: "4rem",
+                        },
+                      }}
                     >
                       {item.jamatTime}
                     </Typography>
                   </Box>
                   <Typography
                     variant="h2"
-                    sx={{ fontSize: { xs: '3rem', sm: '4rem', md: '5rem', lg: '6rem', xl: '7rem' } }}
+                    sx={{
+                      fontSize: {
+                        xs: "3rem",
+                        sm: "4rem",
+                        md: "5rem",
+                        lg: "5rem",
+                        xl: "7rem",
+                      },
+                    }}
                   >
                     {item.name}
                   </Typography>
