@@ -5,8 +5,7 @@ module.exports = [
   {
     name: "strapi::cors",
     config: {
-      enabled: true,
-      origin: ["http://localhost:3000", "https://your-nextjs-app-domain.com"], // Add your Next.js app domain here
+      origin: ["https://main.d2d0x8dpvmgskk.amplifyapp.com"], // Add your Next.js app domain here
     },
   },
   "strapi::poweredBy",
