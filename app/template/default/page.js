@@ -33,9 +33,11 @@ function DefaultTheme() {
     <Box
       sx={{
         position: "relative",
-        height: "1680px",
-        width: "-webkit-fill-available",
-        backgroundImage: 'url("/defaultTheme.jpg")',
+        height: "100vh",
+        width: "100vw",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
       }}
     >
       <Box
@@ -44,8 +46,11 @@ function DefaultTheme() {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          gap: 3,
-          height: "80%",
+          gap: 10,
+          width: "100vh",
+          height: "100vw",
+          textAlign: "center",
+          p: 2,
         }}
       >
         <Box
@@ -56,12 +61,35 @@ function DefaultTheme() {
             alignItems: "center",
           }}
         >
-          <Typography variant="h4">{redux.currentDay}</Typography>
-          <Typography variant="h4">{moment().format("iD/iM/iYYYY")}</Typography>
-          <Typography variant="h4">{redux.currentDate}</Typography>
+          <Typography
+            variant="h2"
+            sx={{ fontSize: { xs: '4rem', sm: '5rem', md: '5rem', lg: '7rem', xl: '8rem' } }}
+          >
+            {redux.currentDay}
+          </Typography>
+          <Typography
+            variant="h2"
+            sx={{ fontSize: { xs: '4rem', sm: '5rem', md: '5rem', lg: '7rem', xl: '8rem' } }}
+          >
+            {moment().format("iD/iM/iYYYY")}
+          </Typography>
+          <Typography
+            variant="h2"
+            sx={{ fontSize: { xs: '4rem', sm: '5rem', md: '5rem', lg: '7rem', xl: '8rem' } }}
+          >
+            {redux.currentDate}
+          </Typography>
         </Box>
-        <Typography variant="h1">{redux.currentTime}</Typography>
-        <Typography variant="h4">
+        <Typography
+          variant="h1"
+          sx={{ fontSize: { xs: '5rem', sm: '6rem', md: '8rem', lg: '8rem', xl: '9rem' } }}
+        >
+          {redux.currentTime}
+        </Typography>
+        <Typography
+          variant="h3"
+          sx={{ fontSize: { xs: '3rem', sm: '4rem', md: '5rem', lg: '6rem', xl: '7rem' } }}
+        >
           <Typewriter
             words={[
               "رَّبِّ اغْفِرْ وَارْحَمْ وَأَنتَخَيْرُ الرَّاحِمِينَ",
@@ -82,8 +110,9 @@ function DefaultTheme() {
                 key={index}
                 sx={{
                   borderRadius: "20px",
-                  bgcolor: "rgba(173, 216, 230, 0.7)", // Light blue with transparency
+                  bgcolor: "rgba(173, 216, 230, 0.7)",
                   p: 2,
+                  mx: 1,
                 }}
               >
                 <Box
@@ -95,10 +124,25 @@ function DefaultTheme() {
                   }}
                 >
                   <Box sx={{ display: "flex", gap: 2, alignItems: "baseline" }}>
-                    <Typography variant="h4">{item.azaanTime}</Typography>
-                    <Typography variant="h5">{item.jamatTime}</Typography>
+                    <Typography
+                      variant="h2"
+                      sx={{ fontSize: { xs: '3rem', sm: '4rem', md: '5rem', lg: '6rem', xl: '7rem' } }}
+                    >
+                      {item.azaanTime}
+                    </Typography>
+                    <Typography
+                      variant="h4"
+                      sx={{ fontSize: { xs: '2rem', sm: '2.5rem', md: '3rem', lg: '3.5rem', xl: '4rem' } }}
+                    >
+                      {item.jamatTime}
+                    </Typography>
                   </Box>
-                  <Typography variant="h4">{item.name}</Typography>
+                  <Typography
+                    variant="h2"
+                    sx={{ fontSize: { xs: '3rem', sm: '4rem', md: '5rem', lg: '6rem', xl: '7rem' } }}
+                  >
+                    {item.name}
+                  </Typography>
                 </Box>
               </Box>
             ))}
