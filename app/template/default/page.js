@@ -217,7 +217,7 @@ function DefaultTheme() {
                 mx: 1,
               }}
             >
-              Azaan
+              Jamaat
             </Typography>
             <Typography
               variant="h2"
@@ -235,7 +235,7 @@ function DefaultTheme() {
                 mx: 1,
               }}
             >
-              Jamat
+              Azaan
             </Typography>
           </Box>
           {redux.prayerTimes && redux.prayerTimes.length > 0 && (
@@ -270,7 +270,7 @@ function DefaultTheme() {
                         },
                       }}
                     >
-                      {item.azaanTime}
+                      {item.jamatTime}
                     </Typography>
                     <Typography
                       variant="h4"
@@ -298,7 +298,7 @@ function DefaultTheme() {
                         },
                       }}
                     >
-                      {item.jamatTime}
+                      {item.azaanTime}
                     </Typography>
                   </Box>
                 </Box>
