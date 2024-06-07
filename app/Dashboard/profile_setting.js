@@ -31,13 +31,14 @@ function UserSettings({ session }) {
     city: "",
     zipcode: "",
     photo: "",
+    mosqName: ""
   });
   useEffect(() => {
     fetchPrayerData();
   }, [session]);
   const fetchPrayerData = async () => {
     if (session) {
-      const checkMethod = `users/${session?.id}?fields=title&fields=email&fields=mobileNumber&fields=address&fields=country&fields=state&fields=city&fields=zipcode&fields&populate=photo`;
+      const checkMethod = `users/${session?.id}?fields=mosqName&fields=title&fields=email&fields=mobileNumber&fields=address&fields=country&fields=state&fields=city&fields=zipcode&fields&populate=photo`;
       const users = await GetApiCall(checkMethod, session?.jwt);
       if (users?.status === 200) {
         delete users?.status;
@@ -52,6 +53,7 @@ function UserSettings({ session }) {
           city: users?.city,
           zipcode: users?.zipcode,
           photo: users?.photo,
+          mosqName: users?.mosqName
         }));
       } else {
         toast.error("Something went wrong! Please reload the page");
@@ -59,7 +61,6 @@ function UserSettings({ session }) {
     }
   };
   const handleInputChange = (event) => {
-    debugger;
     const { name, value } = event.target;
     setFormData((prevuserFormData) => ({
       ...prevuserFormData,
@@ -196,6 +197,15 @@ function UserSettings({ session }) {
                     value={userFormData.email}
                     onChange={handleInputChange}
                     label="Email Address"
+                    fullWidth
+                  />
+                </Grid>
+                <Grid item xs={12} sm={6}>
+                  <TextField
+                    name="mosqName"
+                    value={userFormData.mosqName}
+                    onChange={handleInputChange}
+                    label="Mosque Name"
                     fullWidth
                   />
                 </Grid>

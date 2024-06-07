@@ -11,19 +11,20 @@ import moment from "moment-timezone";
 
 export async function PrayerDetail() {
   return new Promise(async (resolve, reject) => {
-    let latitude, longitude, userCustomPrayerTimings;
+    let latitude, longitude, userCustomPrayerTimings, mosqName;
 
     const session = await getSession();
-    const checkMethod = `users/${session?.id}?fields=location`;
-    const { location } = await GetApiCall(checkMethod, session?.jwt);
-    const userCustomPrayerTime = `prayer-times?&filters[user][id][$eq]=${session?.id}`;
-    const { data, status } = await GetApiCall(
-      userCustomPrayerTime,
-      session?.jwt
-    );
-    if (location) {
-      latitude = location?.latitude;
-      longitude = location?.longitude;
+    const checkMethod = `users/${session?.id}?fields=location&fields=mosqName`; // userID
+    const placeData = await GetApiCall(checkMethod, session?.jwt); //jwt
+    if (placeData?.location) {
+      const userCustomPrayerTime = `prayer-times?&filters[user][id][$eq]=${session?.id}`; // userID
+      const { data, status } = await GetApiCall(
+        userCustomPrayerTime,
+        session?.jwt
+      );
+      latitude = placeData?.location?.latitude;
+      longitude = placeData?.location?.longitude;
+      mosqName = placeData?.mosqName
       userCustomPrayerTimings = data[0]?.attributes;
     } else {
       // Default to current location if no custom location is provided
@@ -46,10 +47,9 @@ export async function PrayerDetail() {
     try {
       // Use default location (current location) if custom location is not provided
       // const coordinates = new Coordinates(latitude, longitude);
-      const params = CalculationMethod.MoonsightingCommittee();
+      const params = CalculationMethod.UmmAlQura();
 
       const timeZoneDetails = await getTimezone(latitude, longitude);
-
       const timeZoneDate = moment.tz(new Date(), timeZoneDetails); // Bhopal uses the same timezone as Kolkata
       const date = timeZoneDate.toDate();
       const prayerTimingsData = {
@@ -58,6 +58,7 @@ export async function PrayerDetail() {
         timeZoneDetails: timeZoneDetails,
         coordinates: new Coordinates(latitude, longitude),
         params: params,
+        mosqName: mosqName ? mosqName : null
       };
       resolve(prayerTimingsData);
     } catch (error) {
