@@ -36,7 +36,7 @@ const templateCards = [
   },
 ];
 
-export default function ClockScreens() {
+export default function ClockScreens({session}) {
   const [isButtonVisible, setIsButtonVisible] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const dispatch = useAppDispatch();
@@ -45,24 +45,6 @@ export default function ClockScreens() {
     setIsMounted(true);
     return () => setIsMounted(false);
   }, []);
-  
-  // useEffect(() => {
-  //   const saveNamzTimings = async () => {
-  //     try {
-  //       const namazLocationIfo = await PrayerDetail();
-  //       const refershTime = setInterval(async () => {
-  //         const namazDetails = await PrayerNamazTime(namazLocationIfo);
-  //         dispatch(add(namazDetails));
-  //       }, 1000);
-  //       // return () => clearInterval(refershTime);
-  //       // return () => clearInterval(refershTime);
-  //     } catch (error) {
-  //       console.error("Error fetching prayer times:", error);
-  //     }
-  //   };
-    
-  //   saveNamzTimings();
-  // }, [dispatch]);
   return (
     <Box display="flex" flexDirection="column" justifyContent="start">
       <ToastContainer containerId="sohail" />
@@ -101,7 +83,7 @@ export default function ClockScreens() {
               >
                 {isMounted && (
                   <Fade in={isButtonVisible}>
-                    <Link href={template.link} target="_blank">
+                    <Link href={`${template.link}/${session?.id}`} target="_blank">
                       <Button variant="contained">Preview</Button>
                     </Link>
                   </Fade>

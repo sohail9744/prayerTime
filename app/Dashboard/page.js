@@ -178,7 +178,7 @@ export default function Dashboard() {
           sx={{ flexGrow: 1, bgcolor: "background.default", p: 3 }}
         >
           <Toolbar />
-          {focused === 0 ? <ClockScreens/> : null}
+          {focused === 0 ? <ClockScreens session={session}/> : null}
           {focused === 1 ? <CustomTime session={session} /> : null}
           {focused === 2 ? <Config session={session} /> : null}
           {focused === 3 ? <Help /> : null}

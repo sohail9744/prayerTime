@@ -2,23 +2,25 @@
 import { Box, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Typewriter } from "react-simple-typewriter";
-import { useAppDispatch, useAppSelector } from "../../lib/hooks";
-import { add } from "../../lib/features/Time/curTimeSlice";
-import { PrayerDetail } from "../../Dashboard/components/PrayerDetail";
-import { PrayerNamazTime } from "../../Dashboard/components/PrayerTime";
+import { useAppDispatch, useAppSelector } from "../../../lib/hooks";
+import { add } from "../../../lib/features/Time/curTimeSlice";
+import { PrayerDetail } from "../../../Dashboard/components/PrayerDetail";
+import { PrayerNamazTime } from "../../../Dashboard/components/PrayerTime";
 import moment from "moment-hijri";
-import { getTemperature } from "../../api/apiCalls";
+import { getTemperature } from "../../../api/apiCalls";
 
-function DefaultTheme() {
+function DefaultTheme({params}) {
   const dispatch = useAppDispatch();
   const redux = useAppSelector((state) => state.currentTime.time);
   const [temperature, setTemperature] = useState(null);
+  const [hijiri, setHijiriTime] = useState(null);
 
   useEffect(() => {
     const saveNamzTimings = async () => {
       try {
         moment.locale("en");
-        const namazLocationInfo = await PrayerDetail();
+        // console.log("ID is coming bro through route", params.userId);
+        const namazLocationInfo = await PrayerDetail(params.userId);
         const refreshTime = setInterval(async () => {
           const namazDetails = await PrayerNamazTime(namazLocationInfo);
           dispatch(add(namazDetails));
@@ -29,12 +31,14 @@ function DefaultTheme() {
           namazLocationInfo.timeZoneDetails
         );
         setTemperature(initialTemperature);
+        setHijiriTime(moment().format("iD iMMMM iYYYY[H]"));
         //Mohammad Sohail: Every 5 hour the Temperature will get the data
         const temperatureInterval = setInterval(async () => {
           const newTemperature = await fetchTemperature(
             namazLocationInfo.coordinates,
             namazLocationInfo.timeZoneDetails
           );
+          setHijiriTime(moment().format("iD iMMMM iYYYY[H]"));
           setTemperature(newTemperature);
         }, 5 * 60 * 60 * 1000);
 
@@ -126,7 +130,7 @@ function DefaultTheme() {
               fontWeight: "bold",
             }}
           >
-            {moment().format("iD iMMMM iYYYY")}
+            {hijiri}
           </Typography>
           <Typography
             variant="h2"

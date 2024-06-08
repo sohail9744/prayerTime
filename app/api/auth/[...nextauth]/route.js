@@ -78,7 +78,7 @@ const userSignUp = async (title, email, password) => {
         password: password,
         confirmed: true,
         blocked: false,
-        role: "2",
+        role: "1",
       },
       {
         headers: {

@@ -1,37 +1,28 @@
-// prayerTimesUtils.js
-import {
-  Coordinates,
-  CalculationMethod,
-  PrayerTimes,
-  SunnahTimes,
-} from "adhan";
-import { getSession } from "next-auth/react";
+import { Coordinates, CalculationMethod } from "adhan";
+// import { getSession } from "next-auth/react";
 import { GetApiCall, getTimezone } from "../../api/apiCalls";
 import moment from "moment-timezone";
 
-export async function PrayerDetail() {
+export async function PrayerDetail(id) {
   return new Promise(async (resolve, reject) => {
     let latitude, longitude, userCustomPrayerTimings, mosqName;
 
-    const session = await getSession();
-    const checkMethod = `users/${session?.id}?fields=location&fields=mosqName`; // userID
-    const placeData = await GetApiCall(checkMethod, session?.jwt); //jwt
+    // const session = await getSession();
+    const checkMethod = `users/${id}?fields=location&fields=mosqName`; // userID
+    const placeData = await GetApiCall(checkMethod, process.env.DEV_API_TOKEN); //jwt
     if (placeData?.location) {
-      const userCustomPrayerTime = `prayer-times?&filters[user][id][$eq]=${session?.id}`; // userID
-      const { data, status } = await GetApiCall(
-        userCustomPrayerTime,
-        session?.jwt
-      );
+      const userCustomPrayerTime = `prayer-times?&filters[user][id][$eq]=${id}`; // userID
+      const { data, status } = await GetApiCall(userCustomPrayerTime, process.env.DEV_API_TOKEN);
       latitude = placeData?.location?.latitude;
       longitude = placeData?.location?.longitude;
-      mosqName = placeData?.mosqName
+      mosqName = placeData?.mosqName;
       userCustomPrayerTimings = data[0]?.attributes;
     } else {
       // Default to current location if no custom location is provided
-      if (navigator.geolocation) {
+      if (navigator?.geolocation) {
         try {
           const position = await new Promise((res, rej) => {
-            navigator.geolocation.getCurrentPosition(res, rej);
+            navigator?.geolocation.getCurrentPosition(res, rej);
           });
           latitude = position.coords.latitude;
           longitude = position.coords.longitude;
@@ -58,7 +49,7 @@ export async function PrayerDetail() {
         timeZoneDetails: timeZoneDetails,
         coordinates: new Coordinates(latitude, longitude),
         params: params,
-        mosqName: mosqName ? mosqName : null
+        mosqName: mosqName ? mosqName : null,
       };
       resolve(prayerTimingsData);
     } catch (error) {

@@ -146,10 +146,11 @@ export async function getTemperature(latitude, longitude) {
   const apiUrl = `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&daily=temperature_2m_max,temperature_2m_min&start_date=${currDate}&end_date=${currDate}`;
   try {
     const response = await axios.get(apiUrl);
-    const temperature = response?.data?.daily?.temperature_2m_max[0]
+    const temperature = response?.data?.daily?.temperature_2m_max[0];
     return temperature;
   } catch (error) {
     console.error("Error fetching timezone:", error);
     return null;
   }
 }
+
