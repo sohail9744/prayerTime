@@ -12,8 +12,8 @@ import { getTemperature } from "../../../api/apiCalls";
 function DefaultTheme({params}) {
   const dispatch = useAppDispatch();
   const redux = useAppSelector((state) => state.currentTime.time);
-  const [temperature, setTemperature] = useState(null);
-  const [hijiri, setHijiriTime] = useState(null);
+  const [temperature, setTemperature] = useState("");
+  const [hijiri, setHijiriTime] = useState("");
 
   useEffect(() => {
     const saveNamzTimings = async () => {
@@ -61,7 +61,6 @@ function DefaultTheme({params}) {
         coordinates?.longitude,
         timeZoneDetails
       );
-      console.log("Temperature fetched:", temperature);
       return temperature;
     } catch (error) {
       console.error("Error fetching the temperature:", error);

@@ -1,6 +1,7 @@
+'use client'
 import { Coordinates, CalculationMethod } from "adhan";
 // import { getSession } from "next-auth/react";
-import { GetApiCall, getTimezone } from "../../api/apiCalls";
+import { GetThemeDataCall, getTimezone } from "../../api/apiCalls";
 import moment from "moment-timezone";
 
 export async function PrayerDetail(id) {
@@ -8,15 +9,18 @@ export async function PrayerDetail(id) {
     let latitude, longitude, userCustomPrayerTimings, mosqName;
 
     // const session = await getSession();
-    const checkMethod = `users/${id}?fields=location&fields=mosqName`; // userID
-    const placeData = await GetApiCall(checkMethod, process.env.DEV_API_TOKEN); //jwt
+    const userId = Number(id);
+
+    const userCustomPrayerTime = `prayer-times?&filters[user][id][$eq]=${userId}`; // userID
+    const { data, status } = await GetThemeDataCall(userCustomPrayerTime);
+    userCustomPrayerTimings = data[0]?.attributes;
+
+    const checkMethod = `users/${userId}?fields=location&fields=mosqName`; // userID
+    const placeData = await GetThemeDataCall(checkMethod); //jwt
     if (placeData?.location) {
-      const userCustomPrayerTime = `prayer-times?&filters[user][id][$eq]=${id}`; // userID
-      const { data, status } = await GetApiCall(userCustomPrayerTime, process.env.DEV_API_TOKEN);
       latitude = placeData?.location?.latitude;
       longitude = placeData?.location?.longitude;
       mosqName = placeData?.mosqName;
-      userCustomPrayerTimings = data[0]?.attributes;
     } else {
       // Default to current location if no custom location is provided
       if (navigator?.geolocation) {

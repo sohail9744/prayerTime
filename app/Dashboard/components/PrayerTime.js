@@ -1,3 +1,4 @@
+'use client'
 // PrayerNamazTime.js
 import { PrayerTimes, SunnahTimes } from "adhan";
 import moment from "moment-timezone";
@@ -8,143 +9,123 @@ export async function PrayerNamazTime({
   params,
   timeZoneDetails,
   userCustomPrayerTimings,
-  mosqName
+  mosqName,
 }) {
   const prayerTimesObj = new PrayerTimes(coordinates, date, params);
   const sunnahTimes = new SunnahTimes(prayerTimesObj);
   // Format prayer times
   try {
-    let prayerTimings;
     //custom prayertimes if user entered
-    if (userCustomPrayerTimings) {
-      prayerTimings = [
-        {
-          name: "FAJR",
-          azaanTime: moment(userCustomPrayerTimings?.azaan_fajr)
-            .tz(timeZoneDetails)
-            .format("h:mm a"),
-          jamatTime: moment(userCustomPrayerTimings?.pray_fajr)
-            .tz(timeZoneDetails)
-            .format("h:mm a"),
-        },
-        {
-          name: "ISHRAQ",
-          azaanTime: moment(prayerTimesObj?.sunrise)
-            .add(15, "minutes")
-            .tz(timeZoneDetails)
-            .format("hh:mm a"),
-          jamatTime: moment(prayerTimesObj?.sunrise)
-            .add(20, "minutes")
-            .tz(timeZoneDetails)
-            .format("hh:mm A"),
-        },
-        {
-          name: "ZUHR",
-          azaanTime: moment(userCustomPrayerTimings?.azaan_dhuhr)
-            .tz(timeZoneDetails)
-            .format("h:mm a"),
-          jamatTime: moment(userCustomPrayerTimings?.pray_dhuhr)
-            .tz(timeZoneDetails)
-            .format("h:mm a"),
-        },
-        {
-          name: "ASR",
-          azaanTime: moment(userCustomPrayerTimings?.azaan_asr)
-            .tz(timeZoneDetails)
-            .format("h:mm a"),
-          jamatTime: moment(userCustomPrayerTimings?.pray_asr)
-            .tz(timeZoneDetails)
-            .format("h:mm a"),
-        },
-        {
-          name: "MAGHRIB",
-          azaanTime: moment(userCustomPrayerTimings?.azaan_maghrib)
-            .tz(timeZoneDetails)
-            .format("h:mm a"),
-          jamatTime: moment(userCustomPrayerTimings?.pray_maghrib)
-            .tz(timeZoneDetails)
-            .format("h:mm a"),
-        },
-        {
-          name: "ISHA",
-          azaanTime: moment(userCustomPrayerTimings?.azaan_isha)
-            .tz(timeZoneDetails)
-            .format("h:mm a"),
-          jamatTime: moment(userCustomPrayerTimings?.pray_isha)
-            .tz(timeZoneDetails)
-            .format("h:mm a"),
-        },
-        {
-          name: "JUMAH",
-          azaanTime: moment(userCustomPrayerTimings?.azaan_jumah)
-            .tz(timeZoneDetails)
-            .format("h:mm a"),
-          jamatTime: moment(userCustomPrayerTimings?.pray_jumah)
-            .tz(timeZoneDetails)
-            .format("h:mm a"),
-        },
-      ];
-    } else {
-      const formatePrayerTime = [
-        {
-          name: "FAJR",
-          azaanTime: moment(prayerTimesObj?.fajr)
-            .tz(timeZoneDetails)
-            .format("h:mm a"),
-        },
-        {
-          name: "ISHRAQ",
-          azaanTime: moment(prayerTimesObj?.sunrise)
-            .add(15, "minutes")
-            .tz(timeZoneDetails)
-            .format("hh:mm a"),
-        },
-        {
-          name: "ZUHR",
-          azaanTime: moment(prayerTimesObj?.dhuhr)
-            .tz(timeZoneDetails)
-            .format("h:mm a"),
-        },
-        {
-          name: "ASR",
-          azaanTime: moment(prayerTimesObj?.asr)
-            .tz(timeZoneDetails)
-            .format("h:mm a"),
-        },
-        {
-          name: "MAGHRIB",
-          azaanTime: moment(prayerTimesObj?.maghrib)
-            .tz(timeZoneDetails)
-            .format("h:mm a"),
-        },
-        {
-          name: "ISHA",
-          azaanTime: moment(prayerTimesObj?.isha)
-            .tz(timeZoneDetails)
-            .format("h:mm a"),
-        },
-        {
-          name: "JUMAH",
-          azaanTime: moment(prayerTimesObj?.dhuhr)
-            .tz(timeZoneDetails)
-            .format("h:mm a"),
-        },
-      ];
-      // Calculate Jamat times (15 minutes after prayer times)
-      prayerTimings = formatePrayerTime.map((Time) => {
-        if (Time.azaanTime !== "Ishraq") {
-          const AzaanTime = moment(Time.azaanTime, "HH:mm");
-          const JamatTime = AzaanTime.add(15, "minutes"); // Add 15 minutes
-          Time.jamatTime = JamatTime.format("hh:mm a"); // Format time to h:mm A
-        } else {
-          Time.jamatTime = moment(prayerTimesObj?.sunrise)
-            .add(20, "minutes")
-            .tz(timeZoneDetails)
-            .format("hh:mm A");
-        }
-        return Time;
-      });
-    }
+    const prayerTimings = [
+      {
+        name: "FAJR",
+        azaanTime: userCustomPrayerTimings?.azaan_fajr
+          ? moment(userCustomPrayerTimings.azaan_fajr).tz(timeZoneDetails).format("h:mm a")
+          : moment(prayerTimesObj?.fajr).tz(timeZoneDetails).format("h:mm a"),
+        jamatTime: userCustomPrayerTimings?.pray_fajr
+          ? moment(userCustomPrayerTimings.pray_fajr)
+              .tz(timeZoneDetails)
+              .format("h:mm a")
+          : moment(prayerTimesObj?.fajr)
+              .add(15, "minutes")
+              .tz(timeZoneDetails)
+              .format("h:mm a"),
+      },
+      {
+        name: "ISHRAQ",
+        azaanTime: moment(prayerTimesObj?.sunrise)
+          .add(15, "minutes")
+          .tz(timeZoneDetails)
+          .format("hh:mm a"),
+        jamatTime: moment(prayerTimesObj?.sunrise)
+          .add(20, "minutes")
+          .tz(timeZoneDetails)
+          .format("hh:mm A"),
+      },
+      {
+        name: "ZUHR",
+        azaanTime: userCustomPrayerTimings?.azaan_dhuhr
+          ? moment(userCustomPrayerTimings.azaan_dhuhr)
+              .tz(timeZoneDetails)
+              .format("h:mm a")
+          : moment(prayerTimesObj?.dhuhr).tz(timeZoneDetails).format("h:mm a"),
+        jamatTime: userCustomPrayerTimings?.pray_dhuhr
+          ? moment(userCustomPrayerTimings.pray_dhuhr)
+              .tz(timeZoneDetails)
+              .format("h:mm a")
+          : moment(prayerTimesObj?.dhuhr)
+              .add(15, "minutes")
+              .tz(timeZoneDetails)
+              .format("h:mm a"),
+      },
+      {
+        name: "ASR",
+        azaanTime: userCustomPrayerTimings?.azaan_asr
+          ? moment(userCustomPrayerTimings.azaan_asr)
+              .tz(timeZoneDetails)
+              .format("h:mm a")
+          : moment(prayerTimesObj?.asr).tz(timeZoneDetails).format("h:mm a"),
+        jamatTime: userCustomPrayerTimings?.pray_asr
+          ? moment(userCustomPrayerTimings.pray_asr)
+              .tz(timeZoneDetails)
+              .format("h:mm a")
+          : moment(prayerTimesObj?.asr)
+              .add(15, "minutes")
+              .tz(timeZoneDetails)
+              .format("h:mm a"),
+      },
+      {
+        name: "MAGHRIB",
+        azaanTime: userCustomPrayerTimings?.azaan_maghrib
+          ? moment(userCustomPrayerTimings.azaan_maghrib)
+              .tz(timeZoneDetails)
+              .format("h:mm a")
+          : moment(prayerTimesObj?.maghrib)
+              .tz(timeZoneDetails)
+              .format("h:mm a"),
+        jamatTime: userCustomPrayerTimings?.pray_maghrib
+          ? moment(userCustomPrayerTimings.pray_maghrib)
+              .tz(timeZoneDetails)
+              .format("h:mm a")
+          : moment(prayerTimesObj?.maghrib)
+              .add(15, "minutes")
+              .tz(timeZoneDetails)
+              .format("h:mm a"),
+      },
+      {
+        name: "ISHA",
+        azaanTime: userCustomPrayerTimings?.azaan_isha
+          ? moment(userCustomPrayerTimings.azaan_isha)
+              .tz(timeZoneDetails)
+              .format("h:mm a")
+          : moment(prayerTimesObj?.isha).tz(timeZoneDetails).format("h:mm a"),
+        jamatTime: userCustomPrayerTimings?.pray_isha
+          ? moment(userCustomPrayerTimings.pray_isha)
+              .tz(timeZoneDetails)
+              .format("h:mm a")
+          : moment(prayerTimesObj?.isha)
+              .add(15, "minutes")
+              .tz(timeZoneDetails)
+              .format("h:mm a"),
+      },
+      {
+        name: "JUMAH",
+        azaanTime: userCustomPrayerTimings?.azaan_jumah
+          ? moment(userCustomPrayerTimings.azaan_jumah)
+              .tz(timeZoneDetails)
+              .format("h:mm a")
+          : moment(prayerTimesObj?.dhuhr).tz(timeZoneDetails).format("h:mm a"),
+        jamatTime: userCustomPrayerTimings?.pray_jumah
+          ? moment(userCustomPrayerTimings.pray_jumah)
+              .tz(timeZoneDetails)
+              .format("h:mm a")
+          : moment(prayerTimesObj?.dhuhr)
+              .add(15, "minutes")
+              .tz(timeZoneDetails)
+              .format("h:mm a"),
+      },
+    ];
+
     // Get current day
     const days = [
       "Sunday",
@@ -180,10 +161,9 @@ export async function PrayerNamazTime({
           .tz(timeZoneDetails)
           .format("h:mm a"),
       },
-      mosqName: mosqName
+      mosqName: mosqName,
     };
   } catch (error) {
     // console.log(error);
   }
 }
-

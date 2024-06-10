@@ -1,7 +1,6 @@
 import axios from "axios";
 import moment from "moment";
 export const PostApiCall = async (endPoint, data, token) => {
-  debugger;
   try {
     const response = await axios.post(
       `${process.env.HOSTNAME}/api/${endPoint}`,
@@ -154,3 +153,23 @@ export async function getTemperature(latitude, longitude) {
   }
 }
 
+export const GetThemeDataCall = async (endPoint) => {
+  try {
+    const response = await axios.get(
+      `${process.env.HOSTNAME}/api/${endPoint}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${process.env.DEV_API_TOKEN}`,
+        },
+      }
+    );
+    return {
+      ...response?.data,
+      status: response?.status,
+    };
+  } catch (error) {
+    console.error("Request failed:", error.response || error.message);
+    return error?.response?.status;
+  }
+};
