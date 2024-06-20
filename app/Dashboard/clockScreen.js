@@ -26,25 +26,31 @@ import { PrayerNamazTime } from "./components/PrayerTime";
 import "./style/prayerTheme.css";
 import { useAppDispatch, useAppSelector } from "../lib/hooks";
 import { add } from "../lib/features/Time/curTimeSlice";
+import CopyLinkComponent from "./components/CopyLinkComponent";
+
 const templateCards = [
   {
     id: 1,
     title: "Default Theme",
     points: ["Prayer Times", "Real Time Clock", "Custom location"],
     image: "/blueTheme.png",
-    link: "/template/default",
+    link: "https://mosqtime.com/template/default",
   },
 ];
 
-export default function ClockScreens({session}) {
+export default function ClockScreens({ session }) {
   const [isButtonVisible, setIsButtonVisible] = useState(false);
   const [isMounted, setIsMounted] = useState(false);
   const dispatch = useAppDispatch();
   const timingData = useAppSelector((state) => state.currentTime.time);
+
   useEffect(() => {
     setIsMounted(true);
     return () => setIsMounted(false);
   }, []);
+
+  const link = `https://mosqtime.com/template/default/${session?.id}`;
+
   return (
     <Box display="flex" flexDirection="column" justifyContent="start">
       <ToastContainer containerId="sohail" />
@@ -52,6 +58,7 @@ export default function ClockScreens({session}) {
         text="We are working Hard and will soon add more templates"
         iconText="info"
       />
+      <CopyLinkComponent link={link} />
       <Box display={"flex"} flexWrap={"wrap"} gap={3}>
         {templateCards.map((template) => (
           <Card key={template.id} sx={{ maxWidth: 310 }}>
@@ -83,7 +90,10 @@ export default function ClockScreens({session}) {
               >
                 {isMounted && (
                   <Fade in={isButtonVisible}>
-                    <Link href={`${template.link}/${session?.id}`} target="_blank">
+                    <Link
+                      href={`${template.link}/${session?.id}`}
+                      target="_blank"
+                    >
                       <Button variant="contained">Preview</Button>
                     </Link>
                   </Fade>

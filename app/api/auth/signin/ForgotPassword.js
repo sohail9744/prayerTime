@@ -9,7 +9,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import OutlinedInput from "@mui/material/OutlinedInput";
 import axios from "axios";
 import Link from "next/link";
-import { SendingEmail } from "../../api/apiCalls";
+import { SendingEmail } from "../../../api/apiCalls";
 
 function ForgotPassword({ open, handleClose }) {
   const [email, setEmail] = React.useState("");

@@ -134,7 +134,7 @@ function AppAppBar({ mode, toggleColorMode }) {
             <ToggleColorMode mode={mode} toggleColorMode={toggleColorMode} />
             <Button color="primary" variant="text" size="small">
               <Link
-                href="/Login/sign-in"
+                href="/api/auth/signin/?csrf=true"
                 variant="body2"
                 sx={{ alignSelf: "center" }}
               >
@@ -143,7 +143,7 @@ function AppAppBar({ mode, toggleColorMode }) {
             </Button>
             <Button color="primary" variant="contained" size="small">
               <Link
-                href="/Login/sign-up"
+                href="/api/auth/signup/?csrf=true"
                 variant="body2"
                 sx={{ alignSelf: "center" }}
               >

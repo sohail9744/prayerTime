@@ -6,15 +6,15 @@ import axios from "axios"; // You might use axios for HTTP requests
 const authOptions = NextAuth({
   providers: [
     CredentialsProvider({
-      name: "Credentials",
-      credentials: {
-        email: {
-          label: "Email",
-          type: "text",
-          placeholder: "jsmith@example.com",
-        },
-        password: { label: "Password", type: "password" },
-      },
+      // name: "Credentials",
+      // credentials: {
+      //   email: {
+      //     label: "Email",
+      //     type: "text",
+      //     placeholder: "jsmith@example.com",
+      //   },
+      //   password: { label: "Password", type: "password" },
+      // },
       async authorize(credentials) {
         const { title, email, password, page } = credentials;
         console.log("user credentials", email, password, page);
