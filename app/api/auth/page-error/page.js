@@ -1,3 +1,4 @@
+'use client'
 import React from "react";
 import { Box, Button, Typography, Link, Container } from "@mui/material";
 import Image from "next/image";
@@ -29,7 +30,7 @@ const ErrorPage = () => {
           Page Not Found
         </Typography>
         <Typography variant="body1" gutterBottom>
-          The page you're looking for doesn't exist or has been moved.
+          The page youre looking for doesnt exist or has been moved.
         </Typography>
         <Link href="/" variant="body2">
           <Button color="secondary" variant="outlined">
