@@ -34,24 +34,26 @@ export default function Hero() {
         sx={{
           display: "flex",
           flexDirection: { xs: "row", sm: "column", lg: "row" },
-          alignItems: "center",
+          alignItems: "start",
           pt: { xs: 14, sm: 20, lg: 15 },
-          pb: { xs: 8, sm: 12 },
+          pb: { xs: 1, sm: 1 },
         }}
       >
         <Stack
           spacing={2}
-          alignItems="start"
-          useFlexGap
+          alignItems={{
+            xs: "center",
+            sm: "center",
+            md: "start",
+            lg: "start",
+            xl: "start",
+          }}
           sx={{ width: { xs: "100%", sm: "70%" } }}
         >
           <Typography
-            variant="h2"
             sx={{
-              display: "flex",
-              flexDirection: { xs: "column", sm: "row" },
-              alignItems: "flex-start",
-              textAlign: "start",
+              fontSize: { xs: "larger", sm: "larger", xl: "42px", lg: "42px" },
+              fontWeight: 600,
             }}
           >
             <Typewriter
@@ -74,26 +76,72 @@ export default function Hero() {
           <Typography
             textAlign="start"
             color="text.secondary"
-            sx={{ width: { sm: "100%", md: "80%" } }}
+            sx={{
+              display: {
+                xs: "none",
+                sm: "none",
+                md: "none",
+                lg: "flex",
+                xl: "flex",
+              },
+              fontSize: "medium",
+              fontWeight: 400,
+            }}
           >
             Say goodbye to traditional clocks! It&apos;s time to switch to
             Mosqtime.com&apos;s digital clock for mosques. Experience accuracy
-            and convenience in just 3 easy steps.
+            and convenience in just 3 easy steps. Our state-of-the-art digital
+            clocks are designed specifically for mosques, ensuring precise
+            prayer times and seamless synchronization with global Islamic
+            calendars. With an easy-to-use interface and customizable features,
+            Mosqtime.com offers a modern solution that enhances the spiritual
+            experience for the community. Installation is a breeze, and our
+            dedicated support team is always available to assist you. Best of
+            all, it&apos;s completely free! Embrace the future of timekeeping
+            with Mosqtime.com&apos;s digital clock and bring your mosque into
+            the digital age. Transform the way you manage prayer schedules and
+            community announcements, all while maintaining the highest level of
+            reliability and precision.
+          </Typography>
+          <Typography
+            textAlign="start"
+            color="text.secondary"
+            sx={{
+              display: {
+                xs: "block",
+                sm: "block",
+                md: "block",
+                lg: "none",
+                xl: "none",
+              },
+            }}
+          >
+            Say goodbye to traditional clocks! It&apos;s time to switch to
+            Mosqtime.com&apos;s digital clock for mosques. Experience accuracy
+            and convenience in just 3 easy steps. Our state-of-the-art digital
+            clocks are designed specifically for mosques, ensuring precise
+            prayer times and seamless synchronization with global Islamic
+            calendars.
           </Typography>
           <Stack
             direction={{ xs: "column", sm: "row" }}
             spacing={1}
             useFlexGap
-            sx={{ pt: 2, width: { xs: "100%", sm: "auto" } }}
+            sx={{
+              pt: 2,
+              width: { xs: "100%", sm: "auto" },
+            }}
           >
-            <Button
-              startIcon={<ArrowRight />}
-              fullWidth
-              variant="contained"
-              color="primary"
-            >
-              Get Started
-            </Button>
+            <Link href="/api/auth/signup/?csrf=true">
+              <Button
+                startIcon={<ArrowRight />}
+                fullWidth
+                variant="contained"
+                color="primary"
+              >
+                Get Started
+              </Button>
+            </Link>
           </Stack>
           <Typography variant="caption" textAlign="center">
             By clicking &quot;Start now&quot; you agree to our&nbsp;
@@ -103,7 +151,17 @@ export default function Hero() {
             .
           </Typography>
         </Stack>
-        <Stack>
+        <Stack
+          sx={{
+            display: {
+              xs: "none",
+              sm: "none",
+              md: "block",
+              lg: "flex",
+              xl: "flex",
+            },
+          }}
+        >
           <Image
             width={344}
             height={344}

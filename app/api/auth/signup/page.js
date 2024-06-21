@@ -233,7 +233,7 @@ export default function SignUp() {
                 Sign up
               </Button>
               <Link
-                href="/Login/sign-in"
+                href="/api/auth/signin/?csrf=true"
                 variant="body2"
                 sx={{ alignSelf: "center" }}
               >

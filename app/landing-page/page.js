@@ -54,13 +54,13 @@ export default function LandingPage() {
       <Box sx={{ bgcolor: "background.default" }}>
         {/* <LivePrayer/> Need to add in Future */}
         <Features />  
-        <LogoCollection />
-        <Divider />
-        <Testimonials />
+        {/* <LogoCollection /> */}
+        {/* <Divider /> */}
+        {/* <Testimonials /> */}
         <Divider />
         <Highlights />
-        <Divider />
-        <Pricing />
+        {/* <Divider />
+        <Pricing /> */}
         <Divider />
         <FAQ />
         <Divider />

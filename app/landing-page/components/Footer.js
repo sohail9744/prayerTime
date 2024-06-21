@@ -21,7 +21,7 @@ function Copyright() {
   return (
     <Typography variant="body2" color="text.secondary" mt={1}>
       {'Copyright © '}
-      <Link href="https://mui.com/">Sitemark&nbsp;</Link>
+      <Link href="https://mosqtime.com/">Mosqtime&nbsp;</Link>
       {new Date().getFullYear()}
     </Typography>
   );
@@ -86,7 +86,7 @@ export default function Footer() {
             </Stack>
           </Box>
         </Box>
-        <Box
+        {/* <Box
           sx={{
             display: { xs: 'none', sm: 'flex' },
             flexDirection: 'column',
@@ -151,7 +151,7 @@ export default function Footer() {
           <Link color="text.secondary" variant="body2" href="#">
             Contact
           </Link>
-        </Box>
+        </Box> */}
       </Box>
       <Box
         sx={{
@@ -184,30 +184,30 @@ export default function Footer() {
             color: 'text.secondary',
           }}
         >
-          <IconButton
+          {/* <IconButton
             color="inherit"
             href="https://github.com/mui"
             aria-label="GitHub"
             sx={{ alignSelf: 'center' }}
           >
             <FacebookIcon />
-          </IconButton>
+          </IconButton> */}
           <IconButton
             color="inherit"
-            href="https://twitter.com/MaterialUI"
+            href="https://twitter.com/"
             aria-label="X"
             sx={{ alignSelf: 'center' }}
           >
             <TwitterIcon />
           </IconButton>
-          <IconButton
+          {/* <IconButton
             color="inherit"
             href="https://www.linkedin.com/company/mui/"
             aria-label="LinkedIn"
             sx={{ alignSelf: 'center' }}
           >
             <LinkedInIcon />
-          </IconButton>
+          </IconButton> */}
         </Stack>
       </Box>
     </Container>

@@ -31,16 +31,15 @@ const items = [
     title: "Set Up Your Time",
     description:
       "Customize the prayer schedule through our intuitive interface. Adjust the times to match your local mosque's timetable or personal preference with ease.",
-    imageLight:
-      '/time.svg', // Replace with actual path
+    imageLight: "/prayerTime.png", // Replace with actual path
     imageDark: 'url("/static/images/templates/templates-images/time-dark.png")', // Replace with actual path
   },
   {
     icon: <TvIcon />,
     title: "Paste the URL into Your Smart TV",
     description:
-      "Finalize the setup by pasting the generated URL into your Smart TV. Enjoy a live display of your prayer times on a bigger screen with clear visibility.",
-    imageLight: '/tvUrl.svg', // Replace with actual path
+      "Finalize the setup by pasting the generated URL into your Smart TV. Tv must be in vertical or 90 degree Enjoy a live display of your prayer times on a bigger screen with clear visibility.",
+    imageLight: "/defaultClock.png", // Replace with actual path
     imageDark: 'url("/static/images/templates/templates-images/tv-dark.png")', // Replace with actual path
   },
 ];
@@ -92,7 +91,7 @@ export default function Features() {
             gap={1}
             sx={{ display: { xs: "auto", sm: "none" } }}
           >
-            {items.map(({ title }, index) => (
+            {items.map(({ icon, title, description }, index) => (
               <Chip
                 key={index}
                 label={title}
@@ -108,7 +107,7 @@ export default function Features() {
               mt: 4,
             }}
           >
-            <Box
+            {/* <Box
               sx={{
                 backgroundImage: (theme) =>
                   theme.palette.mode === "light"
@@ -118,7 +117,14 @@ export default function Features() {
                 backgroundPosition: "center",
                 minHeight: 280,
               }}
-            />
+            /> */}
+            <Image
+              width={300}
+              height={300}
+              sizes="cover"
+              className="p-5"
+              src={items[selectedItemIndex].imageLight}
+            ></Image>
             <Box sx={{ px: 2, pb: 2 }}>
               <Typography color="text.primary" fontWeight="medium" gutterBottom>
                 {selectedFeature.title}
@@ -265,7 +271,13 @@ export default function Features() {
             sx={{
               height: "100%",
               width: "100%",
-              display: { xs: "none", sm: "flex", lg: "flex", justifyContent: 'center', alignItems: 'center' },
+              display: {
+                xs: "none",
+                sm: "flex",
+                lg: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+              },
               pointerEvents: "none",
             }}
           >

@@ -250,7 +250,7 @@ export default function SignIn() {
                 Sign in
               </Button>
               <Link
-                href="/material-ui/getting-started/templates/sign-up/"
+                href="/"
                 variant="body2"
                 sx={{ alignSelf: "center" }}
               >

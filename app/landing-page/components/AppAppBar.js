@@ -89,14 +89,14 @@ function AppAppBar({ mode, toggleColorMode }) {
               >
                 Features
               </Button>
-              <Button
+              {/* <Button
                 variant="text"
                 color="info"
                 size="small"
                 onClick={() => scrollToSection("testimonials")}
               >
                 Testimonials
-              </Button>
+              </Button> */}
               <Button
                 variant="text"
                 color="info"
@@ -105,14 +105,14 @@ function AppAppBar({ mode, toggleColorMode }) {
               >
                 Highlights
               </Button>
-              <Button
+              {/* <Button
                 variant="text"
                 color="info"
                 size="small"
                 onClick={() => scrollToSection("pricing")}
               >
                 Pricing
-              </Button>
+              </Button> */}
               <Button
                 variant="text"
                 color="info"
@@ -181,24 +181,36 @@ function AppAppBar({ mode, toggleColorMode }) {
                 <MenuItem onClick={() => scrollToSection("features")}>
                   Features
                 </MenuItem>
-                <MenuItem onClick={() => scrollToSection("testimonials")}>
+                {/* <MenuItem onClick={() => scrollToSection("testimonials")}>
                   Testimonials
-                </MenuItem>
+                </MenuItem> */}
                 <MenuItem onClick={() => scrollToSection("highlights")}>
                   Highlights
                 </MenuItem>
-                <MenuItem onClick={() => scrollToSection("pricing")}>
+                {/* <MenuItem onClick={() => scrollToSection("pricing")}>
                   Pricing
-                </MenuItem>
+                </MenuItem> */}
                 <MenuItem onClick={() => scrollToSection("faq")}>FAQ</MenuItem>
                 <MenuItem>
                   <Button color="primary" variant="contained" fullWidth>
-                    Sign up
+                    <Link
+                      href="/api/auth/signup/?csrf=true"
+                      variant="body2"
+                      sx={{ alignSelf: "center" }}
+                    >
+                      Sign up
+                    </Link>
                   </Button>
                 </MenuItem>
                 <MenuItem>
                   <Button color="primary" variant="outlined" fullWidth>
-                    Sign in
+                    <Link
+                      href="/api/auth/signin/?csrf=true"
+                      variant="body2"
+                      sx={{ alignSelf: "center" }}
+                    >
+                      Sign in
+                    </Link>
                   </Button>
                 </MenuItem>
               </Box>
