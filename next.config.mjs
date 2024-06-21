@@ -3,9 +3,9 @@ const nextConfig = {
   env: {
     NEXT_PUBLIC_IMAGE: "https://bk.mosqtime.com", // Backend Image Url for frontend side
     HOSTNAME: "https://bk.mosqtime.com", // Backend Hosted on this url
-    NEXTAUTH_URL: "http://localhost:3000",
+    // NEXTAUTH_URL: "http://localhost:3000",
     // Server URL
-    // NEXTAUTH_URL: "https://mosqtime.com",
+    NEXTAUTH_URL: "https://mosqtime.com",
     // Common URL 
     GOOGLE_MAPS_KEY: "AIzaSyD3QQH8b4zZn4CFuhxuZyksdwRRZVbOtWQ",
     NEXTAUTH_SECRET: "zO5TC/ir3qOHwafVy7Ss2zpohjemaVbGEIdYE3ELMDo=",
