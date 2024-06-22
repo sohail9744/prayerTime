@@ -24,8 +24,9 @@ import AutoAwesomeRoundedIcon from "@mui/icons-material/AutoAwesomeRounded";
 import ForgotPassword from "./ForgotPassword";
 import getSignInTheme from "./getSignInTheme";
 import ToggleColorMode from "./ToggleColorMode";
-import { GoogleIcon, FacebookIcon, SitemarkIcon } from "./CustomIcons";
+
 import { getSession, signIn, useSession } from "next-auth/react";
+import Image from "next/image";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
@@ -165,7 +166,9 @@ export default function SignIn() {
           sx={{ height: { xs: "100%", sm: "100dvh" }, p: 2 }}
         >
           <Card sx={{ overflow: "auto" }}>
-            <SitemarkIcon />
+            <Box>
+              <Image src="/logo.svg" height={150} width={150} />
+            </Box>
             <Typography
               component="h1"
               variant="h4"
@@ -249,11 +252,7 @@ export default function SignIn() {
               >
                 Sign in
               </Button>
-              <Link
-                href="/"
-                variant="body2"
-                sx={{ alignSelf: "center" }}
-              >
+              <Link href="/" variant="body2" sx={{ alignSelf: "center" }}>
                 Don&apos;t have an account? Sign up
               </Link>
             </Box>

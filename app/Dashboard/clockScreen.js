@@ -33,7 +33,7 @@ const templateCards = [
     id: 1,
     title: "Default Theme",
     points: ["Prayer Times", "Real Time Clock", "Custom location"],
-    image: "/blueTheme.png",
+    image: "/defaultClock.png",
     link: "https://mosqtime.com/template/default",
   },
 ];
@@ -55,32 +55,20 @@ export default function ClockScreens({ session }) {
     <Box display="flex" flexDirection="column" justifyContent="start">
       <ToastContainer containerId="sohail" />
       <AlertBox
-        text="We are working Hard and will soon add more templates"
+        text="Click on the card to preview the screen"
         iconText="info"
       />
       <CopyLinkComponent link={link} />
       <Box display={"flex"} flexWrap={"wrap"} gap={3}>
         {templateCards.map((template) => (
           <Card key={template.id} sx={{ maxWidth: 310 }}>
-            <CardActions
-              sx={{ display: "flex", justifyContent: "space-between" }}
-            >
-              <Typography
-                sx={{ margin: "0px" }}
-                gutterBottom
-                variant="h5"
-                component="div"
-              >
-                {template.title}
-              </Typography>
-            </CardActions>
             <CardActionArea
               onMouseLeave={() => setIsButtonVisible(false)}
               onMouseEnter={() => setIsButtonVisible(true)}
             >
               <CardMedia
                 sx={{
-                  height: 140,
+                  height: 200,
                   display: "flex",
                   justifyContent: "center",
                   alignItems: "center",

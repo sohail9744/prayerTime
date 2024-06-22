@@ -33,6 +33,7 @@ import UserSettings from "./profile_setting";
 import { ThemeProvider } from "@mui/material/styles";
 import { useSession } from "next-auth/react";
 import { ToastContainer } from "react-toastify";
+import Image from "next/image";
 const drawerWidth = 230;
 
 export default function Dashboard() {
@@ -70,7 +71,7 @@ export default function Dashboard() {
   ];
   return (
     <ThemeProvider theme={theme}>
-      <Box sx={{ display: "flex" }}>
+      <Box sx={{ display: "flex"}}>
         <CssBaseline />
         <AppBar
           position="fixed"
@@ -100,7 +101,7 @@ export default function Dashboard() {
               </IconButton>
             )}
             <Typography variant="h6" noWrap component="div">
-              Dashboard
+              Prayer Time, Perfected with MosqTime
             </Typography>
             <AccountMenu session={session} />
           </Toolbar>
@@ -121,7 +122,11 @@ export default function Dashboard() {
           }}
           onClose={handleDrawerToggle}
         >
-          <Toolbar>Logo</Toolbar>
+          <Toolbar>
+            <Box>
+              <Image src="/logo.svg" height={150} width={150} />
+            </Box>
+          </Toolbar>
           <Divider />
           <List>
             {listData.map((item, index) => (
@@ -178,7 +183,7 @@ export default function Dashboard() {
           sx={{ flexGrow: 1, bgcolor: "background.default", p: 3 }}
         >
           <Toolbar />
-          {focused === 0 ? <ClockScreens session={session}/> : null}
+          {focused === 0 ? <ClockScreens session={session} /> : null}
           {focused === 1 ? <CustomTime session={session} /> : null}
           {focused === 2 ? <Config session={session} /> : null}
           {focused === 3 ? <Help /> : null}

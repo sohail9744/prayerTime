@@ -9,7 +9,7 @@ import { PrayerNamazTime } from "../../../Dashboard/components/PrayerTime";
 import moment from "moment-hijri";
 import { getTemperature } from "../../../api/apiCalls";
 
-function DefaultTheme({params}) {
+function DefaultTheme({ params }) {
   const dispatch = useAppDispatch();
   const redux = useAppSelector((state) => state.currentTime.time);
   const [temperature, setTemperature] = useState("");

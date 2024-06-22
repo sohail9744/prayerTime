@@ -23,9 +23,9 @@ import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
 
 import getSignUpTheme from "./getSignUpTheme";
 import ToggleColorMode from "./ToggleColorMode";
-import { GoogleIcon, FacebookIcon, SitemarkIcon } from "./CustomIcons";
 import { title } from "process";
 import { signIn } from "next-auth/react";
+import Image from "next/image";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
@@ -118,10 +118,10 @@ export default function SignUp() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    const title = data.get('name')
+    const title = data.get("name");
     const email = data.get("email");
     const password = data.get("password");
-    
+
     const result = await signIn("credentials", {
       title,
       email,
@@ -162,7 +162,9 @@ export default function SignUp() {
           sx={{ height: { xs: "100%", sm: "100dvh" }, p: 2 }}
         >
           <Card>
-            <SitemarkIcon />
+            <Box>
+              <Image src="/logo.svg" height={150} width={150} />
+            </Box>
             <Typography
               component="h1"
               variant="h4"

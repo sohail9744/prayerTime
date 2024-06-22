@@ -14,8 +14,8 @@ import MenuIcon from "@mui/icons-material/Menu";
 import CloseRoundedIcon from "@mui/icons-material/CloseRounded";
 import ToggleColorMode from "./ToggleColorMode";
 
-import Sitemark from "./SitemarkIcon";
 import Link from "next/link";
+import Image from "next/image";
 
 function AppAppBar({ mode, toggleColorMode }) {
   const [open, setOpen] = React.useState(false);
@@ -77,9 +77,12 @@ function AppAppBar({ mode, toggleColorMode }) {
               display: "flex",
               alignItems: "center",
               px: 0,
+              gap: 4
             }}
           >
-            <Sitemark />
+            <Box>
+              <Image src="/logo.svg" height={150} width={150} />
+            </Box>
             <Box sx={{ display: { xs: "none", md: "flex" } }}>
               <Button
                 variant="text"
@@ -87,7 +90,7 @@ function AppAppBar({ mode, toggleColorMode }) {
                 size="small"
                 onClick={() => scrollToSection("features")}
               >
-                Features
+               3 Easy Steps
               </Button>
               {/* <Button
                 variant="text"
