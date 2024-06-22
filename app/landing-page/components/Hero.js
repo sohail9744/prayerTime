@@ -48,7 +48,13 @@ export default function Hero() {
             lg: "start",
             xl: "start",
           }}
-          sx={{ width: { xs: "100%", sm: "70%" } }}
+          sx={{
+            width: {
+              md: "-webkit-fill-available",
+              xl: "70%",
+              xs: "100%",
+            },
+          }}
         >
           <Typography
             sx={{
@@ -156,7 +162,7 @@ export default function Hero() {
             display: {
               xs: "none",
               sm: "none",
-              md: "block",
+              md: "none",
               lg: "flex",
               xl: "flex",
             },
