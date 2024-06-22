@@ -52,7 +52,7 @@ export default function Dashboard() {
     setMobileOpen(!mobileOpen);
   };
   const theme = useTheme();
-  const matches = useMediaQuery(theme.breakpoints.down("lg"));
+  const matches = useMediaQuery(theme.breakpoints.down("sm"));
 
   const onHandleItem = (item) => {
     // fetchData();
@@ -71,7 +71,7 @@ export default function Dashboard() {
   ];
   return (
     <ThemeProvider theme={theme}>
-      <Box sx={{ display: "flex"}}>
+      <Box sx={{ display: "flex" }}>
         <CssBaseline />
         <AppBar
           position="fixed"
@@ -95,7 +95,7 @@ export default function Dashboard() {
                 aria-label="open drawer"
                 edge="start"
                 onClick={handleDrawerToggle}
-                sx={{ mr: 2, display: { sm: "none", md: "none" } }}
+                sx={{ mr: 2 }}
               >
                 <MdMenu />
               </IconButton>
