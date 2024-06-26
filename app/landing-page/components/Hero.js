@@ -84,46 +84,16 @@ export default function Hero() {
             color="text.secondary"
             sx={{
               display: {
-                xs: "none",
-                sm: "none",
-                md: "none",
-                lg: "flex",
-                xl: "flex",
-              },
-              fontSize: "medium",
-              fontWeight: 400,
-            }}
-          >
-            Say goodbye to traditional clocks! It&apos;s time to switch to
-            Mosqtime.com&apos;s digital clock for mosques. Experience accuracy
-            and convenience in just 3 easy steps. Our state-of-the-art digital
-            clocks are designed specifically for mosques, ensuring precise
-            prayer times and seamless synchronization with global Islamic
-            calendars. With an easy-to-use interface and customizable features,
-            Mosqtime.com offers a modern solution that enhances the spiritual
-            experience for the community. Installation is a breeze, and our
-            dedicated support team is always available to assist you. Best of
-            all, it&apos;s completely free! Embrace the future of timekeeping
-            with Mosqtime.com&apos;s digital clock and bring your mosque into
-            the digital age. Transform the way you manage prayer schedules and
-            community announcements, all while maintaining the highest level of
-            reliability and precision.
-          </Typography>
-          <Typography
-            textAlign="start"
-            color="text.secondary"
-            sx={{
-              display: {
                 xs: "block",
                 sm: "block",
                 md: "block",
-                lg: "none",
-                xl: "none",
+                lg: "block",
+                xl: "block",
               },
             }}
           >
             Say goodbye to traditional clocks! It&apos;s time to switch to
-            Mosqtime.com&apos;s digital clock for mosques. Experience accuracy
+            Mosqtime.com digital clock for mosques. Experience accuracy
             and convenience in just 3 easy steps. Our state-of-the-art digital
             clocks are designed specifically for mosques, ensuring precise
             prayer times and seamless synchronization with global Islamic
@@ -136,6 +106,7 @@ export default function Hero() {
             sx={{
               pt: 2,
               width: { xs: "100%", sm: "auto" },
+              mt: { xl: "34px" },
             }}
           >
             <Link href="/api/auth/signup/?csrf=true">

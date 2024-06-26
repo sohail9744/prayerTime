@@ -78,7 +78,7 @@ function DefaultTheme({ params }) {
         justifyContent: "center",
         backgroundImage: `url(/defaultBg.png)`,
         backgroundSize: "cover",
-        backgroundRepeat: "no-repeat",
+        // backgroundRepeat: "no-repeat",
         backgroundPosition: "center",
       }}
     >
@@ -94,7 +94,7 @@ function DefaultTheme({ params }) {
       >
         <Typography
           sx={{
-            fontSize: { xs: "4rem", md: "3rem", lg: "5rem", xl: "8rem" },
+            fontSize: { xs: "1rem", md: "3rem", lg: "5rem", xl: "8rem" },
             fontWeight: "bold",
             color: "black",
           }}
@@ -108,7 +108,8 @@ function DefaultTheme({ params }) {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          gap: 10,
+          gap: { md: 10, xs: 3 },
+          marginTop: { xs: 60 },
           width: "100vh",
           height: "100vw",
           textAlign: "center",
@@ -125,7 +126,7 @@ function DefaultTheme({ params }) {
         >
           <Typography
             sx={{
-              fontSize: { xs: "4rem", md: "3rem", lg: "5rem", xl: "8rem" },
+              fontSize: { xs: "1rem", md: "3rem", lg: "5rem", xl: "8rem" },
               fontWeight: "bold",
             }}
           >
@@ -134,7 +135,7 @@ function DefaultTheme({ params }) {
           <Typography
             variant="h2"
             sx={{
-              fontSize: { xs: "4rem", md: "4rem", lg: "4rem", xl: "8rem" },
+              fontSize: { xs: "1rem", md: "4rem", lg: "4rem", xl: "8rem" },
             }}
           >
             {redux.currentDate}
@@ -142,7 +143,7 @@ function DefaultTheme({ params }) {
           <Typography
             variant="h2"
             sx={{
-              fontSize: { xs: "4rem", md: "4rem", lg: "4rem", xl: "8rem" },
+              fontSize: { xs: "1rem", md: "4rem", lg: "4rem", xl: "8rem" },
             }}
           >
             {redux.currentDay}
@@ -150,39 +151,40 @@ function DefaultTheme({ params }) {
           <Typography
             variant="h2"
             sx={{
-              fontSize: { xs: "4rem", md: "4rem", lg: "4rem", xl: "8rem" },
+              fontSize: { xs: "1rem", md: "4rem", lg: "4rem", xl: "8rem" },
             }}
           >
             {redux?.timeZone?.split("/")[1]}
           </Typography>
+          <Typography
+            variant="h1"
+            sx={{
+              fontSize: { xs: "2rem", md: "8rem", lg: "8rem", xl: "9rem" },
+              fontWeight: 700,
+            }}
+          >
+            {redux.currentTime}
+          </Typography>
+          <Typography
+            variant="h3"
+            sx={{
+              fontSize: { xs: "1rem", md: "5rem", lg: "3rem", xl: "7rem" },
+            }}
+          >
+            <Typewriter
+              words={[
+                "رَّبِّ اغْفِرْ وَارْحَمْ وَأَنتَخَيْرُ الرَّاحِمِينَ",
+                "رَبَّنَا هَبْ لَنَا مِنْ أَزْوَاجِنَا وَذُرِّيَّاتِنَا قُرَّةَ أَعْيُنٍ وَاجْعَلْنَا لِلْمُتَّقِينَ إِمَامًا",
+                "رَبَّنَا لَا تُزِغْ قُلُوبَنَا بَعْدَ إِذْ هَدَيْتَنَا وَهَبْ لَنَا مِن لَّدُنكَ رَحْمَةً إِنَّكَ أَنتَ الْوَهَّابُ",
+                "رَبَّنَا إِنَّنَا آمَنَّا فَاغْفِرْ لَنَا ذُنُوبَنَا وَقِنَا عَذَابَ النَّارِ",
+              ]}
+              loop={false}
+              typeSpeed={0}
+              deleteSpeed={0}
+              delaySpeed={10000}
+            />
+          </Typography>
         </Box>
-        <Typography
-          variant="h1"
-          sx={{
-            fontSize: { xs: "5rem", md: "8rem", lg: "8rem", xl: "9rem" },
-          }}
-        >
-          {redux.currentTime}
-        </Typography>
-        <Typography
-          variant="h3"
-          sx={{
-            fontSize: { xs: "3rem", md: "5rem", lg: "3rem", xl: "7rem" },
-          }}
-        >
-          <Typewriter
-            words={[
-              "رَّبِّ اغْفِرْ وَارْحَمْ وَأَنتَخَيْرُ الرَّاحِمِينَ",
-              "رَبَّنَا هَبْ لَنَا مِنْ أَزْوَاجِنَا وَذُرِّيَّاتِنَا قُرَّةَ أَعْيُنٍ وَاجْعَلْنَا لِلْمُتَّقِينَ إِمَامًا",
-              "رَبَّنَا لَا تُزِغْ قُلُوبَنَا بَعْدَ إِذْ هَدَيْتَنَا وَهَبْ لَنَا مِن لَّدُنكَ رَحْمَةً إِنَّكَ أَنتَ الْوَهَّابُ",
-              "رَبَّنَا إِنَّنَا آمَنَّا فَاغْفِرْ لَنَا ذُنُوبَنَا وَقِنَا عَذَابَ النَّارِ",
-            ]}
-            loop={false}
-            typeSpeed={0}
-            deleteSpeed={0}
-            delaySpeed={10000}
-          />
-        </Typography>
         <Box
           sx={{
             display: "flex",
@@ -194,7 +196,7 @@ function DefaultTheme({ params }) {
         >
           <Box
             sx={{
-              borderRadius: "20px",
+              borderRadius: { xs: "3px", md: "20px" },
               // bgcolor: "rgba(173, 216, 230, 0.7)",
               px: 3,
               mx: 2,
@@ -208,13 +210,13 @@ function DefaultTheme({ params }) {
               variant="h2"
               sx={{
                 fontSize: {
-                  xs: "3rem",
+                  xs: "1rem",
                   sm: "4rem",
                   md: "4rem",
                   lg: "5rem",
                   xl: "7rem",
                 },
-                borderRadius: "20px",
+                borderRadius: { xs: "13px", md: "20px" },
                 bgcolor: "rgba(173, 216, 230, 0.7)",
                 p: 2,
                 mx: 1,
@@ -226,13 +228,13 @@ function DefaultTheme({ params }) {
               variant="h2"
               sx={{
                 fontSize: {
-                  xs: "3rem",
+                  xs: "1rem",
                   sm: "4rem",
                   md: "4rem",
                   lg: "5rem",
                   xl: "7rem",
                 },
-                borderRadius: "20px",
+                borderRadius: { xs: "13px", md: "20px" },
                 bgcolor: "rgba(173, 216, 230, 0.7)",
                 p: 2,
                 mx: 1,
@@ -247,10 +249,10 @@ function DefaultTheme({ params }) {
                 <Box
                   key={index}
                   sx={{
-                    borderRadius: "20px",
+                    borderRadius: { xs: "14px", md: "20px" },
                     bgcolor: "rgba(173, 216, 230, 0.7)",
                     p: 2,
-                    mx: 1,
+                    mx: { xs: 0, md: 1 },
                   }}
                 >
                   <Box
@@ -258,14 +260,14 @@ function DefaultTheme({ params }) {
                       display: "flex",
                       alignItems: "center",
                       justifyContent: "space-between",
-                      gap: 10,
+                      gap: { xs: 4, md: 10 },
                     }}
                   >
                     <Typography
                       variant="h2"
                       sx={{
                         fontSize: {
-                          xs: "3rem",
+                          xs: "1rem",
                           sm: "4rem",
                           md: "4rem",
                           lg: "5rem",
@@ -279,7 +281,7 @@ function DefaultTheme({ params }) {
                       variant="h4"
                       sx={{
                         fontSize: {
-                          xs: "2rem",
+                          xs: "1rem",
                           sm: "2.5rem",
                           md: "64px",
                           lg: "3rem",
@@ -293,7 +295,7 @@ function DefaultTheme({ params }) {
                       variant="h2"
                       sx={{
                         fontSize: {
-                          xs: "3rem",
+                          xs: "1rem",
                           sm: "4rem",
                           md: "4rem",
                           lg: "5rem",
@@ -309,58 +311,64 @@ function DefaultTheme({ params }) {
             </Box>
           )}
         </Box>
-      </Box>
-      <Box
-        sx={{
-          position: "absolute",
-          bottom: 120,
-        }}
-        component={"footer"}
-      >
-        {redux?.mosqName && (
-          <Typography
+        <Box
+          sx={{
+            display: "flex",
+          }}
+          component={"footer"}
+        >
+          {redux?.mosqName && (
+            <Typography
+              sx={{
+                fontSize: {
+                  xs: "1rem",
+                  sm: "1rem",
+                  md: "4rem",
+                  lg: "5rem",
+                  xl: "7rem",
+                },
+                fontWeight: "bold",
+                background: "linear-gradient(90deg, #0000ff, #0000ff, #0000ff)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)",
+              }}
+            >
+              {redux.mosqName}
+            </Typography>
+          )}
+        </Box>
+        <Box display={'flex'} justifyContent={'end'} width={"-webkit-fill-available"}>
+          <Box
             sx={{
-              fontSize: {
-                xs: "3rem",
-                sm: "4rem",
-                md: "4rem",
-                lg: "5rem",
-                xl: "7rem",
-              },
-              fontWeight: "bold",
-              background: "linear-gradient(90deg, #0000ff, #0000ff, #0000ff)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              textShadow: "2px 2px 4px rgba(0, 0, 0, 0.5)",
+              display: "flex",
+              background: "linear-gradient(135deg, #6b8e23 0%, #8fbc8f 100%)",
+              padding: { xs: "2px 2px 0px 15px", md: "15px 25px" },
+              borderRadius: { xs: "5px", md: "20px 0 0 0" },
+              boxShadow: "0 4px 8px rgba(0, 0, 0, 0.3)",
+              justifyContent: "end",
+              alignItems: "end",
             }}
           >
-            {redux.mosqName}
-          </Typography>
-        )}
-      </Box>
-      <Box
-        sx={{
-          position: "absolute",
-          bottom: 0,
-          right: 0,
-          background: "linear-gradient(135deg, #6b8e23 0%, #8fbc8f 100%)",
-          padding: "15px 25px",
-          borderRadius: "20px 0 0 0",
-          boxShadow: "0 4px 8px rgba(0, 0, 0, 0.3)",
-        }}
-      >
-        <Typography
-          sx={{
-            fontSize: { xs: "1.2rem", md: "1.2rem", lg: "2rem", xl: "2.5rem" },
-            fontWeight: "bold",
-            color: "#fff",
-            textShadow: "1px 1px 2px rgba(0, 0, 0, 0.3)",
-            letterSpacing: "0.05em",
-            textAlign: "center",
-          }}
-        >
-          Powered by mosqtime.com
-        </Typography>
+            <Typography
+              sx={{
+                fontSize: {
+                  xs: "0.9rem",
+                  md: "1.2rem",
+                  lg: "2rem",
+                  xl: "2.5rem",
+                },
+                fontWeight: "bold",
+                color: "#fff",
+                textShadow: "1px 1px 2px rgba(0, 0, 0, 0.3)",
+                letterSpacing: "0.05em",
+                textAlign: "end",
+              }}
+            >
+              Powered by mosqtime.com
+            </Typography>
+          </Box>
+        </Box>
       </Box>
     </Box>
   );
