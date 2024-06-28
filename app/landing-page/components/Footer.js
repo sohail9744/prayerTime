@@ -195,14 +195,14 @@ export default function Footer() {
             color: "text.secondary",
           }}
         >
-          {/* <IconButton
+          <IconButton
             color="inherit"
-            href="https://github.com/mui"
+            href="https://github.com/sohail9744/prayerTime"
             aria-label="GitHub"
             sx={{ alignSelf: 'center' }}
           >
             <FacebookIcon />
-          </IconButton> */}
+          </IconButton>
           <IconButton
             color="inherit"
             href="https://twitter.com/"
