@@ -19,18 +19,22 @@ const ErrorPage = () => {
         }}
       >
         <Box>
-          <Image src="/error.svg" alt="Error" width={500} height={500} />
+          <Image
+            src="/authError.svg"
+            alt="Error"
+            width={500}
+            height={500}
+          />
         </Box>
         <Typography variant="h4" component="h2" gutterBottom>
-          Oops! Something went wrong.
+          You are Not authorized
         </Typography>
         <Typography variant="body1" gutterBottom>
-          It seems the username or password you entered is incorrect. Please
-          check your credentials and try again.
+          You are not authorized person to access this page.
         </Typography>
-        <Link href="/" variant="body2">
-          <Button color="secondary" variant="outlined">
-            Back to Home Page
+        <Link href="/api/auth/signin/?csrf=true" variant="body2">
+          <Button color="primary" variant="contained">
+            Sign In
           </Button>
         </Link>
       </Box>

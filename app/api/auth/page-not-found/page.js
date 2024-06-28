@@ -15,15 +15,15 @@ const ErrorPage = () => {
           justifyContent: "center",
           textAlign: "center",
           padding: 2,
-          gap: 3,
+          gap: 2,
         }}
       >
         <Box>
           <Image
-            src="/error.png"
+            src="/pageNotFound.svg"
             alt="Error"
-            width={500}
-            height={500}
+            width={300}
+            height={300}
           />
         </Box>
         <Typography variant="h4" component="h2" gutterBottom>
