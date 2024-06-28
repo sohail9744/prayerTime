@@ -1,7 +1,7 @@
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import SessionProvider from "../Session/SessionProvider";
-import StoreProvider from './StoreProvider'
+import StoreProvider from "./StoreProvider";
 import "./globals.css";
 export const metadata = {
   title: "Mosqtime",
@@ -10,6 +10,14 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
+      <head>
+        <link
+          rel="icon"
+          href="/favicon.png"
+          type="image/png"
+          sizes="any"
+        />
+      </head>
       <body>
         <StoreProvider>
           <SessionProvider>{children}</SessionProvider>
