@@ -16,7 +16,7 @@ const authOptions = NextAuth({
       //   password: { label: "Password", type: "password" },
       // },
       async authorize(credentials) {
-        const { title, email, password, page } = credentials;
+        const { name, email, password, page } = credentials;
         console.log("user credentials", email, password, page);
         try {
           if (page === "signIn") {
@@ -27,7 +27,7 @@ const authOptions = NextAuth({
           }
 
           if (page === "signUp") {
-            const newUser = await userSignUp(title, email, password);
+            const newUser = await userSignUp(name, email, password);
             console.log("NEW USER with SIGNUP", newUser);
             let user = newUser;
             return user;

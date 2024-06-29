@@ -1,31 +1,23 @@
 "use client";
 import * as React from "react";
-import PropTypes from "prop-types";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Checkbox from "@mui/material/Checkbox";
 import CssBaseline from "@mui/material/CssBaseline";
-import Divider from "@mui/material/Divider";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import FormLabel from "@mui/material/FormLabel";
 import FormControl from "@mui/material/FormControl";
 import Link from "@mui/material/Link";
 import TextField from "@mui/material/TextField";
-import ToggleButton from "@mui/material/ToggleButton";
-import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import Typography from "@mui/material/Typography";
 import Stack from "@mui/material/Stack";
 import { Card as MuiCard } from "@mui/material";
 import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
-
-import AutoAwesomeRoundedIcon from "@mui/icons-material/AutoAwesomeRounded";
-import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
-
-import getSignUpTheme from "./getSignUpTheme";
-import ToggleColorMode from "./ToggleColorMode";
-import { title } from "process";
-import { signIn } from "next-auth/react";
 import Image from "next/image";
+import { signIn } from "next-auth/react";
+import ArrowBackRoundedIcon from "@mui/icons-material/ArrowBackRounded";
+import ToggleColorMode from "./ToggleColorMode";
+import getSignUpTheme from "./getSignUpTheme";
 
 const Card = styled(MuiCard)(({ theme }) => ({
   display: "flex",
@@ -47,7 +39,7 @@ const Card = styled(MuiCard)(({ theme }) => ({
 
 const SignUpContainer = styled(Stack)(({ theme }) => ({
   height: "auto",
-  padingBottom: theme.spacing(12),
+  paddingBottom: theme.spacing(12),
   backgroundImage:
     theme.palette.mode === "light"
       ? "radial-gradient(ellipse at 50% 50%, hsl(210, 100%, 97%), hsl(0, 0%, 100%))"
@@ -55,13 +47,12 @@ const SignUpContainer = styled(Stack)(({ theme }) => ({
   backgroundRepeat: "no-repeat",
   [theme.breakpoints.up("sm")]: {
     paddingBottom: 0,
-    height: "100dvh",
+    height: "100vh",
   },
 }));
 
 export default function SignUp() {
   const [mode, setMode] = React.useState("light");
-  const defaultTheme = createTheme({ palette: { mode } });
   const SignUpTheme = createTheme(getSignUpTheme(mode));
   const [emailError, setEmailError] = React.useState(false);
   const [emailErrorMessage, setEmailErrorMessage] = React.useState("");
@@ -111,38 +102,54 @@ export default function SignUp() {
     setMode((prev) => (prev === "dark" ? "light" : "dark"));
   };
 
-  const toggleCustomTheme = () => {
-    setShowCustomTheme((prev) => !prev);
-  };
-
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const title = data.get("name");
-    const email = data.get("email");
-    const password = data.get("password");
-
-    const result = await signIn("credentials", {
-      title,
-      email,
-      password,
-      page: "signUp",
-      callbackUrl: "/Dashboard",
-    });
-
-    if (result?.error) {
-      // Handle errors (e.g., display a message to the user)
+    const isValid = validateInputs();
+  
+    if (!isValid) {
+      return; // Do not proceed if form inputs are invalid
+    }
+  
+    const formData = new FormData(event.currentTarget);
+    const email = formData.get("email");
+    const password = formData.get("password");
+    const name = formData.get("name");
+  
+    try {
+      const result = await signIn("credentials", {
+        name,
+        page: "signUp",
+        email,
+        password,
+        callbackUrl: "/Dashboard",
+      });
+  
+      if (result?.error === "CredentialsSignin") {
+        // Handle invalid credentials error
+        setEmailError(true);
+        setEmailErrorMessage("Invalid email or password.");
+        setPasswordError(true);
+        setPasswordErrorMessage("Invalid email or password.");
+      } else if (result?.error) {
+        // Handle other authentication errors
+        setEmailError(true);
+        setEmailErrorMessage("Login failed: " + result.error);
+        setPasswordError(true);
+        setPasswordErrorMessage("Login failed: " + result.error);
+      }
+    } catch (error) {
+      // Handle generic error (e.g., network issues)
       setEmailError(true);
-      setEmailErrorMessage("Login failed: " + result.error);
+      setEmailErrorMessage("Login failed: " + error.message);
       setPasswordError(true);
-      setPasswordErrorMessage("Login failed: " + result.error);
+      setPasswordErrorMessage("Login failed: " + error.message);
     }
   };
 
   return (
     <ThemeProvider theme={SignUpTheme}>
       <CssBaseline />
-      <SignUpContainer direction="column" justifyContent="space-between">
+      <SignUpContainer>
         <Stack
           direction="row"
           justifyContent="space-between"
@@ -159,11 +166,11 @@ export default function SignUp() {
         </Stack>
         <Stack
           justifyContent="center"
-          sx={{ height: { xs: "100%", sm: "100dvh" }, p: 2 }}
+          sx={{ height: { xs: "100%", sm: "100vh" }, p: 2 }}
         >
-          <Card>
-            <Box>
-              <Image src="/logo.svg" height={150} width={150} />
+          <Card id="formData">
+            <Box sx={{ display: "flex", justifyContent: "center" }}>
+              <Image src="/logo.svg" height={150} width={150} alt="Logo" />
             </Box>
             <Typography
               component="h1"
@@ -203,7 +210,7 @@ export default function SignUp() {
                   variant="outlined"
                   error={emailError}
                   helperText={emailErrorMessage}
-                  color={passwordError ? "error" : "primary"}
+                  color={emailError ? "error" : "primary"}
                 />
               </FormControl>
               <FormControl>
@@ -230,7 +237,7 @@ export default function SignUp() {
                 type="submit"
                 fullWidth
                 variant="contained"
-                onClick={validateInputs}
+                onClick={validateInputs} // Move this validation to onSubmit of the form
               >
                 Sign up
               </Button>
@@ -242,31 +249,6 @@ export default function SignUp() {
                 Already have an account? Sign in
               </Link>
             </Box>
-            {/* <Divider>
-              <Typography color="text.secondary">or</Typography>
-            </Divider>
-            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-              <Button
-                type="submit"
-                fullWidth
-                variant="outlined"
-                color="secondary"
-                onClick={() => alert('Sign up with Google')}
-                startIcon={<GoogleIcon />}
-              >
-                Sign up with Google
-              </Button>
-              <Button
-                type="submit"
-                fullWidth
-                variant="outlined"
-                color="secondary"
-                onClick={() => alert('Sign up with Facebook')}
-                startIcon={<FacebookIcon />}
-              >
-                Sign up with Facebook
-              </Button>
-            </Box> */}
           </Card>
         </Stack>
       </SignUpContainer>
