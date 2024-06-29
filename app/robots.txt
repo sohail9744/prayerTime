@@ -1,0 +1,5 @@
+User-Agent: *
+Allow: /
+Disallow: /Dashboard
+
+Sitemap: http://mosqtime.com/sitemap.xml
