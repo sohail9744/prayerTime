@@ -5,7 +5,8 @@ import StoreProvider from "./StoreProvider";
 import "./globals.css";
 
 export const metadata = {
-  title: "Mosque Time",
+  metadataBase: new URL("https://mosqtime.com"),
+  title: "prayer time for smart tv free software",
   description: "MosqTime offers a free and open-source digital clock software specifically designed for mosques. Easily display accurate prayer times on smart TVs and other digital displays. Customize your mosque's timetable to ensure timely prayers and enhance the worship experience. Our user-friendly software supports multiple languages and is perfect for mosques worldwide. Whether you're in Saudi Arabia, Pakistan, Indonesia, or any other country, MosqTime provides a reliable and modern solution for your mosque's needs. Set up your mosque prayer time display effortlessly with MosqTime.",
   keywords: [
     "mosque digital clock software",
