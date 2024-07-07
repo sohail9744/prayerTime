@@ -1,4 +1,4 @@
-'use client'
+"use client";
 // PrayerNamazTime.js
 import { PrayerTimes, SunnahTimes } from "adhan";
 import moment from "moment-timezone";
@@ -20,7 +20,9 @@ export async function PrayerNamazTime({
       {
         name: "FAJR",
         azaanTime: userCustomPrayerTimings?.azaan_fajr
-          ? moment(userCustomPrayerTimings.azaan_fajr).tz(timeZoneDetails).format("h:mm a")
+          ? moment(userCustomPrayerTimings.azaan_fajr)
+              .tz(timeZoneDetails)
+              .format("h:mm a")
           : moment(prayerTimesObj?.fajr).tz(timeZoneDetails).format("h:mm a"),
         jamatTime: userCustomPrayerTimings?.pray_fajr
           ? moment(userCustomPrayerTimings.pray_fajr)
@@ -145,6 +147,7 @@ export async function PrayerNamazTime({
         ? "fajr"
         : prayerTimesObj.nextPrayer(); // it will give you name
 
+    debugger;
     return {
       currentDate: moment().format("Do MMM YYYY"),
       prayerTimes: prayerTimings,

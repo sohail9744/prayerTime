@@ -1,4 +1,4 @@
-'use client'
+"use client";
 import { Coordinates, CalculationMethod } from "adhan";
 // import { getSession } from "next-auth/react";
 import { GetThemeDataCall, getTimezone } from "../../api/apiCalls";
@@ -44,13 +44,15 @@ export async function PrayerDetail(id) {
       // const coordinates = new Coordinates(latitude, longitude);
       const params = CalculationMethod.UmmAlQura();
 
-      const timeZoneDetails = await getTimezone(latitude, longitude);
-      const timeZoneDate = moment.tz(new Date(), timeZoneDetails); // Bhopal uses the same timezone as Kolkata
+      const { zone, city } = await getTimezone(latitude, longitude);
+
+      const timeZoneDate = moment.tz(new Date(), zone); // Bhopal uses the same timezone as Kolkata
       const date = timeZoneDate.toDate();
       const prayerTimingsData = {
         userCustomPrayerTimings: userCustomPrayerTimings,
         date: date,
-        timeZoneDetails: timeZoneDetails,
+        timeZoneDetails: zone,
+        city: city,
         coordinates: new Coordinates(latitude, longitude),
         params: params,
         mosqName: mosqName ? mosqName : null,

@@ -14,6 +14,7 @@ function DefaultTheme({ params }) {
   const redux = useAppSelector((state) => state.currentTime.time);
   const [temperature, setTemperature] = useState("");
   const [hijiri, setHijiriTime] = useState("");
+  const [city, setCity] = useState("");
 
   useEffect(() => {
     const saveNamzTimings = async () => {
@@ -21,6 +22,7 @@ function DefaultTheme({ params }) {
         moment.locale("en");
         // console.log("ID is coming bro through route", params.userId);
         const namazLocationInfo = await PrayerDetail(params.userId);
+        setCity(namazLocationInfo?.city);
         const refreshTime = setInterval(async () => {
           const namazDetails = await PrayerNamazTime(namazLocationInfo);
           dispatch(add(namazDetails));
@@ -154,7 +156,7 @@ function DefaultTheme({ params }) {
               fontSize: { xs: "1rem", md: "4rem", lg: "4rem", xl: "8rem" },
             }}
           >
-            {redux?.timeZone?.split("/")[1]}
+            {city}
           </Typography>
           <Typography
             variant="h1"
@@ -172,12 +174,7 @@ function DefaultTheme({ params }) {
             }}
           >
             <Typewriter
-              words={[
-                "رَّبِّ اغْفِرْ وَارْحَمْ وَأَنتَخَيْرُ الرَّاحِمِينَ",
-                "رَبَّنَا هَبْ لَنَا مِنْ أَزْوَاجِنَا وَذُرِّيَّاتِنَا قُرَّةَ أَعْيُنٍ وَاجْعَلْنَا لِلْمُتَّقِينَ إِمَامًا",
-                "رَبَّنَا لَا تُزِغْ قُلُوبَنَا بَعْدَ إِذْ هَدَيْتَنَا وَهَبْ لَنَا مِن لَّدُنكَ رَحْمَةً إِنَّكَ أَنتَ الْوَهَّابُ",
-                "رَبَّنَا إِنَّنَا آمَنَّا فَاغْفِرْ لَنَا ذُنُوبَنَا وَقِنَا عَذَابَ النَّارِ",
-              ]}
+              words={["لا إله إلا الله، محمد رسول الله"]}
               loop={false}
               typeSpeed={0}
               deleteSpeed={0}
@@ -243,7 +240,7 @@ function DefaultTheme({ params }) {
               Azaan
             </Typography>
           </Box>
-          {redux.prayerTimes && redux.prayerTimes.length > 0 && (
+          {redux?.prayerTimes && redux.prayerTimes.length > 0 && (
             <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
               {redux.prayerTimes.map((item, index) => (
                 <Box
@@ -338,7 +335,11 @@ function DefaultTheme({ params }) {
             </Typography>
           )}
         </Box>
-        <Box display={'flex'} justifyContent={'end'} width={"-webkit-fill-available"}>
+        <Box
+          display={"flex"}
+          justifyContent={"end"}
+          width={"-webkit-fill-available"}
+        >
           <Box
             sx={{
               display: "flex",

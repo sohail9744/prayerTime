@@ -109,7 +109,6 @@ export const DeleteMedia = async (endPoint, token) => {
 };
 
 export const SendingEmail = async (endPoint, token) => {
-  debugger;
   try {
     const response = await axios({
       method: "post",
@@ -125,16 +124,16 @@ export const SendingEmail = async (endPoint, token) => {
   }
 };
 
-export async function getTimezone(latitude, longitude) {
-  const apiKey = process.env.GOOGLE_MAPS_KEY; // Replace with your Google API key
-  const apiUrl = `https://maps.googleapis.com/maps/api/timezone/json?location=${latitude},${longitude}&timestamp=${
-    Date.now() / 1000
-  }&key=${apiKey}`;
+export async function getTimezone(lat, lng) {
+  const apiKey = process.env.TIMEZONE_DB; // Replace with your Google API key
+  const apiUrl = `https://api.timezonedb.com/v2.1/get-time-zone?key=${apiKey}&format=json&by=position&lat=${lat}&lng=${lng}`;
 
   try {
     const response = await axios.get(apiUrl);
-    const timezoneId = response?.data?.timeZoneId;
-    return timezoneId;
+    return{
+      zone: response?.data?.zoneName,
+      city: response?.data?.cityName
+    }
   } catch (error) {
     console.error("Error fetching timezone:", error);
     return null;
