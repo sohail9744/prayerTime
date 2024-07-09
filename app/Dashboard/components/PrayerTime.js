@@ -42,7 +42,7 @@ export async function PrayerNamazTime({
         jamatTime: moment(prayerTimesObj?.sunrise)
           .add(20, "minutes")
           .tz(timeZoneDetails)
-          .format("hh:mm A"),
+          .format("hh:mm a"),
       },
       {
         name: "ZUHR",
@@ -146,12 +146,10 @@ export async function PrayerNamazTime({
       prayerTimesObj.nextPrayer() === "none"
         ? "fajr"
         : prayerTimesObj.nextPrayer(); // it will give you name
-
-    debugger;
     return {
       currentDate: moment().format("Do MMM YYYY"),
       prayerTimes: prayerTimings,
-      currentTime: moment().tz(timeZoneDetails).format("hh:mm:ss a"),
+      currentTime: moment().tz(timeZoneDetails).format("hh:mm:ss A"),
       currentDay: currentDay.toLocaleUpperCase(),
       currentPrayerName: current.toLocaleUpperCase(),
       nextPrayerTime: nextPrayerName.toLocaleUpperCase(),

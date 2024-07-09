@@ -148,7 +148,7 @@ function DefaultTheme({ params }) {
         }}
         display={"flex"}
         flexDirection={"column"}
-        justifyContent={"space-between"}
+        justifyContent={{md: "space-between", xl: "space-between", lg: "space-between", xs: "space-around"}}
         padding={0}
         margin={0}
         flex={1}
@@ -161,15 +161,15 @@ function DefaultTheme({ params }) {
           component={"header"}
         >
           <Box
-            marginTop={2}
-            padding={3}
+            marginTop={{ md: 2, xs: 1, xl: 2, lg: 2 }}
+            padding={{ md: 3, xs: 1, lg: 3, xl: 4 }}
             bgcolor={"#4f6da463"}
             borderRadius={"20px 0 0 20px"}
             aria-label="Temperature Div"
           >
             <Typography
               sx={{
-                fontSize: { xs: "23px", md: "3rem", lg: "5rem", xl: "6rem" },
+                fontSize: { xs: "15px", md: "3rem", lg: "5rem", xl: "6rem" },
                 fontWeight: "bold",
                 color: "black",
               }}
