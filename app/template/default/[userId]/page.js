@@ -1,5 +1,5 @@
 "use client";
-import { Box, Typography } from "@mui/material";
+import { Backdrop, Box, CircularProgress, Typography } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Typewriter } from "react-simple-typewriter";
 import { useAppDispatch, useAppSelector } from "../../../lib/hooks";
@@ -8,8 +8,22 @@ import { PrayerDetail } from "../../../Dashboard/components/PrayerDetail";
 import { PrayerNamazTime } from "../../../Dashboard/components/PrayerTime";
 import moment from "moment-hijri";
 import { getTemperature } from "../../../api/apiCalls";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import "../../../globals.css";
+
+// Define a custom theme to include the imported fonts
+const theme = createTheme({
+  typography: {
+    fontFamily: "Roboto, Arial, sans-serif",
+  },
+});
+// Add Orbitron font to the component
+const orbitronFont = {
+  fontFamily: "Orbitron, sans-serif",
+};
 
 function DefaultTheme({ params }) {
+  const [loader, setLoading] = useState(true);
   const dispatch = useAppDispatch();
   const redux = useAppSelector((state) => state.currentTime.time);
   const [temperature, setTemperature] = useState("");
@@ -43,12 +57,13 @@ function DefaultTheme({ params }) {
           setHijiriTime(moment().format("iD iMMMM iYYYY[H]"));
           setTemperature(newTemperature);
         }, 5 * 60 * 60 * 1000);
-
+        setLoading(false);
         return () => {
           clearInterval(refreshTime);
           clearInterval(temperatureInterval);
         };
       } catch (error) {
+        setLoading(false);
         console.error("Error fetching prayer times:", error);
       }
     };
@@ -69,252 +84,318 @@ function DefaultTheme({ params }) {
       return null;
     }
   }
-  return (
-    <Box
-      sx={{
-        position: "relative",
-        height: "100vh",
-        width: "100vw",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        backgroundImage: `url(/defaultBg.png)`,
-        backgroundSize: "cover",
-        // backgroundRepeat: "no-repeat",
-        backgroundPosition: "center",
-      }}
-    >
-      <Box
+
+  if (loader) {
+    return (
+      // <Box display="flex" justifyContent="center" alignItems="center" height="100vh">
+      //   <CircularProgress />
+      // </Box>
+      <Backdrop
         sx={{
-          position: "absolute",
-          top: 20,
-          right: 0,
-          backgroundColor: "#4f6da463",
-          padding: "10px 20px",
-          borderRadius: "20px 0 0 20px",
-        }}
-      >
-        <Typography
-          sx={{
-            fontSize: { xs: "1rem", md: "3rem", lg: "5rem", xl: "8rem" },
-            fontWeight: "bold",
-            color: "black",
-          }}
-        >
-          {temperature}°C
-        </Typography>
-      </Box>
-      <Box
-        sx={{
+          color: "#fff",
+          background:
+            "linear-gradient(to right, #91EAE4, #86A8E7, #7F7FD5)" /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */,
+          zIndex: (theme) => theme.zIndex.drawer + 1,
           display: "flex",
           flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-          gap: { md: 10, xs: 3 },
-          marginTop: { xs: 60 },
-          width: "100vh",
-          height: "100vw",
-          textAlign: "center",
-          p: 2,
+          flex: 1,
         }}
+        open={true}
       >
         <Box
           sx={{
             display: "flex",
-            flexDirection: "column",
-            gap: 1,
-            alignItems: "center",
-          }}
-        >
-          <Typography
-            sx={{
-              fontSize: { xs: "1rem", md: "3rem", lg: "5rem", xl: "8rem" },
-              fontWeight: "bold",
-            }}
-          >
-            {hijiri}
-          </Typography>
-          <Typography
-            variant="h2"
-            sx={{
-              fontSize: { xs: "1rem", md: "4rem", lg: "4rem", xl: "8rem" },
-            }}
-          >
-            {redux.currentDate}
-          </Typography>
-          <Typography
-            variant="h2"
-            sx={{
-              fontSize: { xs: "1rem", md: "4rem", lg: "4rem", xl: "8rem" },
-            }}
-          >
-            {redux.currentDay}
-          </Typography>
-          <Typography
-            variant="h2"
-            sx={{
-              fontSize: { xs: "1rem", md: "4rem", lg: "4rem", xl: "8rem" },
-            }}
-          >
-            {city}
-          </Typography>
-          <Typography
-            variant="h1"
-            sx={{
-              fontSize: { xs: "2rem", md: "8rem", lg: "8rem", xl: "9rem" },
-              fontWeight: 700,
-            }}
-          >
-            {redux.currentTime}
-          </Typography>
-          <Typography
-            variant="h3"
-            sx={{
-              fontSize: { xs: "1rem", md: "5rem", lg: "3rem", xl: "7rem" },
-            }}
-          >
-            <Typewriter
-              words={["لا إله إلا الله، محمد رسول الله"]}
-              loop={false}
-              typeSpeed={0}
-              deleteSpeed={0}
-              delaySpeed={10000}
-            />
-          </Typography>
-        </Box>
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
-            gap: 2,
           }}
         >
-          <Box
+          <CircularProgress
             sx={{
-              borderRadius: { xs: "3px", md: "20px" },
-              // bgcolor: "rgba(173, 216, 230, 0.7)",
-              px: 3,
-              mx: 2,
-              width: "100%",
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "space-between",
+              color: "transparent",
+              "& .MuiCircularProgress-circle": {
+                strokeLinecap: "round",
+                stroke: "url(#gradient)",
+              },
             }}
+            size={100}
+            thickness={7}
+          />
+          <svg width="0" height="0">
+            <defs>
+              <linearGradient id="gradient" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0%" stopColor="#a1ffce" />
+                <stop offset="50%" stopColor="#faffd1" />
+                <stop offset="100%" stopColor="#d4fc79" />
+              </linearGradient>
+            </defs>
+          </svg>
+        </Box>
+        <Typography fontWeight={550} variant="h6" sx={{ mt: 2 }}>
+          Loading, please wait...
+        </Typography>
+      </Backdrop>
+    );
+  }
+  // Add the other font imports here if needed
+  return (
+    <ThemeProvider theme={theme}>
+      <Box
+        component={"main"}
+        sx={{
+          height: "100vh",
+          width: "100vw",
+          backgroundImage: `url(/defaultBg.png)`,
+        }}
+        display={"flex"}
+        flexDirection={"column"}
+        justifyContent={"space-between"}
+        padding={0}
+        margin={0}
+        flex={1}
+      >
+        {/* Temperature Design Starts ------ */}
+        <Box
+          display={"flex"}
+          justifyContent={"flex-end"}
+          aria-label="Header Main box"
+          component={"header"}
+        >
+          <Box
+            marginTop={2}
+            padding={3}
+            bgcolor={"#4f6da463"}
+            borderRadius={"20px 0 0 20px"}
+            aria-label="Temperature Div"
           >
             <Typography
-              variant="h2"
               sx={{
-                fontSize: {
-                  xs: "1rem",
-                  sm: "4rem",
-                  md: "4rem",
-                  lg: "5rem",
-                  xl: "7rem",
-                },
-                borderRadius: { xs: "13px", md: "20px" },
-                bgcolor: "rgba(173, 216, 230, 0.7)",
-                p: 2,
-                mx: 1,
+                fontSize: { xs: "23px", md: "3rem", lg: "5rem", xl: "6rem" },
+                fontWeight: "bold",
+                color: "black",
               }}
             >
-              Jamaat
-            </Typography>
-            <Typography
-              variant="h2"
-              sx={{
-                fontSize: {
-                  xs: "1rem",
-                  sm: "4rem",
-                  md: "4rem",
-                  lg: "5rem",
-                  xl: "7rem",
-                },
-                borderRadius: { xs: "13px", md: "20px" },
-                bgcolor: "rgba(173, 216, 230, 0.7)",
-                p: 2,
-                mx: 1,
-              }}
-            >
-              Azaan
+              {temperature}°C
             </Typography>
           </Box>
-          {redux?.prayerTimes && redux.prayerTimes.length > 0 && (
-            <Box sx={{ display: "flex", flexDirection: "column", gap: 2 }}>
-              {redux.prayerTimes.map((item, index) => (
-                <Box
-                  key={index}
+        </Box>
+        {/* Temperature Design Ends ------ */}
+        {/* Sub Container Design Start ------ */}
+        <Box
+          display={"flex"}
+          gap={1}
+          flexDirection={"column"}
+          justifyContent={"center"}
+          alignItems={"center"}
+          component={"div"}
+          aria-label="Main Content"
+        >
+          <Box
+            display={"flex"}
+            flexDirection={"column"}
+            justifyContent={"center"}
+            alignItems={"center"}
+            marginLeft={{ md: 31, lg: 31, xl: 31, xs: 0 }}
+          >
+            <Typography
+              sx={{
+                fontSize: { xs: "21px", md: "3rem", lg: "5rem", xl: "6rem" },
+                fontWeight: "400",
+              }}
+            >
+              {hijiri}
+            </Typography>
+            <Typography
+              sx={{
+                fontSize: { xs: "21px", md: "3rem", lg: "5rem", xl: "6rem" },
+                fontWeight: "400",
+              }}
+            >
+              {redux?.currentDate}
+            </Typography>
+            <Typography
+              sx={{
+                fontSize: { xs: "21px", md: "3rem", lg: "5rem", xl: "6rem" },
+                fontWeight: "400",
+              }}
+            >
+              {redux?.currentDay}
+            </Typography>
+            <Typography
+              sx={{
+                fontSize: { xs: "21px", md: "3rem", lg: "5rem", xl: "6rem" },
+                fontWeight: "400",
+              }}
+            >
+              {city}
+            </Typography>
+          </Box>
+        </Box>
+        {/* Sub Container Design Ends ------ */}
+        {/* Time, slogan, heading, and time of namaz Design Starts ------ */}
+        <Box
+          gap={{ xs: 4, md: 4, lg: 4, xl: 5 }}
+          display={"flex"}
+          flexDirection={"column"}
+          m={{ xs: 1, md: 4, lg: 4, xl: 5 }}
+          component={"main"}
+        >
+          {/* Time and Slogan Design Starts ------ */}
+          <Box
+            display={"flex"}
+            justifyContent={"center"}
+            flexDirection={"column"}
+            alignItems={"center"}
+          >
+            <Box component={"span"}>
+              <Typography
+                sx={{
+                  fontSize: {
+                    xs: "2rem",
+                    md: "8rem",
+                    lg: "8rem",
+                    xl: "8rem",
+                  },
+                  fontWeight: 500,
+                  ...orbitronFont,
+                }}
+              >
+                {redux?.currentTime}
+              </Typography>
+            </Box>
+            <Box component={"span"}>
+              <Typography
+                sx={{
+                  fontSize: {
+                    xs: "1rem",
+                    md: "3rem",
+                    lg: "5rem",
+                    xl: "6rem",
+                  },
+                  fontWeight: "bold",
+                }}
+              >
+                لا إله إلا الله، محمد رسول الله
+              </Typography>
+            </Box>
+          </Box>
+          {/* Time and Slogan Design Ends ------ */}
+          {/* List Header container Starts ------ */}
+          <Box aria-label="List" component={"sub"}>
+            <Box
+              component={"sub"}
+              display={"flex"}
+              justifyContent={"space-around"}
+            >
+              <Box
+                borderRadius={{ xs: "13px", md: "20px", xl: "25px" }}
+                component="div"
+                bgcolor={"rgba(173, 216, 230, 0.7)"}
+              >
+                <Typography
                   sx={{
-                    borderRadius: { xs: "14px", md: "20px" },
-                    bgcolor: "rgba(173, 216, 230, 0.7)",
-                    p: 2,
-                    mx: { xs: 0, md: 1 },
+                    fontSize: {
+                      xs: "21px",
+                      sm: "2rem",
+                      md: "3rem",
+                      lg: "5rem",
+                      xl: "7rem",
+                    },
+                    fontWeight: "400",
+                    m: 1,
                   }}
                 >
-                  <Box
+                  JAMAAT
+                </Typography>
+              </Box>
+              <Box
+                borderRadius={{ xs: "13px", md: "20px", xl: "25px" }}
+                component="div"
+                bgcolor={"rgba(173, 216, 230, 0.7)"}
+              >
+                <Typography
+                  sx={{
+                    fontSize: {
+                      xs: "21px",
+                      sm: "2rem",
+                      md: "3rem",
+                      lg: "5rem",
+                      xl: "7rem",
+                    },
+                    fontWeight: "400",
+                    m: 1,
+                  }}
+                >
+                  AZAAN
+                </Typography>
+              </Box>
+            </Box>
+          </Box>
+          {/* List Header container Design Ends ------ */}
+          {/* Namaz List Design start --------- */}
+          {redux?.prayerTimes && redux.prayerTimes.length > 0 && (
+            <Box
+              display={"flex"}
+              flexDirection={"column"}
+              gap={2}
+              component={"main"}
+            >
+              {redux.prayerTimes.map((item, index) => (
+                <Box
+                  component={"sub"}
+                  display={"flex"}
+                  justifyContent={"space-around"}
+                  bgcolor={"rgba(173, 216, 230, 0.7)"}
+                  borderRadius={{ xs: "14px", md: "15px" }}
+                  key={index}
+                >
+                  <Typography
                     sx={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                      gap: { xs: 4, md: 10 },
+                      fontSize: {
+                        xs: "1rem",
+                        sm: "4rem",
+                        md: "4rem",
+                        lg: "5rem",
+                        xl: "7rem",
+                      },
                     }}
                   >
-                    <Typography
-                      variant="h2"
-                      sx={{
-                        fontSize: {
-                          xs: "1rem",
-                          sm: "4rem",
-                          md: "4rem",
-                          lg: "5rem",
-                          xl: "7rem",
-                        },
-                      }}
-                    >
-                      {item.jamatTime}
-                    </Typography>
-                    <Typography
-                      variant="h4"
-                      sx={{
-                        fontSize: {
-                          xs: "1rem",
-                          sm: "2.5rem",
-                          md: "64px",
-                          lg: "3rem",
-                          xl: "4rem",
-                        },
-                      }}
-                    >
-                      {item.name}
-                    </Typography>
-                    <Typography
-                      variant="h2"
-                      sx={{
-                        fontSize: {
-                          xs: "1rem",
-                          sm: "4rem",
-                          md: "4rem",
-                          lg: "5rem",
-                          xl: "7rem",
-                        },
-                      }}
-                    >
-                      {item.azaanTime}
-                    </Typography>
-                  </Box>
+                    {item.jamatTime}
+                  </Typography>
+                  <Typography
+                    sx={{
+                      fontSize: {
+                        xs: "1rem",
+                        sm: "4rem",
+                        md: "4rem",
+                        lg: "5rem",
+                        xl: "7rem",
+                      },
+                    }}
+                  >
+                    {item.name}
+                  </Typography>
+                  <Typography
+                    sx={{
+                      fontSize: {
+                        xs: "1rem",
+                        sm: "4rem",
+                        md: "4rem",
+                        lg: "5rem",
+                        xl: "7rem",
+                      },
+                    }}
+                  >
+                    {item.azaanTime}
+                  </Typography>
                 </Box>
               ))}
             </Box>
           )}
+          {/* Namaz List Design ends --------- */}
         </Box>
-        <Box
-          sx={{
-            display: "flex",
-          }}
-          component={"footer"}
-        >
-          {redux?.mosqName && (
+        {/* Time, slogan, heading, and time of namaz Design Starts ------ */}
+        {redux?.mosqName && (
+          <Box display={"flex"} justifyContent={"center"}>
             <Typography
               sx={{
                 fontSize: {
@@ -333,22 +414,17 @@ function DefaultTheme({ params }) {
             >
               {redux.mosqName}
             </Typography>
-          )}
-        </Box>
-        <Box
-          display={"flex"}
-          justifyContent={"end"}
-          width={"-webkit-fill-available"}
-        >
+          </Box>
+        )}
+        {/* Company Logo Design ends --------- */}
+        {/* <Box position={'sticky'} bottom={0} right={0} component={"footer"}> */}
+        {/* <Box display={"flex"} justifyContent={"flex-end"} component={"footer"}>
           <Box
             sx={{
-              display: "flex",
               background: "linear-gradient(135deg, #6b8e23 0%, #8fbc8f 100%)",
-              padding: { xs: "2px 2px 0px 15px", md: "15px 25px" },
+              padding: 2,
               borderRadius: { xs: "5px", md: "20px 0 0 0" },
               boxShadow: "0 4px 8px rgba(0, 0, 0, 0.3)",
-              justifyContent: "end",
-              alignItems: "end",
             }}
           >
             <Typography
@@ -369,9 +445,10 @@ function DefaultTheme({ params }) {
               Powered by mosqtime.com
             </Typography>
           </Box>
-        </Box>
+        </Box> */}
+        {/* Company Logo Design ends --------- */}
       </Box>
-    </Box>
+    </ThemeProvider>
   );
 }
 
